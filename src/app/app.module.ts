@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppComponent } from './main/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SessionComponent } from './session/session.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SessionComponent
   ],
   imports: [
     BrowserModule,
