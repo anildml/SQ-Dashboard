@@ -4,17 +4,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './main/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SessionComponent } from './session/session.component';
+import { SessionComponent } from './components/session/session.component';
+import { FlowComponent } from './components/flow/flow.component';
+import { InteractionComponent } from './components/interaction/interaction.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SessionComponent
+    SessionComponent,
+    FlowComponent,
+    InteractionComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
