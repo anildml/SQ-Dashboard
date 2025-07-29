@@ -1,32 +1,21 @@
-<!-- <div class="flow_border">
-  <div class="flow_container bg-black p-3">
-    <div class="flow_content bg-white">
-      <div *ngFor="let event of flow.events">
-        <div *ngVar="isFlow(event) as isFlow"></div>
-       <app-flow *ngIf="isFlow" [flow]="eventAsFlow(event)"></app-flow>
-       <app-interaction *ngIf="!isFlow" [interaction]="eventAsInteraction(event)"></app-interaction>
-      </div>
-    </div>
-  </div>
-</div> -->
 
-<div class="flow_container bg-black my-1 p-3 rounded-3">
-  <div class="flow_content m-0 bg-white rounded-3 p-0 border border-3">
-    <div *ngFor="let event of flow.events">
-     <app-flow *ngIf="isFlow(event)" [flow]="eventAsFlow(event)"></app-flow>
-     <app-interaction *ngIf="isInteraction(event)" [interaction]="eventAsInteraction(event)"></app-interaction>
-    </div>
+<div class="flow_container">
+  <div
+    *ngIf="flow.events.length === 0"
+    class="no_event">
   </div>
+  <div
+    *ngFor="let event of flow.events"
+    class="event">
+    <app-flow
+      *ngIf="isFlow(event)"
+      [flow]="eventAsFlow(event)"
+      class="flow">
+    </app-flow>
+    <app-interaction
+      *ngIf="isInteraction(event)"
+      [interaction]="eventAsInteraction(event)"
+      class="interaction">
+    </app-interaction>
+   </div>
 </div>
-
-
-<!-- <div class="a bg-black p-3">
-  <div class="b bg-white">
-    <div class="a bg-black">
-
-    </div>
-  </div>
-  <div class="b bg-white">
-
-  </div>
-</div> -->

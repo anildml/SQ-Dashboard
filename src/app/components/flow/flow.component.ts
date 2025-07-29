@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Flow, isFlow} from "../../models/interfaces/flow";
 import {Event} from "../../models/interfaces/event";
 import {Interaction, isInteraction} from "../../models/interfaces/interaction";
@@ -6,7 +6,8 @@ import {Interaction, isInteraction} from "../../models/interfaces/interaction";
 @Component({
   selector: 'app-flow',
   templateUrl: './flow.component.html',
-  styleUrls: ['./flow.component.scss']
+  styleUrls: ['./flow.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class FlowComponent implements OnInit {
 

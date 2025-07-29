@@ -1,13 +1,37 @@
-.flow_border {
-  margin: 5px;
+@use "bootstrap";
+
+:host {
+  display: inline-flex;
+  flex-direction: column;
 }
 
 .flow_container {
-  min-height: 100px;
-  width: 200px;
+  display: inline-flex;
+  flex-direction: column;
+  @extend .bg-black;
+  @extend .my-1;
+  @extend .p-3;
+  @extend .rounded-2;
+  min-height: 20px;
+  min-width: 200px;
 }
 
-.flow_content {
-  min-height: 100px;
-  width: 200px;
+.no_event {
+  min-height: 20px;
+  @extend .bg-white;
+  @extend .rounded-2;
 }
+
+.event {
+  display: inline-flex;
+  flex-direction: column;
+  @extend .m-0;
+  @extend .bg-white;
+  @extend .rounded-2;
+  @extend .p-0;
+  @extend .border;
+  @extend .border-3;
+  min-height: 20px;
+  min-width: 200px;
+}
+
