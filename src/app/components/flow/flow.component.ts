@@ -2,6 +2,7 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Flow, isFlow} from "../../models/interfaces/flow";
 import {Event} from "../../models/interfaces/event";
 import {Interaction, isInteraction} from "../../models/interfaces/interaction";
+import {Session} from "../../models/interfaces/session";
 
 @Component({
   selector: 'app-flow',
@@ -12,7 +13,7 @@ import {Interaction, isInteraction} from "../../models/interfaces/interaction";
 export class FlowComponent implements OnInit {
 
   @Input("flow")
-  flow: Flow;
+  flow: Flow | Session;
 
   ngOnInit(): void {
 
