@@ -12,8 +12,8 @@ export class AppComponent implements OnInit {
     "_id": "6888c8aa886b6ad40291fb05",
     "client_id": "685d0e6e9dcf1a774e23a5aa",
     "client_name": "user(anily)",
-    "starter_node_id": "685be7058eed05e00fe0edb1",
-    "starter_node_name": "Ana Ekran",
+    "node_id": "685be7058eed05e00fe0edb1",
+    "node_name": "Ana Ekran",
     "start_time": "2025-07-29T13:12:10.031Z",
     "end_time": "2025-07-29T13:29:01.943Z",
     "events": [
