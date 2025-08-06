@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Session} from "../models/interfaces/session";
 
 @Component({
   selector: 'app-root',
