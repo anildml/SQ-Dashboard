@@ -1,19 +1,20 @@
-import { Flow } from "./flow";
-import { Interaction } from "./interaction";
 import {Event} from "./event";
 
 export interface Session {
-  client_trace: string;
+  _id: string;
+  client_id: string;
+  client_name: string;
   starter_node_id: string;
+  starter_node_name: string;
   start_time: string,
   end_time: string,
-  events: Event[],
+  events: Event [],
   state_map_history: any[]
 }
 
-export function isSession(event: Event): event is Session {
+export function isSession(event: Event) {
   return (
-    "client_trace" in event &&
+    "client" in event &&
     "starter_node_id" in event &&
     "start_time" in event &&
     "end_time" in event &&

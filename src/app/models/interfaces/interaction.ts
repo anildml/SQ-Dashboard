@@ -1,7 +1,9 @@
 import {Event} from "./event";
 
 export interface Interaction extends Event {
+  _id: string;
   operation_id: string;
+  operation_name: string;
   trigger_time: string,
   trigger_data: any,
   result_time: string,
@@ -10,22 +12,21 @@ export interface Interaction extends Event {
 }
 
 export interface Update {
-  node_id: string
-  updated_states: UpdatedState[]
+  flow_anchor: string,
+  node_id: string,
+  node_name: string,
+  updated_states: any
 }
 
-export interface UpdatedState {
-  key: string,
-  value: string
-}
-
-export function isInteraction(event: Event): event is Interaction {
+export function isInteraction(interaction: Event) {
   return (
-          "operation_id" in event &&
-          "trigger_time" in event &&
-          "trigger_data" in event &&
-          "result_time" in event &&
-          "result_data" in event &&
-          "updates" in event
+          "id" in interaction &&
+          "operation_id" in interaction &&
+          "operation_name" in interaction &&
+          "trigger_time" in interaction &&
+          "trigger_data" in interaction &&
+          "result_time" in interaction &&
+          "result_data" in interaction &&
+          "updates" in interaction
           );
 }
