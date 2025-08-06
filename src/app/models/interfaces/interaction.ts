@@ -20,7 +20,7 @@ export interface Update {
 
 export function isInteraction(interaction: Event) {
   return (
-          "id" in interaction &&
+          "_id" in interaction &&
           "operation_id" in interaction &&
           "operation_name" in interaction &&
           "trigger_time" in interaction &&
