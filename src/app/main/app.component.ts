@@ -9,93 +9,67 @@ import {Session} from "../models/interfaces/session";
 export class AppComponent implements OnInit {
 
   session: Session = {
-    "client_trace": "c1",
-    "starter_node_id": "62f270e5f0d600a314de5113",
-    "start_time": "2023-03-22T18:50:05.615Z",
-    "end_time": "2023-03-22T18:59:46.592Z",
+    "_id": "6888c8aa886b6ad40291fb05",
+    "client_id": "685d0e6e9dcf1a774e23a5aa",
+    "client_name": "user(anily)",
+    "starter_node_id": "685be7058eed05e00fe0edb1",
+    "starter_node_name": "Ana Ekran",
+    "start_time": "2025-07-29T13:12:10.031Z",
+    "end_time": "2025-07-29T13:29:01.943Z",
     "events": [
       {
-        "node_id": "62f270e5f0d600a314de5116",
-        "start_time": "2023-03-22T18:50:17.275Z",
-        "end_time": "2023-03-22T18:51:27.451Z",
-        "events": [],
-        "state_map_history": [
-          {}
-        ]
-      },
-      {
-        "node_id": "62f270e5f0d600a314de5116",
-        "start_time": "2023-03-22T18:51:32.238Z",
-        "end_time": "2023-03-22T18:58:26.001Z",
+        "_id": "6888c8d5886b6ad40291fb06",
+        "node_id": "686cffcb3eeec175693f944a",
+        "node_name": "Restoran Arama Ekrani",
+        "start_time": "2025-07-29T13:12:53.011Z",
+        "end_time": "2025-07-29T13:28:46.242Z",
         "events": [
           {
-            "operation_id": "62f39581bc8f00f5e625b54f",
-            "trigger_time": "2023-03-22T18:51:49.677Z",
+            "_id": "6888cbac6756e169044da5ba",
+            "operation_id": "686d0d9d6abf12c5a9c8a7fb",
+            "operation_name": "restoran_ara",
+            "trigger_time": "2025-07-29T13:25:00.494Z",
             "trigger_data": {
-              "test": "hello"
+              "restoran_adi": "kebap"
             },
-            "result_time": "2023-03-22T18:57:37.286Z",
+            "result_time": "2025-07-29T13:26:10.481Z",
             "result_data": {
-              "test": "hello back"
+              "restoran_listesi": [
+                "kebap 9, damak kebap"
+              ]
             },
             "updates": [
               {
-                "node_id": "62f270e5f0d600a314de5113",
+                "flow_anchor": "6888c8d5886b6ad40291fb06",
+                "node_id": "686cffcb3eeec175693f944a",
+                "node_name": "Restoran Arama Ekrani",
                 "updated_states": {
-                  "sn1s1": "session update"
-                }
-              },
-              {
-                "node_id": "62f270e5f0d600a314de5116",
-                "updated_states": {
-                  "n2s1": "flow update"
+                  "restoran_listesi": "kebap listesi gelecek buraya, yada updated_states listeye cevirilecek"
                 }
               }
             ]
           },
           {
-            "operation_id": "62f39581bc8f00f5e625b54f",
-            "trigger_time": "2023-03-22T18:57:57.98Z",
-            "trigger_data": {
-              "test": "hello"
-            },
-            "result_time": "2023-03-22T18:58:05.212Z",
-            "result_data": {
-              "test": "hello back"
-            },
-            "updates": [
-              {
-                "node_id": "62f270e5f0d600a314de5113",
-                "updated_states": {
-                  "sn1s1": "session update"
-                }
-              },
-              {
-                "node_id": "62f270e5f0d600a314de5116",
-                "updated_states": {
-                  "n2s1": "flow update"
-                }
-              }
-            ]
+            "_id": "6888cc336756e169044da5bb",
+            "node_id": "688770793eeec175693f948b",
+            "node_name": "Restoran Ekrani",
+            "start_time": "2025-07-29T13:27:14.815Z",
+            "end_time": "2025-07-29T13:27:41.734Z",
+            "events": [],
+            "state_map_history": []
           }
         ],
         "state_map_history": [
-          {}
-        ]
-      },
-      {
-        "node_id": "62f270e5f0d600a314de5116",
-        "start_time": "2023-03-22T18:58:28.754Z",
-        "end_time": "2023-03-22T18:58:34.396Z",
-        "events": [],
-        "state_map_history": [
-          {}
+          {
+            "restoran_listesi": "flow update"
+          },
+          {
+            "restoran_listesi": "kebap listesi gelecek buraya, yada updated_states listeye cevirilecek"
+          }
         ]
       }
     ],
-    "state_map_history": [
-      {}
-    ]
+    "state_map_history": []
   };
 
   title = 'SQ-Dashboard';
