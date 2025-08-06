@@ -8,29 +8,26 @@
 .flow_container {
   display: inline-flex;
   flex-direction: column;
-  @extend .bg-black;
-  @extend .my-1;
-  @extend .p-3;
-  @extend .rounded-2;
+  @extend .me-0;
+  @extend .p-1;
+  @extend .pe-0;
+  @extend .rounded-start;
+  border: solid black;
+  border-width: 5px 0 5px 5px;
+
   min-height: 20px;
   min-width: 200px;
 }
 
 .no_event {
   min-height: 20px;
-  @extend .bg-white;
-  @extend .rounded-2;
 }
 
 .event {
   display: inline-flex;
   flex-direction: column;
-  @extend .m-0;
-  @extend .bg-white;
-  @extend .rounded-2;
-  @extend .p-0;
-  @extend .border;
-  @extend .border-3;
+  margin-bottom: 2px;
+  margin-top: 2px;
   min-height: 20px;
   min-width: 200px;
 }
