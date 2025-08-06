@@ -4,18 +4,18 @@ export interface Interaction extends Event {
   _id: string;
   operation_id: string;
   operation_name: string;
-  trigger_time: string,
-  trigger_data: any,
-  result_time: string,
-  result_data: any,
-  updates: Update[]
+  trigger_time: string;
+  trigger_data: any;
+  result_time: string;
+  result_data: any;
+  updates: Update[];
 }
 
 export interface Update {
-  flow_anchor: string,
-  node_id: string,
-  node_name: string,
-  updated_states: any
+  flow_anchor: string;
+  node_id: string;
+  node_name: string;
+  updated_states: any;
 }
 
 export function isInteraction(interaction: Event) {

@@ -4,10 +4,10 @@ export interface Flow extends Event {
   _id: string;
   node_id: string;
   node_name: string;
-  start_time: string,
-  end_time: string,
-  events: Event []
-  state_map_history: any[]
+  start_time: string;
+  end_time: string;
+  events: Event [];
+  state_map_history: any[];
 }
 
 export function isFlow(flow: Event) {
