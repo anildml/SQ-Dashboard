@@ -1,1 +1,38 @@
-<p>flow works!</p>
+
+<div class="flow_container">
+  <div class="flow_container_header">
+    <div class="flow_container_title_text">
+      {{flow.node_name}}
+    </div>
+    <div class="flow_container_title_datetime">
+      {{getFormattedDateTime(flow.start_time)}}
+    </div>
+  </div>
+  @for (event of flow.events; track $index) {
+  <div
+    class="event">
+    @if (isFlow(event)) {
+    <app-flow
+      [flow]="eventAsFlow(event)"
+      class="flow">
+    </app-flow>
+    }
+    @if (isInteraction(event)) {
+    <app-interaction
+      [interaction]="eventAsInteraction(event)"
+      class="interaction">
+    </app-interaction>
+    }
+   </div>
+  } @empty {
+  <div class="no_event"></div>
+  }
+   <div class="flow_container_footer">
+     <div class="flow_container_title_text">
+
+     </div>
+     <div class="flow_container_title_datetime">
+       {{getFormattedDateTime(flow.end_time)}}
+     </div>
+   </div>
+</div>

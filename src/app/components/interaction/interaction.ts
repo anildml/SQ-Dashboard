@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Interaction} from '../../models/interfaces/interaction';
 
 @Component({
   selector: 'app-interaction',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   templateUrl: './interaction.html',
   styleUrl: './interaction.scss',
 })
-export class Interaction {
+export class InteractionComponent {
+
+  @Input("interaction")
+  interaction!: Interaction;
 
 }

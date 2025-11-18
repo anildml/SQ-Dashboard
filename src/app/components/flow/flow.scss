@@ -1,0 +1,47 @@
+@use "bootstrap";
+
+:host {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.flow_container {
+  display: inline-flex;
+  flex-direction: column;
+  @extend .me-0;
+  @extend .pe-0;
+  margin-left: 2px;
+  border: solid black;
+  border-width: 5px 0 5px 5px;
+  border-radius: 10px 0 0 10px;
+  .flow_container_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @extend .p-1;
+    @extend .px-2;
+    border-radius: 0 0 10px 0;
+    background: rgba(152, 196, 124, 0.5);
+  }
+  .flow_container_footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    @extend .px-2;
+    border-radius: 0 10px 0 0;
+    background: rgba(128, 61, 73, 0.5);
+  }
+  .flow_container_title_datetime {
+    margin-left: 40px;
+  }
+  .no_event {
+    min-height: 20px;
+  }
+
+  .event {
+    display: inline-flex;
+    flex-direction: column;
+    margin-bottom: 2px;
+    margin-top: 2px;
+  }
+}
