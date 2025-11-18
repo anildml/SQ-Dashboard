@@ -23,7 +23,7 @@ export class App implements OnInit {
   protected readonly title = signal('SQ-Core');
 
   session: Session = {
-    "client_name": "c1",
+    "client_name": "temp",
     "node_name": "Ana Ekran",
     "start_time": "2025-11-17T12:24:59.26Z",
     "end_time": "2025-11-17T13:03:15.471Z",
