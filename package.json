@@ -1,5 +1,5 @@
 {
-  "name": "sq-core",
+  "name": "sq-dashboard",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:SQ-Core": "node dist/SQ-Core/server/server.mjs"
+    "serve:ssr:SQ-Dashboard": "node dist/SQ-Dashboard/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,

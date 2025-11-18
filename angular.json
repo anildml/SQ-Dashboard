@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SQ-Core": {
+    "SQ-Dashboard": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SQ-Core:build:production"
+              "buildTarget": "SQ-Dashboard:build:production"
             },
             "development": {
-              "buildTarget": "SQ-Core:build:development"
+              "buildTarget": "SQ-Dashboard:build:development"
             }
           },
           "defaultConfiguration": "development"
