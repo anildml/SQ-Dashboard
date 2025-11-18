@@ -2,7 +2,7 @@ import {Component, OnInit, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {SessionComponent} from '../components/session/session';
 import {DatePipe} from '@angular/common';
-import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {Session} from '../models/interfaces/session';
 
@@ -20,7 +20,7 @@ import {Session} from '../models/interfaces/session';
 })
 export class App implements OnInit {
 
-  protected readonly title = signal('SQ-Core');
+  protected readonly title = signal('SQ Dashboard');
 
   session: Session = {
     "client_name": "temp",

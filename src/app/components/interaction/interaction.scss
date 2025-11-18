@@ -1,0 +1,43 @@
+@use "bootstrap";
+
+:host {
+  display: inline-flex;
+  flex-direction: column;
+}
+.interaction_container {
+  display: inline-flex;
+  flex-direction: column;
+  @extend .me-0;
+  @extend .pe-0;
+  margin-left: 2px;
+  border: solid black;
+  border-width: 5px 0px 5px 5px;
+  border-radius: 10px 0px 0px 10px;
+  .interaction_container_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @extend .p-1;
+    border: solid black;
+    border-width: 0 5px 5px 0;
+
+  }
+  .interaction_container_footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    @extend .px-1;
+    border: solid black;
+    border-width: 5px 5px 0 0;
+
+  }
+  .interaction_container_title_text {
+    width: 150px;
+  }
+  .interaction_container_title_datetime {
+    margin-left: 40px;
+  }
+  .interaction_content {
+
+  }
+}
