@@ -29,6 +29,13 @@ export class App implements OnInit {
     "end_time": "2025-11-17T13:03:15.471Z",
     "events": [
       {
+        "node_name": "Restoran Ekrani",
+        "start_time": "2025-11-17T13:00:23.615Z",
+        "end_time": "2025-11-17T13:01:35.809Z",
+        "events": [],
+        "state_map_history": []
+      },
+      {
         "node_name": "Restoran Arama",
         "start_time": "2025-11-17T12:30:21.918Z",
         "end_time": "2025-11-17T13:02:30.185Z",
@@ -50,6 +57,43 @@ export class App implements OnInit {
                 }
               }
             ]
+          },
+          {
+            "node_name": "Restoran Ekrani",
+            "start_time": "2025-11-17T13:00:23.615Z",
+            "end_time": "2025-11-17T13:01:35.809Z",
+            "events": [
+              {
+                "node_name": "Restoran Ekrani",
+                "start_time": "2025-11-17T13:00:23.615Z",
+                "end_time": "2025-11-17T13:01:35.809Z",
+                "events": [],
+                "state_map_history": []
+              },
+              {
+                "node_name": "Restoran Ekrani",
+                "start_time": "2025-11-17T13:00:23.615Z",
+                "end_time": "2025-11-17T13:01:35.809Z",
+                "events": [
+                  {
+                    "node_name": "Restoran Ekrani",
+                    "start_time": "2025-11-17T13:00:23.615Z",
+                    "end_time": "2025-11-17T13:01:35.809Z",
+                    "events": [],
+                    "state_map_history": []
+                  },
+                  {
+                    "node_name": "Restoran Ekrani",
+                    "start_time": "2025-11-17T13:00:23.615Z",
+                    "end_time": "2025-11-17T13:01:35.809Z",
+                    "events": [],
+                    "state_map_history": []
+                  }
+                ],
+                "state_map_history": []
+              }
+            ],
+            "state_map_history": []
           },
           {
             "node_name": "Restoran Ekrani",
@@ -78,20 +122,20 @@ export class App implements OnInit {
   }
 
   async ngOnInit() {
-    console.log("test");
-    let a = await firstValueFrom(this.http.get(
-      "http://localhost:64400/v1/event/session/691b141fd2f3b3e6de933b32",
-      {
-        headers: {},
-        params: {},
-      }
-    )).then((res: any) => {
-          console.log(res);
-        return res;
-      }
-    );
-    this.session = a.session;
-    console.log(this.session);
+//    console.log("test");
+//    let a = await firstValueFrom(this.http.get(
+//      "http://localhost:64400/v1/event/session/691b141fd2f3b3e6de933b32",
+//      {
+//        headers: {},
+//        params: {},
+//      }
+//    )).then((res: any) => {
+////          console.log(res);
+//        return res;
+//      }
+//    );
+//    this.session = a.session;
+//    console.log(this.session);
   }
 
 }
