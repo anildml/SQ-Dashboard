@@ -1,24 +1,29 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, signal, ViewEncapsulation} from '@angular/core';
 import {Flow, isFlow} from '../../models/interfaces/flow';
 import {DatePipe} from '@angular/common';
 import {Session} from '../../models/interfaces/session';
 import {Event} from '../../models/interfaces/event';
 import {Interaction, isInteraction} from '../../models/interfaces/interaction';
 import {InteractionComponent} from '../interaction/interaction';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-flow',
   imports: [
-    InteractionComponent
+    InteractionComponent,
+    MatExpansionModule
   ],
   templateUrl: './flow.html',
   styleUrl: './flow.scss',
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class FlowComponent {
 
 
   @Input("flow")
   flow!: Flow | Session;
+
+  panelOpenState = signal(false);
 
   constructor(
     private datePipe: DatePipe

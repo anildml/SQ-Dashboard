@@ -1,12 +1,6 @@
 @use "bootstrap";
 
-:host {
-  display: inline-flex;
-  flex-direction: column;
-}
 .interaction_container {
-  display: inline-flex;
-  flex-direction: column;
   @extend .me-0;
   @extend .pe-0;
   margin-left: 2px;
