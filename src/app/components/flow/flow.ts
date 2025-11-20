@@ -15,7 +15,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
   ],
   templateUrl: './flow.html',
   styleUrl: './flow.scss',
-  encapsulation: ViewEncapsulation.ShadowDom
+  encapsulation: ViewEncapsulation.None
 })
 export class FlowComponent {
 
