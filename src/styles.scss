@@ -37,3 +37,26 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.flow-mat-accordion {
+  .mat-expansion-panel {
+    border: solid black;
+    border-width: 5px 0 5px 5px;
+    border-radius: 10px 0 0 10px!important;
+    margin-left: 5px;
+    box-shadow: none!important;
+    background: none!important;
+    .mat-expansion-panel-header {
+      padding: 0;
+      height: 30px;
+      background: rgba(152, 196, 124, 0.5)!important;
+      .mat-content {
+        margin: 0;
+      }
+      border-radius: 0 0 10px 0;
+    }
+    .mat-expansion-panel-body {
+      padding: 0;
+    }
+  }
+}
