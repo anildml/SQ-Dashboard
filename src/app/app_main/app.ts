@@ -3,7 +3,6 @@ import {RouterOutlet} from '@angular/router';
 import {SessionComponent} from '../components/session/session';
 import {DatePipe} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
-import {firstValueFrom} from 'rxjs';
 import {Session} from '../models/interfaces/session';
 
 @Component({
