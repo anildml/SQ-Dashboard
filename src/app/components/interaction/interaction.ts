@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Interaction} from '../../models/interfaces/interaction';
 import {DatePipe} from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
