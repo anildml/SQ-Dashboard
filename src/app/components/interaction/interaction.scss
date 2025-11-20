@@ -25,12 +25,12 @@
     width: 50%;
     max-width: 300px;
 //    max-width may dysfunction???
-    @extend .px-2;
+    padding: 0 0.25rem;
   }
   .interaction_content_result_data {
     width: 50%;
     max-width: 300px;
 //    max-width may dysfunction???
-    @extend .px-2;
+    padding: 0 0.25rem;
   }
 }

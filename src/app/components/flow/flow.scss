@@ -1,8 +1,8 @@
-@use "bootstrap";
+
 
 .flow__container__content {
   .event {
-    @extend .my-1;
+    margin: 0.25rem 0;
     .flow {
       display: block;
       width: 100%;
