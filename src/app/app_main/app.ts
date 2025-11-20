@@ -41,7 +41,7 @@ export class App implements OnInit {
         "end_time": "2025-11-17T13:02:30.185Z",
         "events": [
           {
-            "operation_name": "Restoran Ara - Arama",
+            "operation_name": "Arama()",
             "trigger_time": "2025-11-17T12:52:15.193Z",
             "trigger_data": {
               "restoran_adi": "beyzade kebap"
