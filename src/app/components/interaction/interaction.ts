@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Interaction} from '../../models/interfaces/interaction';
 import {DatePipe} from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -11,7 +11,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
   templateUrl: './interaction.html',
   styleUrl: './interaction.scss'
 })
-export class InteractionComponent {
+export class InteractionComponent implements OnInit {
 
   @Input("interaction")
   interaction!: Interaction;
@@ -20,6 +20,14 @@ export class InteractionComponent {
     private datePipe: DatePipe
   ) {
 
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  getPrettyJSONString(t: object): string {
+    return JSON.stringify(t, null, 2);
   }
 
   getFormattedDateTime(date: string): string {

@@ -1,26 +1,28 @@
-<div class="interaction_container">
-  <div class="interaction_container_header">
-    <div class="interaction_container_title_text">
-      {{interaction.operation_name}}
+<mat-accordion class="flow-mat-accordion">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <div class="flow_container_header">
+        <div class="flow_container_title_text">
+          {{interaction.operation_name}}
+        </div>
+        <div class="flow_container_title_datetime">
+          {{getFormattedDateTime(interaction.trigger_time)}}
+        </div>
+      </div>
+    </mat-expansion-panel-header>
+    <div class="interaction_container_content">
+      <div class="interaction_content_trigger_data">
+        <pre>{{temp(interaction.trigger_data)}}</pre>
+      </div>
+      <div class="interaction_content_result_data">
+        <pre>{{temp(interaction.result_data)}}</pre>
+      </div>
     </div>
-    <div class="interaction_container_title_datetime">
-      {{getFormattedDateTime(interaction.trigger_time)}}
+    <div class="flow_container_footer">
+      <div class="flow_container_title_text"></div>
+      <div class="flow_container_title_datetime">
+        {{getFormattedDateTime(interaction.result_time)}}
+      </div>
     </div>
-  </div>
-  <div class="interaction_content">
-    <div class="interaction_content_trigger_data">
-
-    </div>
-    <div class="interaction_content_result_data">
-
-    </div>
-  </div>
-   <div class="interaction_container_footer">
-     <div class="interaction_container_title_text">
-
-     </div>
-     <div class="interaction_container_footer_datetime">
-       {{getFormattedDateTime(interaction.result_time)}}
-     </div>
-   </div>
-</div>
+  </mat-expansion-panel>
+</mat-accordion>
