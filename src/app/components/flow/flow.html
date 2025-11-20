@@ -1,16 +1,16 @@
-<mat-accordion class="flow-mat-accordion">
-  <mat-expansion-panel hideToggle>
+<mat-accordion class="flow__mat__accordion">
+  <mat-expansion-panel class="flow__container" hideToggle>
     <mat-expansion-panel-header>
-      <div class="flow_container_header">
-        <div class="flow_container_title_text">
+      <div class="flow__container__header">
+        <div class="flow__container__title__text">
           {{flow.node_name}}
         </div>
-        <div class="flow_container_title_datetime">
+        <div class="flow__container__title__datetime">
           {{getFormattedDateTime(flow.start_time)}}
         </div>
       </div>
     </mat-expansion-panel-header>
-    <div class="flow_container_content">
+    <div class="flow__container__content">
       @for (event of flow.events; track $index) {
       <div
         class="event">
@@ -31,10 +31,10 @@
       <div class="no_event"></div>
       }
     </div>
-    <div class="flow_container_footer">
-      <div class="flow_container_title_text">
+    <div class="flow__container__footer">
+      <div class="flow__container__title__text">
       </div>
-      <div class="flow_container_title_datetime">
+      <div class="flow__container__title__datetime">
         {{getFormattedDateTime(flow.end_time)}}
       </div>
     </div>
