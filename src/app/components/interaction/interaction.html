@@ -12,10 +12,10 @@
     </mat-expansion-panel-header>
     <div class="interaction_container_content">
       <div class="interaction_content_trigger_data">
-        <pre>{{temp(interaction.trigger_data)}}</pre>
+        <pre>{{getPrettyJSONString(interaction.trigger_data)}}</pre>
       </div>
       <div class="interaction_content_result_data">
-        <pre>{{temp(interaction.result_data)}}</pre>
+        <pre>{{getPrettyJSONString(interaction.result_data)}}</pre>
       </div>
     </div>
     <div class="flow_container_footer">
