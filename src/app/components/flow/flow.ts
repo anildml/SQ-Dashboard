@@ -1,4 +1,4 @@
-import {Component, Input, signal, ViewEncapsulation} from '@angular/core';
+import {Component, Input, signal} from '@angular/core';
 import {Flow, isFlow} from '../../models/interfaces/flow';
 import {DatePipe} from '@angular/common';
 import {Session} from '../../models/interfaces/session';
@@ -14,8 +14,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatExpansionModule
   ],
   templateUrl: './flow.html',
-  styleUrl: './flow.scss',
-  encapsulation: ViewEncapsulation.None
+  styleUrl: './flow.scss'
 })
 export class FlowComponent {
 

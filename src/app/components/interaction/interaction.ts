@@ -1,12 +1,15 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {Interaction} from '../../models/interfaces/interaction';
 import {DatePipe} from '@angular/common';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-interaction',
-  imports: [],
+  imports: [
+    MatExpansionModule
+  ],
   templateUrl: './interaction.html',
-  styleUrl: './interaction.scss',
+  styleUrl: './interaction.scss'
 })
 export class InteractionComponent {
 
