@@ -76,6 +76,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     &__title__datetime {
       margin-left: 40px;
       margin-right: 10px;
+      text-align: end;
     }
     .mat-expansion-panel-header {
       padding: 0;

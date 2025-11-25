@@ -1,58 +1,34 @@
 .flow__mat__accordion {
-  .flow__container {
-    border-width: 0;
-    border-radius: 0 10px 10px 0 !important;
-    margin-left: 0;
-    &__footer {
-      background: rgba(32, 104, 200, 0.5)!important;
-      border-radius: 0;
-    }
-    .mat-expansion-panel-header {
-      padding: 0;
-      background: rgba(32, 104, 200, 0.5)!important;
-      border-radius: 0;
-    }
-  }
-}
-
-.header_area {
-  justify-content: space-between;
-  height: 50px;
-  background: rgba(32, 104, 200, 0.5)!important;
-  padding: 0 1rem;
-  border-radius: 0 10px 10px 0 !important;
-  .title {
-    font-weight: var(--mat-sys-title-medium-weight);
-  }
-  .button_area {
-
-  }
-}
-
-.integration__container__header {
-  &__buttons {
-    &__trigger{
-      button {
-        margin: 0 0.25rem;
+  .interaction__container {
+    background: rgba(32, 104, 200, 0.3)!important;
+    &__header {
+      justify-content: space-between;
+      height: 50px;
+      padding: 0 1rem;
+      border-radius: 0 10px 10px 0 !important;
+      &__title {
+        font-weight: var(--mat-sys-title-medium-weight);
+      }
+      &__buttons {
+        &__trigger {
+          button {
+            margin: 0 0.25rem;
+          }
+        }
       }
     }
-    &__trigger{
-
+    &__panel {
+      box-shadow: none;
+      border-radius: 0 0 0 5px;
     }
-  }
-}
-
-.interaction_container_content {
-  .interaction_content_trigger_data {
-    width: 50%;
-    max-width: 300px;
-//    max-width may dysfunction???
-    padding: 0 0.25rem;
-  }
-  .interaction_content_result_data {
-    width: 50%;
-    max-width: 300px;
-//    max-width may dysfunction???
-    padding: 0 0.25rem;
+    &__content {
+      max-width: 500px;
+      padding: 1rem;
+      &__data {
+        &__json {
+          margin-top: 0;
+        }
+      }
+    }
   }
 }

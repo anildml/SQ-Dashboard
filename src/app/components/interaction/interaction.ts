@@ -54,7 +54,6 @@ export class InteractionComponent implements OnInit {
   }
 
   async toggleInteractionContent(contentType: CONTENT_TYPE) {
-
     if (this.contentType === contentType) {
       this.panel.toggle();
     } else {
@@ -64,6 +63,34 @@ export class InteractionComponent implements OnInit {
       }
       this.contentType = contentType;
       this.panel.open();
+    }
+  }
+
+  getContentTime(): string {
+    switch (this.contentType) {
+      case CONTENT_TYPE.RESULT: {
+        return this.getFormattedDateTime(this.interaction.result_time);
+      }
+      case CONTENT_TYPE.TRIGGER: {
+        return this.getFormattedDateTime(this.interaction.trigger_time);
+      }
+      default: {
+        return "";
+      }
+    }
+  }
+
+  getContentData(): string {
+    switch (this.contentType) {
+      case CONTENT_TYPE.RESULT: {
+        return this.getPrettyJSONString(this.interaction.result_data);
+      }
+      case CONTENT_TYPE.TRIGGER: {
+        return this.getPrettyJSONString(this.interaction.trigger_data);
+      }
+      default: {
+        return "";
+      }
     }
   }
 
