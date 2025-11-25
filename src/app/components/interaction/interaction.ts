@@ -1,12 +1,21 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Interaction} from '../../models/interfaces/interaction';
 import {DatePipe} from '@angular/common';
-import {MatExpansionModule} from '@angular/material/expansion';
+import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
+import {MatButtonModule} from '@angular/material/button';
+import {firstValueFrom} from 'rxjs';
+
+export enum CONTENT_TYPE {
+  TRIGGER,
+  RESULT,
+  EMPTY
+}
 
 @Component({
   selector: 'app-interaction',
   imports: [
-    MatExpansionModule
+    MatExpansionModule,
+    MatButtonModule
   ],
   templateUrl: './interaction.html',
   styleUrl: './interaction.scss'
@@ -15,6 +24,12 @@ export class InteractionComponent implements OnInit {
 
   @Input("interaction")
   interaction!: Interaction;
+
+  @ViewChild("panel")
+  panel!: MatExpansionPanel;
+
+  CONTENT_TYPE_ENUM = CONTENT_TYPE;
+  contentType: CONTENT_TYPE = CONTENT_TYPE.EMPTY;
 
   constructor(
     private datePipe: DatePipe
@@ -36,6 +51,20 @@ export class InteractionComponent implements OnInit {
     dateString = dateString === null ? "dd-MM-yyyy" : dateString;
     timeString = timeString === null ? "hh-mm-ss" : timeString;
     return dateString + "  -  " + timeString;
+  }
+
+  async toggleInteractionContent(contentType: CONTENT_TYPE) {
+
+    if (this.contentType === contentType) {
+      this.panel.toggle();
+    } else {
+      if (this.panel.expanded) {
+        this.panel.close();
+        await firstValueFrom(this.panel.afterCollapse);
+      }
+      this.contentType = contentType;
+      this.panel.open();
+    }
   }
 
 }
