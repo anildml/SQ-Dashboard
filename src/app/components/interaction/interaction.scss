@@ -1,4 +1,4 @@
-@use "bootstrap";
+
 
 .flow__mat__accordion {
   .flow__container {
@@ -17,6 +17,44 @@
   }
 }
 
+.header_area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  background: rgba(32, 104, 200, 0.5)!important;
+  padding: 0 1rem;
+  border-radius: 0 10px 10px 0 !important;
+  .title {
+    font-weight: var(--mat-sys-title-medium-weight);
+  }
+  .button_area {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.integration__container__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    &__trigger{
+      button {
+        margin: 0 0.25rem;
+      }
+    }
+    &__trigger{
+
+    }
+  }
+}
 
 .interaction_container_content {
   display: flex;
