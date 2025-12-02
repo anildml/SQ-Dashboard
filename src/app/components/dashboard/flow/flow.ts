@@ -1,9 +1,9 @@
 import {Component, Input, signal} from '@angular/core';
-import {Flow, isFlow} from '../../models/interfaces/flow';
+import {Flow, isFlow} from '../../../models/interfaces/flow';
 import {DatePipe} from '@angular/common';
-import {Session} from '../../models/interfaces/session';
-import {Event} from '../../models/interfaces/event';
-import {Interaction, isInteraction} from '../../models/interfaces/interaction';
+import {Session} from '../../../models/interfaces/session';
+import {Event} from '../../../models/interfaces/event';
+import {Interaction, isInteraction} from '../../../models/interfaces/interaction';
 import {InteractionComponent} from '../interaction/interaction';
 import {MatExpansionModule} from '@angular/material/expansion';
 

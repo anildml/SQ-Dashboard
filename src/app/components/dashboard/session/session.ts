@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Session} from '../../models/interfaces/session';
+import {Session} from '../../../models/interfaces/session';
 import {FlowComponent} from '../flow/flow';
 
 @Component({
