@@ -33,7 +33,10 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "scripts": [
+              "node_modules/leader-line/leader-line.min.js"
+            ]
           },
           "configurations": {
             "production": {
