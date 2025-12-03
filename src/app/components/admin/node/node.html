@@ -1,7 +1,7 @@
 <div class="node__container">
   <div class="node__container__title">
     <div class="node__container__title__ node__container__text__content">
-      Ana Ekran
+      {{node.name}}
     </div>
   </div>
   <div class="node__container__operation_list">
@@ -9,12 +9,14 @@
         Operations
     </div>
     <div>
-      @for (operationId of node.operationIds; track $index) {
+      @for (operation of node.operation_list; track $index) {
         <div class="node__container__operation_list__operation">
-          {{operationId}}
+          {{operation.name}}
         </div>
       } @empty {
-
+        <div class="node__container__operation_list__operation">
+          -
+        </div>
       }
     </div>
   </div>
@@ -23,12 +25,14 @@
       States
     </div>
     <div>
-      @for (state of node.stateList; track $index) {
+      @for (state of node.state_list; track $index) {
         <div class="node__container__state_list__state">
           {{state}}
         </div>
       } @empty {
-
+        <div class="node__container__state_list__state">
+          -
+        </div>
       }
     </div>
   </div>

@@ -1,0 +1,6 @@
+<div class="node__tree__container">
+  @for (node of activeLayerNodes; track $index) {
+    <!-- LAYER HERE -->
+    <app-node-tree-layer [parentNode]="node"></app-node-tree-layer>
+  }
+</div>

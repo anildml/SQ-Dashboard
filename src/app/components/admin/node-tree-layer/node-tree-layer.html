@@ -1,0 +1,7 @@
+<div class="layer">
+  @for (childNode of parentNode.children; track $index) {
+    <div>
+      <app-node [node]="childNode"></app-node>
+    </div>
+  }
+</div>
