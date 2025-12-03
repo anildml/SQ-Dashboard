@@ -1,7 +1,7 @@
 <div class="layer">
-  @for (childNode of parentNode.children; track $index) {
+  @for (node of nodeList; track $index) {
     <div>
-      <app-node [node]="childNode"></app-node>
+      <app-node [node]="node"></app-node>
     </div>
   }
 </div>

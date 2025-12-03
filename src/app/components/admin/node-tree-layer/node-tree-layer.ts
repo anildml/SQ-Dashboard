@@ -12,7 +12,7 @@ import {Node} from '../../../models/interfaces/node';
 })
 export class NodeTreeLayerComponennt {
 
-  @Input('parentNode')
-  parentNode!: Node;
+  @Input('nodeList')
+  nodeList!: Node[];
 
 }
