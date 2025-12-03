@@ -1,0 +1,35 @@
+<div class="node__container">
+  <div class="node__container__title">
+    <div class="node__container__title__ node__container__text__content">
+      Ana Ekran
+    </div>
+  </div>
+  <div class="node__container__operation_list">
+    <div class="node__container__text__content">
+        Operations
+    </div>
+    <div>
+      @for (operationId of node.operationIds; track $index) {
+        <div class="node__container__operation_list__operation">
+          {{operationId}}
+        </div>
+      } @empty {
+
+      }
+    </div>
+  </div>
+  <div class="node__container__state_list">
+    <div class="node__container__text__content">
+      States
+    </div>
+    <div>
+      @for (state of node.stateList; track $index) {
+        <div class="node__container__state_list__state">
+          {{state}}
+        </div>
+      } @empty {
+
+      }
+    </div>
+  </div>
+</div>
