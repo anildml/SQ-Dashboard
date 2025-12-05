@@ -1,6 +1,6 @@
 <div class="node__tree__container">
   @for (layer of treePath; track $index) {
     <!-- LAYER HERE -->
-    <app-node-tree-layer [nodeList]="layer.nodeList"></app-node-tree-layer>
+    <app-node-tree-layer (expandChildNodeClick)="nodeClicked($event)" [nodeList]="layer.nodeList"></app-node-tree-layer>
   }
 </div>

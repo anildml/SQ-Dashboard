@@ -2,7 +2,6 @@
   display: block;
   width: fit-content;
 
-  margin-left: 5px;
   border: 5px solid black;
   border-radius: 10px !important;
   min-width: 200px;
@@ -30,5 +29,20 @@
   &__text__content {
     font-size: 1rem;
     font-weight: 500;
+  }
+}
+
+.node__expand__child__nodes {
+  box-shadow: rgba(149, 157, 165, 0.75) 0 0 10px;
+  border-radius: 0 0 10px 10px;
+  width: 25%;
+  margin-bottom: 5px;
+  color: rgba(0, 0, 0, 0.25);
+  .keyboard_arrow_down {
+    font-size: 30px;
+    color: inherit;
+  }
+  &:hover {
+    color: rgba(0, 0, 0, 0.75);
   }
 }

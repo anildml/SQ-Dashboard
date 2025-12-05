@@ -1,7 +1,7 @@
 <div class="layer">
   @for (node of nodeList; track $index) {
     <div>
-      <app-node [node]="node"></app-node>
+      <app-node (expandChildNodeClick)="expandChildNodeClicked($event)" [node]="node"></app-node>
     </div>
   }
 </div>

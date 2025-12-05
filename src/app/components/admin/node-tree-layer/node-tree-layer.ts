@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, output} from '@angular/core';
 import {NodeComponennt} from '../node/node';
 import {Node} from '../../../models/interfaces/node';
 
@@ -14,5 +14,11 @@ export class NodeTreeLayerComponennt {
 
   @Input('nodeList')
   nodeList!: Node[];
+
+  expandChildNodeClick = output<string>();
+
+  expandChildNodeClicked(id: string) {
+    this.expandChildNodeClick.emit(id);
+  }
 
 }
