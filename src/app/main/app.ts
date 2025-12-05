@@ -1,15 +1,17 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {SessionComponent} from '../components/session/session';
+import {SessionComponent} from '../components/dashboard/session/session';
 import {DatePipe} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Session} from '../models/interfaces/session';
+import {AdminComponent} from '../components/admin/admin';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    SessionComponent
+    SessionComponent,
+    AdminComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
