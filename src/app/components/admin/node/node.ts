@@ -17,7 +17,7 @@ export class NodeComponennt {
 
   expandChildNodeClick = output<string>();
 
-  expandChildNodes() {
+  expandChildNodeClicked() {
     this.expandChildNodeClick.emit(this.node.id);
   }
 
