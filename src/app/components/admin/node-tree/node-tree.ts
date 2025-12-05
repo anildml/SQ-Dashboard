@@ -4,7 +4,7 @@ import {NodeTreeLayerComponennt} from '../node-tree-layer/node-tree-layer';
 
 interface LayerData {
   nodeList: Node[];
-  selectedNode: string | null;
+  selectedNode?: Node | null;
 }
 
 @Component({
@@ -22,53 +22,54 @@ export class NodeTreeComponent implements OnInit {
 
   treePath: LayerData[] = [];
 
-  ngOnInit_OLD(): void {
-//    let c0: Node = this.rootNode;
-//    let c1: Node = (c0.children ?? []).at(0) ?? this.rootNode;
-//    let c2: Node = (c1.children ?? []).at(0) ?? this.rootNode;
-//    let c3: Node = (c2.children ?? []).at(0) ?? this.rootNode;
-//
-//    this.treePath.push({
-//      nodeList: [c0],
-//      selectedNode: c1.id
-//    });
-//
-//    this.treePath.push({
-//      nodeList: (c0.children ?? []),
-//      selectedNode: c2.id
-//    });
-//
-//    this.treePath.push({
-//      nodeList: (c1.children ?? []),
-//      selectedNode: c3.id
-//    });
-//
-//    this.treePath.push({
-//      nodeList: (c2.children ?? []),
-//      selectedNode: null
-//    });
-
-  }
-
   ngOnInit(): void {
 
     let c0: Node = this.rootNode;
-    let c1: Node = (c0.children ?? []).at(0) ?? this.rootNode;
-
     this.treePath.push({
       nodeList: [c0],
-      selectedNode: c1.id
-    });
-
-    this.treePath.push({
-      nodeList: (c0.children ?? []),
       selectedNode: null
     });
-
   }
 
-  nodeClicked(event: any) {
-    console.log(event);
+  nodeClicked(id: string) {
+    let layerIndex: number = -1;
+    let clickedNode!: Node;
+
+    this.treePath.forEach((layer, i) => {
+      layer.nodeList.forEach((node, _) => {
+        if (node.id === id) {
+          clickedNode = node;
+          layerIndex = i;
+        }
+      });
+    });
+
+    if (this.isLastLayer(layerIndex)) {
+      let layer = this.treePath.at(-1)!;
+      layer.selectedNode = clickedNode;
+      this.treePath.push({
+        nodeList: clickedNode.children ?? [],
+        selectedNode: null
+      });
+    } else {
+      this.treePath = this.treePath.slice(0, layerIndex + 1);
+      let isClickedNodeActive: boolean = this.isClickedNodeActive(layerIndex, clickedNode);
+      this.treePath.at(-1)!.selectedNode = null;
+      if (!isClickedNodeActive) {
+        this.treePath.push({
+          nodeList: clickedNode.children ?? [],
+          selectedNode: clickedNode
+        });
+      }
+    }
+  }
+
+  isLastLayer(layerIndex: number): boolean {
+    return layerIndex === this.treePath.length - 1;
+  }
+
+  isClickedNodeActive(layerIndex: number, clickedNode: Node): boolean {
+    return this.treePath.at(layerIndex)?.selectedNode?.id === clickedNode.id;
   }
 
 }
