@@ -10,7 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
   templateUrl: './node.html',
   styleUrl: './node.scss',
 })
-export class NodeComponennt {
+export class NodeComponent {
 
   @Input('node')
   node!: Node

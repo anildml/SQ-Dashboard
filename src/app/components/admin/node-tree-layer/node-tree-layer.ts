@@ -1,16 +1,16 @@
 import {Component, Input, output} from '@angular/core';
-import {NodeComponennt} from '../node/node';
+import {NodeComponent} from '../node/node';
 import {Node} from '../../../models/interfaces/node';
 
 @Component({
   selector: 'app-node-tree-layer',
   imports: [
-    NodeComponennt
+    NodeComponent
   ],
   templateUrl: './node-tree-layer.html',
   styleUrl: './node-tree-layer.scss',
 })
-export class NodeTreeLayerComponennt {
+export class NodeTreeLayerComponent {
 
   @Input('nodeList')
   nodeList!: Node[];

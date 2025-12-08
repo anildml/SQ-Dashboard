@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
-import {NodeTreeLayerComponennt} from '../node-tree-layer/node-tree-layer';
+import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
 
 interface LayerData {
   nodeList: Node[];
@@ -10,7 +10,7 @@ interface LayerData {
 @Component({
   selector: 'app-node-tree',
   imports: [
-    NodeTreeLayerComponennt
+    NodeTreeLayerComponent
   ],
   templateUrl: './node-tree.html',
   styleUrl: './node-tree.scss',
