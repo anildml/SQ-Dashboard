@@ -63,53 +63,19 @@ export class NodeTreeComponent implements OnInit {
     });
 
     await this.updateTree(layerIndex, clickedNode);
-
   }
 
   async updateTree(layerIndex: number, lastSelectedNode: Node) {
     if (this.isLastLayer(layerIndex)) {
-      let layer = this.treePath().at(-1)!;
-      layer.selectedNode = lastSelectedNode;
-      this.treePath.update(tp => {
-        tp.push({
-          nodeList: lastSelectedNode.children ?? [],
-          selectedNode: null
-        });
-        return tp;
-      });
-      await firstValueFrom(this.layers.changes);
-      console.log("layers changed");
-      setTimeout(() => this.layers.last.open(), 250); // timeout added for animation
+      this.addNewLayerToTreePath(lastSelectedNode);
+      await this.waitForViewRender();
+      await this.expandLayer();
     } else {
-      let layersCollapsed: Promise<any>[] = [];
-      let layersToCollapse: MatExpansionPanel[] = [];
-      for (let i = layerIndex + 1; i < this.treePath().length; i++) {
-        let layer = this.layers.get(i)!;
-        layersCollapsed.push(firstValueFrom(layer.afterCollapse.asObservable()));
-        layersToCollapse.push(layer);
-      }
-      layersToCollapse.forEach(layer => layer.close());
-      await Promise.all(layersCollapsed).then();
-      this.treePath.update(tp => {
-        return tp.slice(0, layerIndex + 1);
-      });
-      let isClickedNodeActive: boolean = this.isClickedNodeActive(layerIndex, lastSelectedNode);
-      this.treePath.update(tp => {
-        tp.at(-1)!.selectedNode = null;
-        return tp;
-      })
-      this.treePath().at(-1)!.selectedNode = null;
-      if (!isClickedNodeActive) {
-        this.treePath.update(tp => {
-          tp.push({
-            nodeList: lastSelectedNode.children ?? [],
-            selectedNode: lastSelectedNode
-          });
-          return tp;
-        });
-        await firstValueFrom(this.layers.changes);
-        setTimeout(() => this.layers.last.open(), 250); // timeout added for animation
-
+      let isNewBranch: boolean = this.isNewBranch(layerIndex, lastSelectedNode);
+      await this.shortenTreePath(layerIndex);
+      if (isNewBranch) {
+        this.addNewLayerToTreePath(lastSelectedNode);
+        await this.expandLayer();
       }
     }
   }
@@ -118,8 +84,48 @@ export class NodeTreeComponent implements OnInit {
     return layerIndex === this.treePath().length - 1;
   }
 
-  isClickedNodeActive(layerIndex: number, clickedNode: Node): boolean {
-    return this.treePath().at(layerIndex)?.selectedNode?.id === clickedNode.id;
+  addNewLayerToTreePath(lastSelectedNode: Node) {
+    this.treePath.update(tp => {
+      tp.at(-1)!.selectedNode = lastSelectedNode;
+      tp.push({
+        nodeList: lastSelectedNode.children ?? [],
+        selectedNode: null
+      });
+      return tp;
+    });
+  }
+
+  async waitForViewRender() {
+    await firstValueFrom(this.layers.changes);
+  }
+
+  async expandLayer() {
+    setTimeout(() => this.layers.last.open(), 250); // timeout added for animation
+  }
+
+  isNewBranch(layerIndex: number, clickedNode: Node): boolean {
+    return !(this.treePath().at(layerIndex)?.selectedNode?.id === clickedNode.id);
+  }
+
+  async shortenTreePath(layerIndex: number) {
+    await this.collapseLayers(layerIndex);
+    this.treePath.update(tp => {
+      tp = tp.slice(0, layerIndex + 1);
+      tp.at(-1)!.selectedNode = null;
+      return tp;
+    });
+  }
+
+  async collapseLayers(layerIndex: number) {
+    let layersCollapsed: Promise<any>[] = [];
+    let layersToCollapse: MatExpansionPanel[] = [];
+    for (let i = layerIndex + 1; i < this.treePath().length; i++) {
+      let layer = this.layers.get(i)!;
+      layersCollapsed.push(firstValueFrom(layer.afterCollapse.asObservable()));
+      layersToCollapse.push(layer);
+    }
+    layersToCollapse.forEach(layer => layer.close());
+    await Promise.all(layersCollapsed).then();
   }
 
 }
