@@ -77,12 +77,23 @@ export class AdminComponent implements AfterViewInit {
               ]
             },
             {
-              "id": "691ae4d3d539009f0a8f8c00",
+              "id": "691ae4d3d539009f0a8f8c08",
               "name": "Hesap Yonetme Ekrani",
               "parents": [
                 "691ae464d539009f0a8f8bff"
               ],
-              "children": null,
+              "children": [
+                {
+                  "id": "691ae4d3d539009f0a8f8c09",
+                  "name": "Gizlilik Ayarlari",
+                  "parents": [
+                    "691ae4d3d539009f0a8f8c08"
+                  ],
+                  "children": null,
+                  "state_list": null,
+                  "operation_list": null
+                }
+              ],
               "state_list": null,
               "operation_list": null
             }
