@@ -3,4 +3,16 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 20px 0 0 0;
+  &__add__new__node {
+    border-radius: 20px;
+    background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
+    mat-icon {
+      margin: 0 5px;
+      font-size: 30px;
+      height: 30px;
+      width: 30px;
+      font-weight: 900;
+      color: var(--mat-button-tonal-label-text-color, var(--mat-sys-on-secondary-container));
+    }
+  }
 }
