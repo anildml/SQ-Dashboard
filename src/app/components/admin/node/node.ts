@@ -15,9 +15,6 @@ export class NodeComponent {
   @Input('node')
   node!: Node
 
-  @Input('isLastLayer')
-  isLastLayer!: boolean;
-
   expandChildNodeClick = output<string>();
 
   expandChildNodeClicked() {
