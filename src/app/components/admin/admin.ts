@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {Node} from '../../models/interfaces/node';
 import {NodeTreeComponent} from './node-tree/node-tree';
 
@@ -10,21 +10,9 @@ import {NodeTreeComponent} from './node-tree/node-tree';
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
 })
-export class AdminComponent implements AfterViewInit {
+export class AdminComponent {
 
   constructor() {
-  }
-
-  ngAfterViewInit() {
-  }
-
-  leader(id: any, id2: any) {
-
-    var line = new LeaderLine(id, id2);
-
-    line.path = 'grid';
-    line.setOptions({startSocket: 'bottom', endSocket: 'left'});
-    line.startSocketGravity = 0;
   }
 
   getRootNode(): Node {
