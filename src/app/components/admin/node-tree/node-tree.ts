@@ -2,7 +2,7 @@ import {
   Component,
   Input,
   OnInit,
-  QueryList, signal, viewChild,
+  QueryList, signal,
   ViewChildren, WritableSignal
 } from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
@@ -13,6 +13,7 @@ import {firstValueFrom} from 'rxjs';
 interface LayerData {
   nodeList: Node[];
   selectedNode?: Node | null;
+  lines?: any[];
 }
 
 @Component({
@@ -36,22 +37,6 @@ export class NodeTreeComponent implements OnInit {
 
   constructor() {
 
-  }
-
-  drawLines(parentNodeID: string, childNodeIDs: string[]) {
-    for (let childNodeID of childNodeIDs) {
-      let parentNode = document.getElementById("node_" + parentNodeID);
-      let childNode = document.getElementById("node_" + childNodeID);
-      let line = new LeaderLine(parentNode, childNode, {
-        hide: true,
-        path: "fluid",
-        startPlug: "square",
-        startSocket: "bottom",
-        endSocket: "top",
-        endPlug: "disc"
-      });
-      line.show("draw", {duration: 200});
-    }
   }
 
   async ngOnInit(): Promise<void> {
@@ -122,10 +107,34 @@ export class NodeTreeComponent implements OnInit {
         resolve();
       }, 250); // timeout added for animation
     });
+    this.drawLines();
     await firstValueFrom(this.layers.last.afterExpand);
-    let parentNode = this.treePath().at(-2)?.selectedNode?.id!;
-    let childNodes = this.treePath().at(-1)?.nodeList?.map(n => n.id)!;
-    this.drawLines(parentNode, childNodes);
+  }
+
+  drawLines() {
+    let parentNodeID = this.treePath().at(-2)?.selectedNode!?.id;
+    let childNodeIDs = this.treePath().at(-1)?.nodeList!.map(n => n.id)!;
+    let lines: any[] = [];
+    for (let childNodeID of childNodeIDs) {
+      let parentNode = document.getElementById("node_" + parentNodeID);
+      let parentNodeExpandButton = parentNode?.getElementsByClassName("node__expand__child__nodes")?.item(0);
+      let childNode = document.getElementById("node_" + childNodeID);
+      let line = new LeaderLine(LeaderLine.pointAnchor(parentNodeExpandButton), childNode, {
+        hide: true,
+        path: "fluid",
+        startPlug: "square",
+        startPlugSize: 2,
+        startSocket: "bottom",
+        endSocket: "top",
+        endPlug: "disc"
+      });
+      line.show("draw", {duration: 200});
+      lines.push(line);
+    }
+    this.treePath.update(tp => {
+      tp.at(-2)!.lines = lines;
+      return tp;
+    });
   }
 
   isNewBranch(layerIndex: number, clickedNode: Node): boolean {
@@ -144,11 +153,19 @@ export class NodeTreeComponent implements OnInit {
   async collapseLayers(layerIndex: number) {
     let layersCollapsed: Promise<any>[] = [];
     let layersToCollapse: MatExpansionPanel[] = [];
+    let linesToRemove: any[] = [];
     for (let i = layerIndex + 1; i < this.treePath().length; i++) {
+      let layerData = this.treePath().at(i - 1);
+      linesToRemove = linesToRemove.concat(layerData?.lines);
       let layer = this.layers.get(i)!;
       layersCollapsed.push(firstValueFrom(layer.afterCollapse));
       layersToCollapse.push(layer);
     }
+    linesToRemove.forEach(async (line) => {
+      line.hide("draw", {duration: 200});
+      await new Promise(resolve => setTimeout(resolve, 200));
+      line.remove();
+    });
     layersToCollapse.forEach(layer => layer.close());
     await Promise.all(layersCollapsed).then();
   }
