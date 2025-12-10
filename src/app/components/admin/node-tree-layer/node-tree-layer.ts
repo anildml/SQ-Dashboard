@@ -17,6 +17,9 @@ export class NodeTreeLayerComponent {
 
   expandChildNodeClick = output<string>();
 
+  @Input('isLastLayer')
+  isLastLayer!: boolean;
+
   expandChildNodeClicked(id: string) {
     this.expandChildNodeClick.emit(id);
   }
