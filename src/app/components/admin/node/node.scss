@@ -1,34 +1,36 @@
 .node__container {
-  display: block;
-  width: fit-content;
+  &__content {
+    display: block;
+    width: fit-content;
 
-  border: 5px solid black;
-  border-radius: 10px !important;
-  min-width: 200px;
-  &__title {
-    font-size: 1.4rem;
-    font-weight: 500;
-    padding: 5px;
-  }
-  &__operation_list {
-    border: solid black;
-    border-width: 5px 0 0 0;
-    padding: 5px;
-    &__operation {
-      padding-left: 25px;
+    border: 5px solid black;
+    border-radius: 10px !important;
+    min-width: 200px;
+    &__title {
+      font-size: 1.4rem;
+      font-weight: 500;
+      padding: 5px;
     }
-  }
-  &__state_list {
-    border: solid black;
-    border-width: 5px 0 0 0;
-    padding: 5px;
-    &__state {
-      padding-left: 25px;
+    &__operation_list {
+      border: solid black;
+      border-width: 5px 0 0 0;
+      padding: 5px;
+      &__operation {
+        padding-left: 25px;
+      }
     }
-  }
-  &__text__content {
-    font-size: 1rem;
-    font-weight: 500;
+    &__state_list {
+      border: solid black;
+      border-width: 5px 0 0 0;
+      padding: 5px;
+      &__state {
+        padding-left: 25px;
+      }
+    }
+    &__text__content {
+      font-size: 1rem;
+      font-weight: 500;
+    }
   }
 }
 
