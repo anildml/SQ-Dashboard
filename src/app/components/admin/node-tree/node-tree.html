@@ -1,12 +1,11 @@
 <div class="node__tree__container">
   <mat-accordion [multi]="true">
-  @for (layer of treePath(); track $index; let f = $first, l = $last) {
+  @for (layer of treePath(); track $index; let f = $first) {
     <mat-expansion-panel #layer [id]="'layer'+$index" [expanded]="$first">
       <div>
         <app-node-tree-layer
           (expandChildNodeClick)="nodeClicked($event)"
           [nodeList]="layer.nodeList"
-          [isLastLayer]="$last"
         ></app-node-tree-layer>
       </div>
     </mat-expansion-panel>
