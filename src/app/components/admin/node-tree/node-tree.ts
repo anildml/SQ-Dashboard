@@ -119,7 +119,8 @@ export class NodeTreeComponent implements OnInit {
       let parentNode = document.getElementById("node_" + parentNodeID);
       let parentNodeExpandButton = parentNode?.getElementsByClassName("node__expand__child__nodes")?.item(0);
       let childNode = document.getElementById("node_" + childNodeID);
-      let line = new LeaderLine(LeaderLine.pointAnchor(parentNodeExpandButton), childNode, {
+      let childNodeContent = childNode?.getElementsByClassName("node__container__content")?.item(0);
+      let line = new LeaderLine(LeaderLine.pointAnchor(parentNodeExpandButton), childNodeContent, {
         hide: true,
         path: "fluid",
         startPlug: "square",

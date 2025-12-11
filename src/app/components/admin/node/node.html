@@ -1,8 +1,18 @@
-<div class="node__container">
+<div class="node__container flex-center">
   <div class="node__container__content">
-    <div class="node__container__content__title">
-      <div class="node__container__content__title__ node__container__content__text__content">
-        {{node.name}}
+    <div class="node__container__content__title__section">
+      <div class="flex-center node__container__content__title__section__container">
+        <div class="node__container__content__text__content title">
+          {{node.name}}
+        </div>
+        <div class="node__title__sidebar">
+          <div class="node__title__sidebar__edit__node flex-center">
+            <mat-icon class="flex-center" fontIcon="mode_edit_outline"></mat-icon>
+          </div>
+          <div class="node__title__sidebar__delete__node flex-center">
+            <mat-icon class="flex-center" fontIcon="delete_outline"></mat-icon>
+          </div>
+        </div>
       </div>
     </div>
     <div class="node__container__content__operation_list">
