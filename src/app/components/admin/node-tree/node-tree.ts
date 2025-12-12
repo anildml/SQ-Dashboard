@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   Input,
   OnInit,
@@ -33,7 +34,7 @@ export class NodeTreeComponent implements OnInit {
   treePath: WritableSignal<LayerData[]> = signal([]);
 
   @ViewChildren("layer")
-  layers!: QueryList<MatExpansionPanel>;
+  layerPanels!: QueryList<MatExpansionPanel>;
 
   constructor() {
 
@@ -69,7 +70,6 @@ export class NodeTreeComponent implements OnInit {
   async updateTree(layerIndex: number, lastSelectedNode: Node) {
     if (this.isLastLayer(layerIndex)) {
       this.addNewLayerToTreePath(lastSelectedNode);
-      await this.waitForViewRender();
       await this.expandLayer();
     } else {
       let isNewBranch: boolean = this.isNewBranch(layerIndex, lastSelectedNode);
@@ -96,19 +96,15 @@ export class NodeTreeComponent implements OnInit {
     });
   }
 
-  async waitForViewRender() {
-    await firstValueFrom(this.layers.changes);
-  }
-
   async expandLayer() {
     await new Promise<void>(resolve => {
       setTimeout(() => {
-        this.layers.last.open();
+        this.layerPanels.last.open();
         resolve();
       }, 250); // timeout added for animation
     });
     this.drawLines();
-    await firstValueFrom(this.layers.last.afterExpand);
+    await firstValueFrom(this.layerPanels.last.afterExpand);
   }
 
   drawLines() {
@@ -158,7 +154,7 @@ export class NodeTreeComponent implements OnInit {
     for (let i = layerIndex + 1; i < this.treePath().length; i++) {
       let layerData = this.treePath().at(i - 1);
       linesToRemove = linesToRemove.concat(layerData?.lines);
-      let layer = this.layers.get(i)!;
+      let layer = this.layerPanels.get(i)!;
       layersCollapsed.push(firstValueFrom(layer.afterCollapse));
       layersToCollapse.push(layer);
     }
