@@ -1,36 +1,26 @@
 <mat-accordion #accordion class="flow__mat__accordion">
-  <div class="interaction__container flow__container">
-    <div class="interaction__container__header flex-center">
-      <div class="interaction__container__header__title">
+  <div class="container flow__container">
+    <div class="container__header flex-center">
+      <div class="container__header__title">
         {{interaction.operation_name}}
       </div>
-      <div class="interaction__container__header__buttons flex-center">
-        <div class="interaction__container__header__buttons__trigger">
+      <div class="container__header__buttons flex-center">
+        <div class="container__header__buttons__trigger">
           <button matButton="tonal" (click)="toggleInteractionContent(CONTENT_TYPE_ENUM.TRIGGER)">Trigger</button>
         </div>
-        <div class="interaction__container__header__buttons__result">
+        <div class="container__header__buttons__result">
           <button matButton="tonal" (click)="toggleInteractionContent(CONTENT_TYPE_ENUM.RESULT)" >Result</button>
         </div>
       </div>
     </div>
-    <mat-expansion-panel #panel class="interaction__container__panel">
-      <div class="interaction__container__content">
-        <div class="flow__container__title__datetime">
+    <mat-expansion-panel #panel class="container__panel">
+      <div class="container__panel__content">
+        <div class="container__panel__content__header">
           {{getContentTime()}}
         </div>
         <div class="interaction__container__content__data">
           <pre class="interaction__container__content__data__json">{{getContentData()}}</pre>
         </div>
-        <!--<div class="interaction__container__content__data">-->
-        <!--  @switch (contentType) {-->
-        <!--    @case (CONTENT_TYPE_ENUM.TRIGGER) {-->
-        <!--      <pre class="interaction__container__content__data__json">{{getPrettyJSONString(interaction.trigger_data)}}</pre>-->
-        <!--    }-->
-        <!--    @case (CONTENT_TYPE_ENUM.RESULT) {-->
-        <!--      <pre class="interaction__container__content__data__json">{{getPrettyJSONString(interaction.result_data)}}</pre>-->
-        <!--    }-->
-        <!--  }-->
-        <!--</div>-->
       </div>
     </mat-expansion-panel>
   </div>

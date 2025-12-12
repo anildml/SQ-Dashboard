@@ -2,7 +2,7 @@
 
 
 .flow__mat__accordion {
-  .interaction__container {
+  .container {
     background: rgba(var(--sq_blue), 0.3)!important;
     &__header {
       flex-direction: row;
@@ -26,9 +26,12 @@
       box-shadow: none;
       border-radius: 0 0 0 5px;
     }
-    &__content {
+    .container__panel__content {
       max-width: 500px;
       padding: 1rem;
+      &__header {
+        @extend .flow__container__title__datetime;
+      }
       &__data {
         &__json {
           margin-top: 0;
