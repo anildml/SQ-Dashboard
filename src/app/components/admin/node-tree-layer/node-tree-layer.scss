@@ -5,7 +5,7 @@
   padding: 20px 0 0 0;
   &__add__new__node {
     border-radius: 20px;
-    background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
+    background-color: rgba(var(--sq_blue), 0.5);
     mat-icon {
       margin: 0 5px;
       font-size: 30px;

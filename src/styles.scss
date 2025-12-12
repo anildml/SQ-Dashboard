@@ -39,6 +39,12 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+:root {
+  --sq_green: 109, 171, 99;
+  --sq_blue: 66, 128, 166;
+  --sq_red: 140, 55, 42;
+}
+
 div {
   display: flex;
   flex-direction: column;
@@ -72,7 +78,7 @@ div {
       align-items: center;
       height: 50px;
       padding: 0 1rem;
-      background: rgba(128, 61, 73, 0.5);
+      background: rgba(var(--sq_red), 0.5);
       border-radius: 0 10px 0 0;
     }
     &__title__text {
@@ -85,7 +91,7 @@ div {
     }
     .mat-expansion-panel-header {
       padding: 0;
-      background: rgba(152, 196, 124, 0.5)!important;
+      background: rgba(var(--sq_green), 0.5)!important;
       .mat-content {
         margin: 0;
       }

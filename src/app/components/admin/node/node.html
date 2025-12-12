@@ -1,57 +1,54 @@
-<div class="node__container flex-center">
-  <div class="node__container__content">
-    <div class="node__container__content__title__section">
-      <div class="flex-center node__container__content__title__section__container">
-        <div class="node__container__content__text__content title">
-          {{node.name}}
-        </div>
-        <div class="node__title__sidebar">
-          <div class="node__title__sidebar__edit__node flex-center">
-            <mat-icon class="flex-center" fontIcon="mode_edit_outline"></mat-icon>
-          </div>
-          <div class="node__title__sidebar__delete__node flex-center">
-            <mat-icon class="flex-center" fontIcon="delete_outline"></mat-icon>
-          </div>
-        </div>
+<div class="container">
+  <div class="container__header flex-center">
+    <div class="container__header__title">
+      {{node.name}}
+    </div>
+    <div class="container__header__sidebar">
+      <div class="container__header__sidebar__edit flex-center">
+        <mat-icon class="flex-center" fontIcon="mode_edit_outline"></mat-icon>
+      </div>
+      <div class="container__header__sidebar__delete flex-center">
+        <mat-icon class="flex-center" fontIcon="delete_outline"></mat-icon>
       </div>
     </div>
-    <div class="node__container__content__operation_list">
-      <div class="node__container__content__text__content">
-          Operations
-      </div>
-      <div>
-        @for (operation of node.operation_list; track $index) {
-          <div class="node__container__content__operation_list__operation">
-            {{operation.name}}
-          </div>
-        } @empty {
-          <div class="node__container__content__operation_list__operation">
-            -
-          </div>
-        }
-      </div>
+  </div>
+  <div class="container__operation_list">
+    <div class="container__operation_list__title">
+        Operations
     </div>
-    <div class="node__container__content__state_list">
-      <div class="node__container__content__text__content">
-        States
-      </div>
-      <div>
-        @for (state of node.state_list; track $index) {
-          <div class="node__container__content__state_list__state">
-            {{state}}
-          </div>
-        } @empty {
-          <div class="node__container__content__state_list__state">
-            -
-          </div>
-        }
-      </div>
+    <div class="container__operation_list__content">
+      @for (operation of node.operation_list; track $index) {
+        <div class="container__operation_list__content__operation">
+          {{operation.name}}
+        </div>
+      } @empty {
+        <div class="container__operation_list__content__operation">
+          -
+        </div>
+      }
+    </div>
+  </div>
+  <div class="container__state_list">
+    <div class="container__state_list__title">
+      States
+    </div>
+    <div class="container__state_list__content">
+      @for (state of node.state_list; track $index) {
+        <div class="container__state_list__content__state">
+          {{state}}
+        </div>
+      } @empty {
+        <div class="container__state_list__content__state">
+          -
+        </div>
+      }
     </div>
   </div>
 </div>
 @if (node.children) {
-<div class="flex-center node__expand__child__nodes">
-  <div (click)="expandChildNodeClicked()" class="node__expand__child__nodes__button flex-center">
+<div class="footer flex-center">
+  <div class="footer__expand_button flex-center"
+       (click)="expandChildNodeClicked()">
     <span class="keyboard_arrow_down material-symbols-outlined flex-center">
       keyboard_arrow_down
     </span>
