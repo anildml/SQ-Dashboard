@@ -39,6 +39,11 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+div {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-center {
   display: flex;
   justify-content: center;

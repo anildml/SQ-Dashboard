@@ -9,6 +9,7 @@
       font-size: 1.4rem;
       font-weight: 500;
       &__container {
+        flex-direction: row;
         justify-content: space-between;
         .node__title__sidebar {
           display: flex;
