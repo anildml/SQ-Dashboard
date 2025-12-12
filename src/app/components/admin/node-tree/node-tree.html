@@ -1,4 +1,4 @@
-<div class="node__tree__container">
+<div class="container">
   <mat-accordion [multi]="true">
   @for (layer of treePath(); track $index; let f = $first) {
     <mat-expansion-panel #layer [id]="'layer'+$index" [expanded]="$first">
