@@ -1,3 +1,5 @@
+@use "../../../../styles.scss";
+
 .container {
   border: 5px solid black;
   border-radius: 10px !important;
@@ -6,10 +8,9 @@
     flex-direction: row;
     justify-content: space-between;
     &__title {
-      padding: 5px;
+      @extend .title;
     }
     &__sidebar {
-      display: flex;
       flex-direction: row;
       align-self: normal;
       &__edit {
@@ -20,7 +21,7 @@
       }
       mat-icon {
         font-size: 18px;
-        display: flex!important;
+        @extend .flex-center;
       }
     }
   }
@@ -29,7 +30,7 @@
     border-width: 5px 0 0 0;
     padding-bottom: 5px;
     &__title {
-      padding: 5px;
+      @extend .title;
     }
     &__content {
       &__operation {
@@ -42,7 +43,7 @@
     border-width: 5px 0 0 0;
     padding-bottom: 5px;
     &__title {
-      padding: 5px;
+      @extend .title;
     }
     &__content {
       &__state {
