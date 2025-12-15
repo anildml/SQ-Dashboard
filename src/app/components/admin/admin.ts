@@ -61,6 +61,18 @@ export class AdminComponent {
                       ]
                     }
                   ]
+                },
+                {
+                  "id": "691b01196dda601803c1cf12",
+                  "name": "Restoran Ara - Aramama",
+                  "update_schema_list": [
+                    {
+                      "node_id": "691ae155a7adf91a70f76792",
+                      "effected_states": [
+                        "restoran_listesi"
+                      ]
+                    }
+                  ]
                 }
               ]
             },

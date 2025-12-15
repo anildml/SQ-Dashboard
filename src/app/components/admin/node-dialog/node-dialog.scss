@@ -1,0 +1,64 @@
+@use "../../../../styles.scss";
+
+.form {
+  border: 5px solid black;
+  border-radius: 10px !important;
+//  min-width: 200px;
+  &__header {
+    &__name {
+      width: 100%;
+    }
+  }
+  &__list {
+    border: solid black;
+    border-width: 5px 0 0 0;
+    padding: 5px 10px 10px 0;
+    &__header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      &__title {
+        @extend .title;
+        align-self: center;
+      }
+      &__add_button {
+      }
+    }
+    &__content {
+      &__el {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        box-shadow: 0 0 3px black;
+        border-radius: 5px;
+        margin: 5px 0 5px 25px;
+        padding-left: 5px;
+        &__name {
+          align-self: center;
+        }
+        &__remove_button {
+        }
+      }
+    }
+  }
+  &__text__content {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+.footer {
+  &__expand_button {
+    width: 25%;
+    border-radius: 0 0 10px 10px;
+    color: rgba(0, 0, 0, 0.25);
+    .keyboard_arrow_down {
+      font-size: 30px;
+      color: inherit;
+      cursor: default;
+    }
+    &:hover {
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+}

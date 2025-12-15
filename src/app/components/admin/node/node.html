@@ -4,41 +4,41 @@
       {{node.name}}
     </div>
     <div class="container__header__sidebar">
-      <div class="container__header__sidebar__edit flex-center">
-        <mat-icon class="flex-center" fontIcon="mode_edit_outline"></mat-icon>
+      <div class="container__header__sidebar__edit flex-center" (click)="openNodeDialog()">
+        <mat-icon class="flex-center">mode_edit_outline</mat-icon>
       </div>
       <div class="container__header__sidebar__delete flex-center">
-        <mat-icon class="flex-center" fontIcon="delete_outline"></mat-icon>
+        <mat-icon class="flex-center">delete_outline</mat-icon>
       </div>
     </div>
   </div>
-  <div class="container__operation_list">
-    <div class="container__operation_list__title">
+  <div class="container__list">
+    <div class="container__list__title">
         Operations
     </div>
-    <div class="container__operation_list__content">
+    <div class="container__list__content">
       @for (operation of node.operation_list; track $index) {
-        <div class="container__operation_list__content__operation">
+        <div class="container__list__content__el">
           {{operation.name}}
         </div>
       } @empty {
-        <div class="container__operation_list__content__operation">
+        <div class="container__list__content__el">
           -
         </div>
       }
     </div>
   </div>
-  <div class="container__state_list">
-    <div class="container__state_list__title">
+  <div class="container__list">
+    <div class="container__list__title">
       States
     </div>
-    <div class="container__state_list__content">
+    <div class="container__list__content">
       @for (state of node.state_list; track $index) {
-        <div class="container__state_list__content__state">
+        <div class="container__list__content__el">
           {{state}}
         </div>
       } @empty {
-        <div class="container__state_list__content__state">
+        <div class="container__list__content__el">
           -
         </div>
       }

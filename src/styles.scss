@@ -45,11 +45,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --sq_red: 140, 55, 42;
 }
 
-div {
-  display: flex;
-  flex-direction: column;
-}
-
 .flex-center {
   display: flex;
   justify-content: center;
@@ -71,11 +66,13 @@ div {
     background: none!important;
     &__header {
       width: 100%;
+      display: flex;
       flex-direction: row;
       justify-content: space-between;
       padding: 0 1rem;
     }
     &__footer {
+      display: flex;
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;

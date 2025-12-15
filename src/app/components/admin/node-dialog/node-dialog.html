@@ -1,0 +1,75 @@
+<mat-dialog-content>
+  <h4 mat-dialog-title>id: {{node.id}}</h4>
+  <form class="form">
+    <div class="container">
+      <div class="form__header flex-center">
+        <mat-form-field class="form__header__name">
+          <mat-label>Name</mat-label>
+          <input matInput [readonly]="false" [value]="node.name">
+          @if (isEditName) {
+          <mat-icon matSuffix>check</mat-icon>
+          <mat-icon matSuffix>close</mat-icon>
+          } @else {
+          <mat-icon matSuffix>mode_edit</mat-icon>
+          }
+        </mat-form-field>
+      </div>
+      <div class="form__list">
+        <div class="form__list__header">
+          <div class="form__list__header__title">
+              Operations
+          </div>
+          <div class="form__list__header__add_button flex-center">
+            <mat-icon (click)="addOperation()">add</mat-icon>
+          </div>
+        </div>
+        <div class="form__list__content">
+          @for (el of node.operation_list; track $index) {
+            <div class="form__list__content__el">
+              <div class="form__list__content__el__name">
+                {{el.name}}
+              </div>
+              <div class="form__list__content__el__remove_button flex-center">
+                <mat-icon (click)="removeOperation()">remove</mat-icon>
+              </div>
+            </div>
+          } @empty {
+            <div class="form__list__content__el">
+              -
+            </div>
+          }
+        </div>
+      </div>
+      <div class="form__list">
+        <div class="form__list__header">
+          <div class="form__list__header__title">
+            States
+          </div>
+          <div class="form__list__header__add_button flex-center">
+            <mat-icon (click)="addState()">add</mat-icon>
+          </div>
+        </div>
+        <div class="form__list__content">
+          @for (el of node.state_list; track $index) {
+            <div class="form__list__content__el">
+              <div class="form__list__content__el__name">
+                {{el}}
+              </div>
+              <div class="form__list__content__el__remove_button flex-center">
+                <mat-icon (click)="removeState()">remove</mat-icon>
+              </div>
+            </div>
+          } @empty {
+            <div class="form__list__content__el">
+              -
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close>Cancel</button>
+  <button matButton [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>

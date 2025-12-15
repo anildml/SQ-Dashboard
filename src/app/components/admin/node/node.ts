@@ -1,6 +1,8 @@
-import {Component, Input, output} from '@angular/core';
+import {Component, inject, Input, output} from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDialog} from '@angular/material/dialog';
+import {NodeDialogComponent} from '../node-dialog/node-dialog';
 
 @Component({
   selector: 'app-node',
@@ -12,6 +14,8 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class NodeComponent {
 
+  dialog: MatDialog = inject(MatDialog);
+
   @Input('node')
   node!: Node
 
@@ -19,6 +23,12 @@ export class NodeComponent {
 
   expandChildNodeClicked() {
     this.expandChildNodeClick.emit(this.node.id);
+  }
+
+  openNodeDialog() {
+    this.dialog.open(NodeDialogComponent, {
+      data: this.node
+    });
   }
 
 }
