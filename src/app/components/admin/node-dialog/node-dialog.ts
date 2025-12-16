@@ -30,6 +30,7 @@ export class NodeDialogComponent {
 
   isEditName: boolean = false;
   isAddingState: boolean = false;
+  isAddingOperation: boolean = false;
 
   constructor() {
     this.updatedVersion = JSON.parse(JSON.stringify(this.node));
@@ -46,12 +47,21 @@ export class NodeDialogComponent {
     }
   }
 
-  enterEditStateMode() {
+  enterAddOperationMode() {
+    this.isAddingOperation = true;
+  }
+
+  enterAddStateMode() {
     this.isAddingState = true;
   }
 
-  addOperation() {
-
+  addOperation(val: any) {
+    this.isAddingOperation = false;
+    this.updatedVersion.operation_list?.push({
+      id: "",
+      name: val.value,
+      update_schema_list: []
+    });
   }
 
   addState(val: any) {

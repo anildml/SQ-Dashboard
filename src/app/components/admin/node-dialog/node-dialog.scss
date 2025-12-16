@@ -34,9 +34,10 @@
         box-shadow: 0 0 3px black;
         border-radius: 5px;
         margin: 5px 0 5px 25px;
-        padding: 5px 0 5px 5px;
+        padding: 0 0 0 5px;
         &__name {
           align-self: center;
+          padding: 5px 0 5px 0;
         }
         &__remove_button {
         }

@@ -23,7 +23,7 @@
           Operations
         </div>
         <div class="container__list__header__add_button flex-center">
-          <mat-icon (click)="addOperation()">add</mat-icon>
+          <mat-icon (click)="enterAddOperationMode()">add</mat-icon>
         </div>
       </div>
       <div class="container__list__content">
@@ -37,6 +37,15 @@
           </div>
         </div>
         }
+        @if (isAddingOperation) {
+        <div class="container__list__content__el add_operation">
+          <mat-form-field class="add_state__input">
+            <mat-label>Name</mat-label>
+            <input matInput #newOperation>
+            <mat-icon matSuffix (click)="addOperation(newOperation)">check</mat-icon>
+          </mat-form-field>
+        </div>
+        }
       </div>
     </div>
     <div class="container__list">
@@ -45,7 +54,7 @@
           States
         </div>
         <div class="container__list__header__add_button flex-center">
-          <mat-icon (click)="enterEditStateMode()">add</mat-icon>
+          <mat-icon (click)="enterAddStateMode()">add</mat-icon>
         </div>
       </div>
       <div class="container__list__content">
