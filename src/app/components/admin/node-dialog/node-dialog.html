@@ -1,75 +1,78 @@
 <mat-dialog-content>
-  <h4 mat-dialog-title>id: {{node.id}}</h4>
-  <form class="form">
-    <div class="container">
-      <div class="form__header flex-center">
-        <mat-form-field class="form__header__name">
-          <mat-label>Name</mat-label>
-          <input matInput [readonly]="false" [value]="node.name">
-          @if (isEditName) {
-          <mat-icon matSuffix>check</mat-icon>
-          <mat-icon matSuffix>close</mat-icon>
-          } @else {
-          <mat-icon matSuffix>mode_edit</mat-icon>
-          }
-        </mat-form-field>
-      </div>
-      <div class="form__list">
-        <div class="form__list__header">
-          <div class="form__list__header__title">
-              Operations
-          </div>
-          <div class="form__list__header__add_button flex-center">
-            <mat-icon (click)="addOperation()">add</mat-icon>
-          </div>
+  <h4 mat-dialog-title>id: {{updatedVersion.id}}</h4>
+  <div class="container">
+    <div class="container__header flex-center">
+      <mat-form-field class="container__header__name">
+        <mat-label>Name</mat-label>
+        <input matInput [readonly]="!isEditName" [(ngModel)]="updatedVersion.name">
+        <!-- FAILED TO MERGE THESE IF BLOCKS -->
+        @if (!isEditName) {
+        <mat-icon matSuffix (click)="enterEditNameMode()">mode_edit</mat-icon>
+        }
+        @if (isEditName) {
+        <mat-icon matSuffix (click)="exitEditNameMode(true)">check</mat-icon>
+        }
+        @if (isEditName) {
+        <mat-icon matSuffix (click)="exitEditNameMode(false)">close</mat-icon>
+        }
+      </mat-form-field>
+    </div>
+    <div class="container__list">
+      <div class="container__list__header">
+        <div class="container__list__header__title">
+          Operations
         </div>
-        <div class="form__list__content">
-          @for (el of node.operation_list; track $index) {
-            <div class="form__list__content__el">
-              <div class="form__list__content__el__name">
-                {{el.name}}
-              </div>
-              <div class="form__list__content__el__remove_button flex-center">
-                <mat-icon (click)="removeOperation()">remove</mat-icon>
-              </div>
-            </div>
-          } @empty {
-            <div class="form__list__content__el">
-              -
-            </div>
-          }
+        <div class="container__list__header__add_button flex-center">
+          <mat-icon (click)="addOperation()">add</mat-icon>
         </div>
       </div>
-      <div class="form__list">
-        <div class="form__list__header">
-          <div class="form__list__header__title">
-            States
+      <div class="container__list__content">
+        @for (el of updatedVersion.operation_list; track $index) {
+        <div class="container__list__content__el">
+          <div class="container__list__content__el__name">
+            {{el.name}}
           </div>
-          <div class="form__list__header__add_button flex-center">
-            <mat-icon (click)="addState()">add</mat-icon>
+          <div class="container__list__content__el__remove_button flex-center">
+            <mat-icon (click)="removeOperation($index)">delete_outline</mat-icon>
           </div>
         </div>
-        <div class="form__list__content">
-          @for (el of node.state_list; track $index) {
-            <div class="form__list__content__el">
-              <div class="form__list__content__el__name">
-                {{el}}
-              </div>
-              <div class="form__list__content__el__remove_button flex-center">
-                <mat-icon (click)="removeState()">remove</mat-icon>
-              </div>
-            </div>
-          } @empty {
-            <div class="form__list__content__el">
-              -
-            </div>
-          }
-        </div>
+        }
       </div>
     </div>
-  </form>
+    <div class="container__list">
+      <div class="container__list__header">
+        <div class="container__list__header__title">
+          States
+        </div>
+        <div class="container__list__header__add_button flex-center">
+          <mat-icon (click)="enterEditStateMode()">add</mat-icon>
+        </div>
+      </div>
+      <div class="container__list__content">
+        @for (el of updatedVersion.state_list; track $index) {
+        <div class="container__list__content__el">
+          <div class="container__list__content__el__name">
+            {{el}}
+          </div>
+          <div class="container__list__content__el__remove_button flex-center">
+            <mat-icon (click)="removeState($index)">delete_outline</mat-icon>
+          </div>
+        </div>
+        }
+        @if (isAddingState) {
+        <div class="container__list__content__el add_state">
+          <mat-form-field class="add_state__input">
+            <mat-label>Name</mat-label>
+            <input matInput #newState>
+            <mat-icon matSuffix (click)="addState(newState)">check</mat-icon>
+          </mat-form-field>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button matButton mat-dialog-close>Cancel</button>
-  <button matButton [mat-dialog-close]="true">Save</button>
+  <button matButton [mat-dialog-close]="false">Save</button>
 </mat-dialog-actions>

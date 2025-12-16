@@ -19,7 +19,7 @@ export class AdminComponent {
     let a: Node = {
       "id": "691ae106a7adf91a70f76791",
       "name": "root",
-      "parents": null,
+      "parents": [],
       "children": [
         {
           "id": "691ae155a7adf91a70f76792",
@@ -41,9 +41,9 @@ export class AdminComponent {
                   "parents": [
                     "691ae464d539009f0a8f8bff"
                   ],
-                  "children": null,
-                  "state_list": null,
-                  "operation_list": null
+                  "children": [],
+                  "state_list": [],
+                  "operation_list": []
                 }
               ],
               "state_list": [
@@ -89,23 +89,23 @@ export class AdminComponent {
                   "parents": [
                     "691ae4d3d539009f0a8f8c08"
                   ],
-                  "children": null,
-                  "state_list": null,
-                  "operation_list": null
+                  "children": [],
+                  "state_list": [],
+                  "operation_list": []
                 }
               ],
-              "state_list": null,
-              "operation_list": null
+              "state_list": [],
+              "operation_list": []
             }
           ],
           "state_list": [
             "restoran_listesi"
           ],
-          "operation_list": null
+          "operation_list": []
         }
       ],
-      "state_list": null,
-      "operation_list": null
+      "state_list": [],
+      "operation_list": []
     };
     return a;
   }

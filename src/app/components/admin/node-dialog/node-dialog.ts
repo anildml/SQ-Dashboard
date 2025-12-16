@@ -1,8 +1,8 @@
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
 import {MatIconModule} from "@angular/material/icon";
 import {MatDialogContent, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -16,42 +16,55 @@ import {MatButtonModule} from '@angular/material/button';
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule
   ],
   standalone: true,
   templateUrl: './node-dialog.html',
-  styleUrl: './node-dialog.scss',
+  styleUrl: './node-dialog.scss'
 })
-export class NodeDialogComponent implements OnInit {
+export class NodeDialogComponent {
 
   node: Node = inject(MAT_DIALOG_DATA);
-  nodePreviousVersion!: Node;
+  updatedVersion!: Node;
 
   isEditName: boolean = false;
+  isAddingState: boolean = false;
 
   constructor() {
-
+    this.updatedVersion = JSON.parse(JSON.stringify(this.node));
   }
 
-  ngOnInit(): void {
-    this.nodePreviousVersion = Object.assign(this.node, this.nodePreviousVersion);
-    this.nodePreviousVersion = Object.assign(this.node, this.nodePreviousVersion);
+  enterEditNameMode() {
+    this.isEditName = true;
+  }
+
+  exitEditNameMode(saveValue: boolean) {
+    this.isEditName = false;
+    if (!saveValue) {
+      this.updatedVersion.name = this.node.name;
+    }
+  }
+
+  enterEditStateMode() {
+    this.isAddingState = true;
   }
 
   addOperation() {
 
   }
 
-  addState() {
-
+  addState(val: any) {
+    this.isAddingState = false;
+    this.updatedVersion.state_list?.push(val.value);
   }
 
-  removeOperation() {
-
+  removeOperation(index: number) {
+    this.updatedVersion.operation_list = this.updatedVersion.operation_list.filter((el, i) => i != index);
   }
 
-  removeState() {
-
+  removeState(index: number) {
+    this.updatedVersion.state_list = this.updatedVersion.state_list.filter((el, i) => i != index);
   }
 
 }

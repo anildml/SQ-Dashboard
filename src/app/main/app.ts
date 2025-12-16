@@ -10,7 +10,7 @@ import {AdminComponent} from '../components/admin/admin';
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    SessionComponent,
+//    SessionComponent,
     AdminComponent
   ],
   templateUrl: './app.html',
