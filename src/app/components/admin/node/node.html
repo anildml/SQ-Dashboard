@@ -1,44 +1,46 @@
-<div class="container">
-  <div class="container__header flex-center">
-    <div class="container__header__title">
+<div class="node_container">
+  <div class="header flex-center">
+    <div class="title">
       {{node.name}}
     </div>
-    <div class="container__header__sidebar">
-      <div class="container__header__sidebar__edit flex-center" (click)="openNodeDialog()">
+    <div class="sidebar">
+      <div class="edit_button flex-center" (click)="openNodeDialog()">
         <mat-icon class="flex-center">mode_edit_outline</mat-icon>
       </div>
-      <div class="container__header__sidebar__delete flex-center">
+      <div class="delete_button flex-center">
         <mat-icon class="flex-center">delete_outline</mat-icon>
       </div>
     </div>
   </div>
-  <div class="container__list">
-    <div class="container__list__title">
+  <div class="border_between_content"></div>
+  <div class="operation_list">
+    <div class="title">
         Operations
     </div>
-    <div class="container__list__content">
+    <div class="list">
       @for (operation of node.operation_list; track $index) {
-        <div class="container__list__content__el">
+        <div class="el">
           {{operation.name}}
         </div>
       } @empty {
-        <div class="container__list__content__el">
+        <div class="el">
           -
         </div>
       }
     </div>
   </div>
-  <div class="container__list">
-    <div class="container__list__title">
+  <div class="border_between_content"></div>
+  <div class="state_list">
+    <div class="title">
       States
     </div>
-    <div class="container__list__content">
+    <div class="list">
       @for (state of node.state_list; track $index) {
-        <div class="container__list__content__el" (click)="isModeDefineOperationUpdateSchema()() ? clickedOnState(state) : false">
+        <div class="el" (click)="isModeDefineOperationUpdateSchema()() ? clickedOnState(state) : false">
           {{state}}
         </div>
       } @empty {
-        <div class="container__list__content__el">
+        <div class="el">
           -
         </div>
       }
@@ -47,7 +49,7 @@
 </div>
 @if (node.children) {
 <div class="footer flex-center">
-  <div class="footer__expand_button flex-center"
+  <div class="expand_button flex-center"
        (click)="expandChildNodeClicked()">
     <span class="keyboard_arrow_down material-symbols-outlined flex-center">
       keyboard_arrow_down

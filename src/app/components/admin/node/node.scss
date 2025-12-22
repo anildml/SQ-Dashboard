@@ -1,19 +1,35 @@
 @use "../../../../styles.scss";
 
-.container {
+.p5 {
+  padding: 5px;
+}
+
+.list {
+  @extend .p5;
+  .title {
+    @extend .title;
+  }
+  .list {
+    .el {
+      padding-left: 25px;
+    }
+  }
+}
+
+.node_container {
   border: 5px solid black;
-  border-radius: 10px !important;
+  border-radius: 10px;
   min-width: 200px;
-  &__header {
+  .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background-color: rgba(var(--sq_blue), 0.25);
-    padding: 10px;
-    &__title {
+    @extend .p5;
+    .title {
       @extend .title;
     }
-    &__sidebar {
+    .sidebar {
       display: flex;
       flex-direction: row;
       align-self: normal;
@@ -23,23 +39,20 @@
       }
     }
   }
-  &__list {
-    border: solid black;
-    border-width: 5px 0 0 0;
-    padding-bottom: 5px;
-    &__title {
-      @extend .title;
-    }
-    &__content {
-      &__el {
-        padding-left: 25px;
-      }
-    }
+  .operation_list {
+    @extend .list;
+  }
+  .state_list {
+    @extend .list;
+  }
+
+  .border_between_content {
+    border-bottom: 5px solid black;
   }
 }
 
 .footer {
-  &__expand_button {
+  .expand_button {
     width: 25%;
     border-radius: 0 0 10px 10px;
     color: rgba(0, 0, 0, 0.25);
