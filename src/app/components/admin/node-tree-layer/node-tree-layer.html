@@ -2,7 +2,6 @@
   @for (node of nodeList; track $index) {
     <div>
       <app-node
-        (expandChildNodeClick)="expandChildNodeClicked($event)"
         [node]="node"
         [id]="'node_'+node.id"
       ></app-node>

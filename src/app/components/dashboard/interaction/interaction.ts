@@ -20,7 +20,7 @@ export enum CONTENT_TYPE {
   templateUrl: './interaction.html',
   styleUrl: './interaction.scss'
 })
-export class InteractionComponent implements OnInit {
+export class InteractionComponent {
 
   @Input("interaction")
   interaction!: Interaction;
@@ -33,13 +33,7 @@ export class InteractionComponent implements OnInit {
 
   constructor(
     private datePipe: DatePipe
-  ) {
-
-  }
-
-  ngOnInit(): void {
-
-  }
+  ) {}
 
   getPrettyJSONString(t: object): string {
     return JSON.stringify(t, null, 2);

@@ -1,4 +1,4 @@
-import {Component, Input, output} from '@angular/core';
+import {Component, Input, OnChanges, output, signal, SimpleChanges, WritableSignal} from '@angular/core';
 import {NodeComponent} from '../node/node';
 import {Node} from '../../../models/interfaces/node';
 import {MatButtonModule} from '@angular/material/button';
@@ -18,11 +18,5 @@ export class NodeTreeLayerComponent {
 
   @Input('nodeList')
   nodeList!: Node[];
-
-  expandChildNodeClick = output<string>();
-
-  expandChildNodeClicked(id: string) {
-    this.expandChildNodeClick.emit(id);
-  }
 
 }

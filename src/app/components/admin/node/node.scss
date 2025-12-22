@@ -9,6 +9,7 @@
     flex-direction: row;
     justify-content: space-between;
     background-color: rgba(var(--sq_blue), 0.25);
+    padding: 10px;
     &__title {
       @extend .title;
     }
@@ -16,12 +17,6 @@
       display: flex;
       flex-direction: row;
       align-self: normal;
-      &__edit {
-//        background-color: rgba(var(--sq_blue), 0.5);
-      }
-      &__delete {
-//        background-color:rgba(var(--sq_red), 0.5);
-      }
       mat-icon {
         font-size: 18px;
         @extend .flex-center;
@@ -40,10 +35,6 @@
         padding-left: 25px;
       }
     }
-  }
-  &__text__content {
-    font-size: 1rem;
-    font-weight: 500;
   }
 }
 

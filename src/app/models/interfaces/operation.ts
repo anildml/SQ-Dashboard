@@ -6,5 +6,6 @@ export interface Operation {
 
 export interface UpdateSchema {
   node_id: string;
+  node_name?: string;
   effected_states: string[];
 }

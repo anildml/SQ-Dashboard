@@ -1,11 +1,13 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy, WritableSignal} from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
 import {MatIconModule} from "@angular/material/icon";
-import {MatDialogContent, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatDialogContent, MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {OperationComponent} from '../operation/operation';
+import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
 
 @Component({
   selector: 'app-node-dialog',
@@ -17,7 +19,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    OperationComponent
   ],
   standalone: true,
   templateUrl: './node-dialog.html',
@@ -25,56 +28,60 @@ import {MatButtonModule} from '@angular/material/button';
 })
 export class NodeDialogComponent {
 
+  dialogRef: MatDialogRef<NodeDialogComponent> = inject(MatDialogRef<NodeDialogComponent>);
   node: Node = inject(MAT_DIALOG_DATA);
-  updatedVersion!: Node;
-
-  isEditName: boolean = false;
-  isAddingState: boolean = false;
-  isAddingOperation: boolean = false;
+  nodeManagementService: NodeManagementService = inject(NodeManagementService);
 
   constructor() {
-    this.updatedVersion = JSON.parse(JSON.stringify(this.node));
+    this.nodeManagementService.initContext(this.node, this.dialogRef);
+  }
+
+  finalizeEditNode(saveValue: boolean) {
+    this.nodeManagementService.finalizeEditNode(saveValue);
+    this.dialogRef.close();
   }
 
   enterEditNameMode() {
-    this.isEditName = true;
+    this.nodeManagementService.enterEditNameMode();
   }
 
-  exitEditNameMode(saveValue: boolean) {
-    this.isEditName = false;
-    if (!saveValue) {
-      this.updatedVersion.name = this.node.name;
-    }
+  finalizeEditName(saveValue: boolean, val: any) {
+    this.nodeManagementService.finalizeEditName(saveValue, val.value);
   }
+
+
+
+
 
   enterAddOperationMode() {
-    this.isAddingOperation = true;
+    this.nodeManagementService.enterAddOperationMode();
   }
+
+  operationNameFinalized(val: any) {
+    this.nodeManagementService.enterDefineOperationTemplateMode(val.value);
+  }
+
+  saveOperation(saveValue: boolean) {
+    this.nodeManagementService.finalizeDefineOperationUpdateSchema(saveValue);
+  }
+
+
+
 
   enterAddStateMode() {
-    this.isAddingState = true;
-  }
-
-  addOperation(val: any) {
-    this.isAddingOperation = false;
-    this.updatedVersion.operation_list?.push({
-      id: "",
-      name: val.value,
-      update_schema_list: []
-    });
+    this.nodeManagementService.enterAddStateMode()
   }
 
   addState(val: any) {
-    this.isAddingState = false;
-    this.updatedVersion.state_list?.push(val.value);
+    this.nodeManagementService.saveState(val.value);
   }
 
   removeOperation(index: number) {
-    this.updatedVersion.operation_list = this.updatedVersion.operation_list.filter((el, i) => i != index);
+    this.nodeManagementService.removeOperation(index);
   }
 
   removeState(index: number) {
-    this.updatedVersion.state_list = this.updatedVersion.state_list.filter((el, i) => i != index);
+    this.nodeManagementService.removeState(index);
   }
 
 }

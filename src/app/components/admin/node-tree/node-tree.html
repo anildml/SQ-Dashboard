@@ -4,7 +4,6 @@
     <mat-expansion-panel #layer [id]="'layer'+$index" [expanded]="$first">
       <div>
         <app-node-tree-layer
-          (expandChildNodeClick)="nodeClicked($event)"
           [nodeList]="layer.nodeList"
         ></app-node-tree-layer>
       </div>

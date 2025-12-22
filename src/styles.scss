@@ -56,6 +56,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-weight: 600;
 }
 
+.sqnt-container {
+  padding-right: 10px;
+}
+
 .flow__mat__accordion {
   .flow__container {
     border: solid black;
@@ -103,6 +107,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
-.mat-mdc-form-field-subscript-wrapper {
-  display: none;
+.mat-mdc-dialog-surface {
+  box-shadow: 0 0 10px black!important;
 }

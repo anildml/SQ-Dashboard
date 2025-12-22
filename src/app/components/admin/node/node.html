@@ -34,7 +34,7 @@
     </div>
     <div class="container__list__content">
       @for (state of node.state_list; track $index) {
-        <div class="container__list__content__el">
+        <div class="container__list__content__el" (click)="isModeDefineOperationUpdateSchema()() ? clickedOnState(state) : false">
           {{state}}
         </div>
       } @empty {

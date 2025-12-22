@@ -1,10 +1,20 @@
 @use "../../../../styles.scss";
 
+.dialog_wrapper {
+
+}
+
 .container {
   border: 5px solid black;
   border-radius: 10px !important;
 //  min-width: 200px;
   &__header {
+    justify-content: space-between;
+    &__title {
+      border: none;
+      background: none;
+      &:focus {outline: none}
+    }
     &__name {
       width: 100%;
     }
@@ -27,25 +37,27 @@
     }
     &__content {
       padding: 0 10px 0 0;
+      margin: 0 0 0 25px;
       &__el {
         display: flex;
         justify-content: space-between;
         box-shadow: 0 0 3px black;
         border-radius: 5px;
-        margin: 5px 0 5px 25px;
-        padding: 0 0 0 5px;
+        margin: 5px 0 5px 0;
+        &__sidebar {
+          display: flex;
+          flex-direction: row;
+          align-self: normal;
+          margin-left: 50px;
+        }
         &__name {
           align-self: center;
-          padding: 5px 0 5px 0;
+          padding: 5px 0 5px 5px;
         }
         &__remove_button {
         }
       }
     }
-  }
-  &__text__content {
-    font-size: 1rem;
-    font-weight: 500;
   }
 }
 

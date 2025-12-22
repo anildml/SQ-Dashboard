@@ -1,4 +1,4 @@
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {EventEmitter, inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {Node} from '../../models/interfaces/node';
 
 interface LayerData {
@@ -12,9 +12,11 @@ interface LayerData {
 })
 export class NodeTreeService {
 
-  private rootNode!: Node
+  rootNode!: Node
 
   treePath: WritableSignal<LayerData[]> = signal([]);
+
+  expandChildNodeClicked: EventEmitter<string> = new EventEmitter<string>();
 
   initNodeTree(node: Node) {
     this.rootNode = node;
@@ -23,7 +25,7 @@ export class NodeTreeService {
         nodeList: [this.rootNode],
         selectedNode: null
       });
-      return tp;
+      return [...tp];
     })
   }
 
@@ -45,14 +47,14 @@ export class NodeTreeService {
     };
   }
 
-  addNewLayerToTreePath(lastSelectedNode: Node) {
+  growTreePath(lastSelectedNode: Node) {
     this.treePath.update(tp => {
       tp.at(-1)!.selectedNode = lastSelectedNode;
       tp.push({
         nodeList: lastSelectedNode.children ?? [],
         selectedNode: null
       });
-      return tp;
+      return [...tp];
     });
   }
 
@@ -60,7 +62,7 @@ export class NodeTreeService {
     this.treePath.update(tp => {
       tp = tp.slice(0, layerIndex + 1);
       tp.at(-1)!.selectedNode = null;
-      return tp;
+      return [...tp];
     });
   }
 
@@ -75,16 +77,28 @@ export class NodeTreeService {
   addLinesToLayer(lines: any[]) {
     this.treePath.update(tp => {
       tp.at(-2)!.lines = lines;
-      return tp;
+      return [...tp];
     })
   }
 
-  getLayerData(i: number) {
-    return this.treePath().at(i);
+  updateNode(node: Node) {
+    let parentnode = this.findParentNode(this.rootNode, node);
+    let i = parentnode?.children?.findIndex(c => c.id == node.id) ?? -1;
+    parentnode!.children![i] = node;
+    this.treePath.update(tp => [...tp]);
   }
 
-  getTreePathLength() {
-    return this.treePath().length;
+  findParentNode(parent: Node, search: Node): (Node | null) {
+    for (let child of parent.children!) {
+      if (search.id == child.id) {
+        return parent;
+      }
+      let result = this.findParentNode(child, search);
+      if (result) {
+        return result;
+      }
+    }
+    return null;
   }
 
 }

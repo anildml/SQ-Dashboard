@@ -1,90 +1,121 @@
-<mat-dialog-content>
-  <h4 mat-dialog-title>id: {{updatedVersion.id}}</h4>
-  <div class="container">
-    <div class="container__header flex-center">
-      <mat-form-field class="container__header__name">
-        <mat-label>Name</mat-label>
-        <input matInput [readonly]="!isEditName" [(ngModel)]="updatedVersion.name">
-        <!-- FAILED TO MERGE THESE IF BLOCKS -->
-        @if (!isEditName) {
-        <mat-icon matSuffix (click)="enterEditNameMode()">mode_edit</mat-icon>
-        }
-        @if (isEditName) {
-        <mat-icon matSuffix (click)="exitEditNameMode(true)">check</mat-icon>
-        }
-        @if (isEditName) {
-        <mat-icon matSuffix (click)="exitEditNameMode(false)">close</mat-icon>
-        }
-      </mat-form-field>
+<div class="dialog_wrapper">
+  <mat-dialog-content>
+    @if (!nodeManagementService.MODE.defineOperationUpdateSchema()) {
+    <div class="container">
+      <div class="container__header flex-center">
+        <input
+          class="container__header__title"
+          #nodeName
+          [readonly]="!(nodeManagementService.MODE.editName())"
+          [value]="nodeManagementService.node()!.name">
+        <div class="container__header__sidebar">
+          <div class="container__header__sidebar__edit flex-center">
+            <mat-icon class="flex-center">mode_edit_outline</mat-icon>
+          </div>
+          <div class="container__header__sidebar__delete flex-center">
+            <mat-icon class="flex-center">delete_outline</mat-icon>
+          </div>
+        </div>
+        <!--<mat-form-field class="container__header__name">-->
+        <!--  <mat-label>Name</mat-label>-->
+        <!--  <input matInput #nodeName [readonly]="!(nodeManagementService.MODE.editName())" [value]="nodeManagementService.node()!.name">-->
+        <!--  &lt;!&ndash; FAILED TO MERGE THESE IF BLOCKS &ndash;&gt;-->
+        <!--  @if (!nodeManagementService.MODE.editName()) {-->
+        <!--  <mat-icon matSuffix (click)="enterEditNameMode()">mode_edit</mat-icon>-->
+        <!--  }-->
+        <!--  @if (nodeManagementService.MODE.editName()) {-->
+        <!--  <mat-icon matSuffix (click)="finalizeEditName(true, nodeName)">check</mat-icon>-->
+        <!--  }-->
+        <!--  @if (nodeManagementService.MODE.editName()) {-->
+        <!--  <mat-icon matSuffix (click)="finalizeEditName(false, '')">close</mat-icon>-->
+        <!--  }-->
+        <!--</mat-form-field>-->
+      </div>
+      <div class="container__list">
+        <div class="container__list__header">
+          <div class="container__list__header__title">
+            Operations
+          </div>
+          <div class="container__list__header__add_button flex-center">
+            <mat-icon (click)="enterAddOperationMode()">add</mat-icon>
+          </div>
+        </div>
+        <div class="container__list__content">
+          @for (el of nodeManagementService.node()!.operation_list; track $index) {
+          <div class="container__list__content__el">
+            <div class="container__list__content__el__name">
+              {{el.name}}
+            </div>
+            <div class="container__list__content__el__sidebar">
+              <div class="container__list__content__el__sidebar__edit_button flex-center">
+                <mat-icon (click)="removeOperation($index)">mode_edit_outline</mat-icon>
+              </div>
+              <div class="container__list__content__el__sidebar__remove_button flex-center">
+                <mat-icon (click)="removeOperation($index)">delete_outline</mat-icon>
+              </div>
+            </div>
+          </div>
+          }
+          @if (nodeManagementService.MODE.addOperation()) {
+          <div class="container__list__content__el add_operation">
+            <mat-form-field class="add_state__input">
+              <mat-label>Operation Name</mat-label>
+              <input matInput #newOperation>
+              <mat-icon matSuffix (click)="operationNameFinalized(newOperation)">check</mat-icon>
+            </mat-form-field>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="container__list">
+        <div class="container__list__header">
+          <div class="container__list__header__title">
+            States
+          </div>
+          <div class="container__list__header__add_button flex-center">
+            <mat-icon (click)="enterAddStateMode()">add</mat-icon>
+          </div>
+        </div>
+        <div class="container__list__content">
+          @for (el of nodeManagementService.node()!.state_list; track $index) {
+          <div class="container__list__content__el">
+            <div class="container__list__content__el__name">
+              {{el}}
+            </div>
+            <div class="container__list__content__el__sidebar">
+              <div class="container__list__content__el__sidebar__edit_button flex-center">
+                <mat-icon (click)="removeState($index)">mode_edit_outline</mat-icon>
+              </div>
+              <div class="container__list__content__el__sidebar__remove_button flex-center">
+                <mat-icon (click)="removeState($index)">delete_outline</mat-icon>
+              </div>
+            </div>
+          </div>
+          }
+          @if (nodeManagementService.MODE.addState()) {
+          <div class="container__list__content__el add_state">
+            <mat-form-field class="add_state__input">
+              <mat-label>State Name</mat-label>
+              <input matInput #newState>
+              <mat-icon matSuffix (click)="addState(newState)">check</mat-icon>
+            </mat-form-field>
+          </div>
+          }
+        </div>
+      </div>
     </div>
-    <div class="container__list">
-      <div class="container__list__header">
-        <div class="container__list__header__title">
-          Operations
-        </div>
-        <div class="container__list__header__add_button flex-center">
-          <mat-icon (click)="enterAddOperationMode()">add</mat-icon>
-        </div>
-      </div>
-      <div class="container__list__content">
-        @for (el of updatedVersion.operation_list; track $index) {
-        <div class="container__list__content__el">
-          <div class="container__list__content__el__name">
-            {{el.name}}
-          </div>
-          <div>
-            
-          </div>
-          <div class="container__list__content__el__remove_button flex-center">
-            <mat-icon (click)="removeOperation($index)">delete_outline</mat-icon>
-          </div>
-        </div>
-        }
-        @if (isAddingOperation) {
-        <div class="container__list__content__el add_operation">
-          <mat-form-field class="add_state__input">
-            <mat-label>Name</mat-label>
-            <input matInput #newOperation>
-            <mat-icon matSuffix (click)="addOperation(newOperation)">check</mat-icon>
-          </mat-form-field>
-        </div>
-        }
-      </div>
-    </div>
-    <div class="container__list">
-      <div class="container__list__header">
-        <div class="container__list__header__title">
-          States
-        </div>
-        <div class="container__list__header__add_button flex-center">
-          <mat-icon (click)="enterAddStateMode()">add</mat-icon>
-        </div>
-      </div>
-      <div class="container__list__content">
-        @for (el of updatedVersion.state_list; track $index) {
-        <div class="container__list__content__el">
-          <div class="container__list__content__el__name">
-            {{el}}
-          </div>
-          <div class="container__list__content__el__remove_button flex-center">
-            <mat-icon (click)="removeState($index)">delete_outline</mat-icon>
-          </div>
-        </div>
-        }
-        @if (isAddingState) {
-        <div class="container__list__content__el add_state">
-          <mat-form-field class="add_state__input">
-            <mat-label>Name</mat-label>
-            <input matInput #newState>
-            <mat-icon matSuffix (click)="addState(newState)">check</mat-icon>
-          </mat-form-field>
-        </div>
-        }
-      </div>
-    </div>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Cancel</button>
-  <button matButton [mat-dialog-close]="false">Save</button>
-</mat-dialog-actions>
+    } @else {
+    <app-operation
+      [operation]="nodeManagementService.operation()!"
+      (saveOperation)="saveOperation($event)"
+    ></app-operation>
+    }
+  </mat-dialog-content>
+  @if (!nodeManagementService.MODE.defineOperationUpdateSchema()) {
+  <mat-dialog-actions align="end">
+    <button matButton mat-dialog-close (click)="finalizeEditNode(false)">Cancel</button>
+    <button matButton mat-dialog-close (click)="finalizeEditNode(true)">Save Node</button>
+  </mat-dialog-actions>
+  }
+</div>
+

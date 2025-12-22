@@ -1,0 +1,33 @@
+@use "../../../../styles.scss";
+
+
+.container {
+  &__title {
+    width: 100%;
+    &__hint {
+      font-weight: 600;
+      display: flex;
+      justify-content: end;
+      margin-bottom: 20px;
+    }
+  }
+  &__footer {
+    display: flex;
+    justify-content: end;
+  }
+}
+
+
+.container {
+  &__list {
+    padding-bottom: 5px;
+    &__title {
+      @extend .title;
+    }
+    &__content {
+      &__el {
+        padding-left: 25px;
+      }
+    }
+  }
+}
