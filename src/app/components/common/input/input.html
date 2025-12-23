@@ -1,0 +1,25 @@
+<div class="container">
+  <input
+    id="name"
+    #name
+    class="title"
+    [disabled]="disabled()"
+    [value]="currentValue()">
+  <div class="sidebar">
+    @if (disabled()) {
+    <div class="flex-center" (click)="enterEditMode()">
+      <mat-icon class="flex-center">mode_edit_outline</mat-icon>
+    </div>
+    }
+    @if (!disabled()) {
+    <div class="flex-center" (click)="exitEditMode(true, name)">
+      <mat-icon class="flex-center">check</mat-icon>
+    </div>
+    }
+    @if (!disabled()) {
+    <div class="flex-center" (click)="exitEditMode(false, name)">
+      <mat-icon class="flex-center" >close</mat-icon>
+    </div>
+    }
+  </div>
+</div>

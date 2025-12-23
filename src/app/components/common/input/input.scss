@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  .title {
+    border: none;
+    background: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: medium;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+  }
+}
