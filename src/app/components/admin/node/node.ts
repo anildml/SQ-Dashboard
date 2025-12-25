@@ -145,4 +145,10 @@ export class NodeComponent implements OnInit {
     });
   }
 
+  clickedOnState() {
+    if (this.nodeManagementService.defineUpdateSchemaMode()) {
+      this.nodeManagementService.addStateToOperationUpdateSchemaEventEmitter.emit();
+    }
+  }
+
 }

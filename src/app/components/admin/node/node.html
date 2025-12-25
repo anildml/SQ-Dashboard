@@ -63,6 +63,7 @@
             [placeholder]="'Can\'t be empty'"
             (exitEditMode)="editState($event, $index)"
             (deleteClick)="deleteState(el)"
+            (componentClick)="clickedOnState()"
           ></app-input>
         </div>
         }

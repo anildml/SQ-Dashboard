@@ -46,6 +46,7 @@ export class InputComponent {
   editClick = output<void>();
   exitEditMode = output<string>();
   deleteClick = output<void>();
+  componentClick = output<void>();
 
   constructor() {
     effect(() => {
