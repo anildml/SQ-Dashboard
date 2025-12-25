@@ -63,7 +63,7 @@ export class NodeComponent implements OnInit {
     });
   }
 
-  nameEdited(val: string) {
+  editName(val: string) {
     this.node$.update(node => {
       node.name = val;
       return {...node};
