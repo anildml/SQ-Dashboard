@@ -83,7 +83,7 @@ export class NodeComponent implements OnInit {
     this.viewOperationList().at(-1)?._enterEditMode();
   }
 
-  async addState() {
+  async addNewStateRecord() {
     this.node$.update(node => {
       node.state_list.push("");
       return {...node};
