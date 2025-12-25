@@ -9,15 +9,13 @@ import {
 } from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
 import {MatIconModule} from '@angular/material/icon';
-import {MatDialog} from '@angular/material/dialog';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
 import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
 import {MatInputModule} from '@angular/material/input';
 import {InputComponent} from '../../common/input/input';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {firstValueFrom, lastValueFrom, skip} from 'rxjs';
+import {firstValueFrom, skip} from 'rxjs';
 import {Operation} from '../../../models/interfaces/operation';
-import {OperationDialogComponent} from '../operation-dialog/operation-dialog';
 
 @Component({
   selector: 'app-node',
@@ -40,7 +38,6 @@ export class NodeComponent implements OnInit {
   viewStateList_ = toObservable(this.viewStateList);
   viewOperationList: Signal<readonly InputComponent[]> = viewChildren("operation");
   viewOperationList_ = toObservable(this.viewOperationList);
-  dialog: MatDialog = inject(MatDialog);
 
   constructor() {
   }
@@ -54,13 +51,7 @@ export class NodeComponent implements OnInit {
   }
 
   openOperationDialog(operation: Operation) {
-    this.dialog.open(OperationDialogComponent, {
-      data: operation,
-      position: {
-        bottom: "10px"
-      },
-      hasBackdrop: false
-    });
+    this.nodeManagementService.operationToEdit.set(operation);
   }
 
   editName(val: string) {
@@ -145,9 +136,13 @@ export class NodeComponent implements OnInit {
     });
   }
 
-  clickedOnState() {
-    if (this.nodeManagementService.defineUpdateSchemaMode()) {
-      this.nodeManagementService.addStateToOperationUpdateSchemaEventEmitter.emit();
+  clickedOnState(state: string) {
+    if (this.nodeManagementService.operationEditMode()) {
+      this.nodeManagementService.addStateToOperationUpdateSchemaEventEmitter.emit({
+        state: state,
+        nodeId: this.node().id,
+        nodeName: this.node().name
+      });
     }
   }
 

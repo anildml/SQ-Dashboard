@@ -1,11 +1,14 @@
 @use "../../../../styles.scss";
 
-.list {
+.node_data_list {
   padding: 10px;
   .list_header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    .add_button {
+      padding-right: 5px;
+    }
   }
   .list {
     .el {
@@ -63,10 +66,15 @@
       }
     }
     .operation_list {
-      @extend .list;
+      @extend .node_data_list;
     }
     .state_list {
-      @extend .list;
+      @extend .node_data_list;
+      .el {
+        position: relative;
+        z-index: 1;
+        background: white;
+      }
     }
     .border_between_content {
       border-bottom: 5px solid black;

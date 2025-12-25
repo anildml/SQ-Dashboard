@@ -19,9 +19,8 @@
         <div class="title">
           Operations
         </div>
-        <div
-          (click)="addNewOperationRecord()"
-          class="add_button flex-center">
+        <div class="add_button flex-center"
+          (click)="addNewOperationRecord()">
           <mat-icon>add</mat-icon>
         </div>
       </div>
@@ -47,9 +46,8 @@
         <div class="title">
           States
         </div>
-        <div
-          (click)="addNewStateRecord()"
-          class="add_button flex-center">
+        <div class="add_button flex-center"
+          (click)="addNewStateRecord()">
           <mat-icon>add</mat-icon>
         </div>
       </div>
@@ -61,9 +59,10 @@
             [value]="el"
             [isDeletable]="true"
             [placeholder]="'Can\'t be empty'"
+            [isSelectable]="nodeManagementService.operationEditMode()"
             (exitEditMode)="editState($event, $index)"
             (deleteClick)="deleteState(el)"
-            (componentClick)="clickedOnState()"
+            (selectClick)="clickedOnState(el)"
           ></app-input>
         </div>
         }
