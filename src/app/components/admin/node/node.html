@@ -1,59 +1,82 @@
-<div class="node_container">
-  <div class="header flex-center">
-    <div class="title">
-      {{node.name}}
-    </div>
-    <div class="sidebar">
-      <div class="edit_button flex-center" (click)="openNodeDialog()">
-        <mat-icon class="flex-center">mode_edit_outline</mat-icon>
+<div class="node">
+  <div class="content">
+    <div class="header">
+      <app-input
+        [value]="node$().name"
+        [bold]="true"
+        (valueEdit)="nameEdited($event)"
+      ></app-input>
+      <div class="sidebar">
+        <div class="separator"></div>
+        <div class="delete_button flex-center" (click)="deleteNode()">
+          <mat-icon class="flex-center">delete_outline</mat-icon>
+        </div>
       </div>
-      <div class="delete_button flex-center">
-        <mat-icon class="flex-center">delete_outline</mat-icon>
+    </div>
+    <div class="border_between_content"></div>
+    <div class="operation_list">
+      <div class="list_header">
+        <div class="title">
+          Operations
+        </div>
+        <div
+          (click)="addNewOperationRecord()"
+          class="add_button flex-center">
+          <mat-icon>add</mat-icon>
+        </div>
+      </div>
+      <div class="list">
+        @for (el of node$().operation_list; track $index) {
+        <div class="el">
+          <app-input
+            #operation
+            [value]="el.name"
+            [isDeletable]="true"
+            [isEditable]="false"
+            (editClick)="editOperation(el.id)"
+            (exitEditMode)="initDefineNewOperation($event, $index)"
+            (deleteClick)="deleteOperation(el.id)"
+          ></app-input>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="border_between_content"></div>
+    <div class="state_list">
+      <div class="list_header">
+        <div class="title">
+          States
+        </div>
+        <div
+          (click)="addState()"
+          class="add_button flex-center">
+          <mat-icon>add</mat-icon>
+        </div>
+      </div>
+      <div class="list">
+        @for (el of node$().state_list; track $index) {
+        <div class="el">
+          <app-input
+            #state
+            [value]="el"
+            [isDeletable]="true"
+            [placeholder]="'Can\'t be empty'"
+            (exitEditMode)="editState($event, $index)"
+            (deleteClick)="deleteState(el)"
+          ></app-input>
+        </div>
+        }
       </div>
     </div>
   </div>
-  <div class="border_between_content"></div>
-  <div class="operation_list">
-    <div class="title">
-        Operations
-    </div>
-    <div class="list">
-      @for (operation of node.operation_list; track $index) {
-        <div class="el">
-          {{operation.name}}
-        </div>
-      } @empty {
-        <div class="el">
-          -
-        </div>
-      }
+  @if (node$().children) {
+  <div class="footer flex-center">
+    <div class="expand_button flex-center"
+         (click)="expandChildNodeClicked()">
+      <span class="keyboard_arrow_down material-symbols-outlined flex-center">
+        keyboard_arrow_down
+      </span>
     </div>
   </div>
-  <div class="border_between_content"></div>
-  <div class="state_list">
-    <div class="title">
-      States
-    </div>
-    <div class="list">
-      @for (state of node.state_list; track $index) {
-        <div class="el" (click)="isModeDefineOperationUpdateSchema()() ? clickedOnState(state) : false">
-          {{state}}
-        </div>
-      } @empty {
-        <div class="el">
-          -
-        </div>
-      }
-    </div>
-  </div>
+  }
 </div>
-@if (node.children) {
-<div class="footer flex-center">
-  <div class="expand_button flex-center"
-       (click)="expandChildNodeClicked()">
-    <span class="keyboard_arrow_down material-symbols-outlined flex-center">
-      keyboard_arrow_down
-    </span>
-  </div>
-</div>
-}

@@ -1,13 +1,23 @@
+:host {
+  width: 100%;
+}
+
 .container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   .title {
     border: none;
     background: none;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: medium;
+    padding: 5px;
     color: rgba(0, 0, 0, 0.8);
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+  .bold_title {
+    font-size: medium;
+    font-weight: 600;
   }
   .sidebar {
     display: flex;

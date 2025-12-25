@@ -28,6 +28,12 @@ export class NodeManagementService implements OnDestroy {
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
   dialogRef: MatDialogRef<NodeDialogComponent> | null = null;
 
+  
+
+
+
+
+
   ngOnDestroy(): void {
     // symbolic call
     // in case of life cycle changes in the future, don't forget to destroy context when required

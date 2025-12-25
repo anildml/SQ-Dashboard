@@ -1,24 +1,41 @@
 <div class="container">
   <input
-    id="name"
     #name
     class="title"
-    [disabled]="disabled()"
-    [value]="currentValue()">
+    [class]="bold() ? 'bold_title' : ''"
+    [disabled]="!editMode()"
+    [(ngModel)]="currentValue"
+    [placeholder]="isDirty() ? placeholder() : ''"
+  >
   <div class="sidebar">
-    @if (disabled()) {
-    <div class="flex-center" (click)="enterEditMode()">
+    @if (showEditButton()) {
+    <div class="flex-center" (click)="_enterEditMode()">
       <mat-icon class="flex-center">mode_edit_outline</mat-icon>
     </div>
     }
-    @if (!disabled()) {
-    <div class="flex-center" (click)="exitEditMode(true, name)">
+    @if (showCompleteButton()) {
+    <div class="flex-center" (click)="_exitEditMode(true)">
       <mat-icon class="flex-center">check</mat-icon>
     </div>
     }
-    @if (!disabled()) {
-    <div class="flex-center" (click)="exitEditMode(false, name)">
-      <mat-icon class="flex-center" >close</mat-icon>
+    @if (showCancelButton()) {
+    <div class="flex-center" (click)="_exitEditMode(false)">
+      <mat-icon class="flex-center">close</mat-icon>
+    </div>
+    }
+    @if (showDeleteButton()) {
+    <div class="flex-center" (click)="_deleteClicked()">
+      <mat-icon class="flex-center">delete_outline</mat-icon>
+    </div>
+    }
+    @if (showSelectedRadioButton()) {
+    <div class="flex-center">
+      <mat-icon class="flex-center">radio_button_checked</mat-icon>
+    </div>
+    }
+    @if (showUnselectedRadioButton()) {
+    <div class="flex-center">
+      <mat-icon class="flex-center">radio_button_unchecked</mat-icon>
     </div>
     }
   </div>

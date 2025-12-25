@@ -60,6 +60,7 @@ export class AdminComponent {
                   "update_schema_list": [
                     {
                       "node_id": "691ae155a7adf91a70f76792",
+                      "node_name": "Ana Ekran",
                       "effected_states": [
                         "restoran_listesi"
                       ]
@@ -72,6 +73,7 @@ export class AdminComponent {
                   "update_schema_list": [
                     {
                       "node_id": "691ae155a7adf91a70f76792",
+                      "node_name": "Ana Ekran",
                       "effected_states": [
                         "restoran_listesi"
                       ]

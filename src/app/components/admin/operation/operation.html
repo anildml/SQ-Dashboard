@@ -1,35 +1,29 @@
 <div class="container">
-  <mat-form-field class="container__title">
-    <mat-label>Operation Name</mat-label>
-    <input matInput
-           #newState
-           readonly
-           [value]="operation.name"
-           class="container__title__name">
-  </mat-form-field>
-  <div class="container__title__hint">CLICK STATES ON THE TREE TO ADD</div>
+  <app-input
+    class="operation_name"
+    [value]="operation()!.name"
+    [bold]="true"
+    [placeholder]="'Can\'t be empty'"
+  >
+  </app-input>
   <div>
-    @for (update_schema of operation.update_schema_list; track $index) {
-    <div class="container__list">
-      <div class="container__list__title">
+    @for (update_schema of operation()!.update_schema_list; track $index) {
+    <div class="update_schema_list">
+      <div class="update_schema__node_name">
         {{update_schema.node_name}}
       </div>
-      <div class="container__list__content">
+      <div class="update_schema_content">
         @for (state of update_schema.effected_states; track $index;) {
-        <div class="container__list__content__el">
+        <div class="state">
           {{state}}
         </div>
         } @empty {
-        <div class="container__list__content__el">
+        <div class="state">
           -
         </div>
         }
       </div>
     </div>
     }
-  </div>
-  <div class="container__footer">
-    <button matButton (click)="finalizeEditOperation(false)">Cancel</button>
-    <button matButton (click)="finalizeEditOperation(true)">Save Operation</button>
   </div>
 </div>

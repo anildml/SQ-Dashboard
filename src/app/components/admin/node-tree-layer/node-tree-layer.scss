@@ -1,9 +1,9 @@
-.layer {
+.node_tree_layer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 20px 0 0 0;
-  &__add__new__node {
+  .add__new__node {
     border-radius: 20px;
     background-color: rgba(var(--sq_blue), 0.5);
     mat-icon {

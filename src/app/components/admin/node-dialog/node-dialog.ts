@@ -49,10 +49,6 @@ export class NodeDialogComponent {
     this.nodeManagementService.finalizeEditName(saveValue, val.value);
   }
 
-
-
-
-
   enterAddOperationMode() {
     this.nodeManagementService.enterAddOperationMode();
   }
@@ -64,9 +60,6 @@ export class NodeDialogComponent {
   saveOperation(saveValue: boolean) {
     this.nodeManagementService.finalizeDefineOperationUpdateSchema(saveValue);
   }
-
-
-
 
   enterAddStateMode() {
     this.nodeManagementService.enterAddStateMode()

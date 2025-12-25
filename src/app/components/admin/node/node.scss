@@ -1,68 +1,90 @@
 @use "../../../../styles.scss";
 
-.p5 {
-  padding: 5px;
-}
-
 .list {
-  @extend .p5;
-  .title {
-    @extend .title;
-  }
-  .list {
-    .el {
-      padding-left: 25px;
-    }
-  }
-}
-
-.node_container {
-  border: 5px solid black;
-  border-radius: 10px;
-  min-width: 200px;
-  .header {
+  padding: 10px;
+  .list_header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: rgba(var(--sq_blue), 0.25);
-    @extend .p5;
-    .title {
-      @extend .title;
-    }
-    .sidebar {
+  }
+  .list {
+    .el {
       display: flex;
-      flex-direction: row;
-      align-self: normal;
-      mat-icon {
-        font-size: 18px;
-        @extend .flex-center;
+      justify-content: space-between;
+      box-shadow: 0 0 3px black;
+      border-radius: 5px;
+      margin: 5px 0 5px 0;
+      .name {
+        padding: 5px 0 5px 5px;
+      }
+      .sidebar {
+        display: flex;
+        flex-direction: row;
+        align-self: normal;
+        margin-left: 50px;
       }
     }
   }
-  .operation_list {
-    @extend .list;
-  }
-  .state_list {
-    @extend .list;
-  }
-
-  .border_between_content {
-    border-bottom: 5px solid black;
-  }
 }
 
-.footer {
-  .expand_button {
-    width: 25%;
-    border-radius: 0 0 10px 10px;
-    color: rgba(0, 0, 0, 0.25);
-    .keyboard_arrow_down {
-      font-size: 30px;
-      color: inherit;
-      cursor: default;
+.node {
+  .content {
+    border: 5px solid black;
+    border-radius: 10px;
+    min-width: 200px;
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 5px 0 5px;
+      background-color: rgba(var(--sq_blue), 0.25);
+      .title {
+        border: none;
+        background: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: medium;
+      }
+      .edit_button {
+        padding: 5px;
+      }
+      .sidebar {
+        display: flex;
+        flex-direction: row;
+        align-self: normal;
+        .separator {
+          border-left: 5px solid black;
+          width: 10px;
+        }
+        mat-icon {
+          font-size: 18px;
+          @extend .flex-center;
+        }
+      }
     }
-    &:hover {
-      color: rgba(0, 0, 0, 0.75);
+    .operation_list {
+      @extend .list;
+    }
+    .state_list {
+      @extend .list;
+    }
+    .border_between_content {
+      border-bottom: 5px solid black;
+    }
+  }
+  .footer {
+    .expand_button {
+      width: 25%;
+      border-radius: 0 0 10px 10px;
+      color: rgba(0, 0, 0, 0.25);
+      .keyboard_arrow_down {
+        font-size: 30px;
+        color: inherit;
+        cursor: default;
+      }
+      &:hover {
+        color: rgba(0, 0, 0, 0.75);
+      }
     }
   }
 }
