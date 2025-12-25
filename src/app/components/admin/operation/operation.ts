@@ -1,16 +1,14 @@
 import {Component, inject, input, Input, InputSignal, output, Output} from '@angular/core';
 import {Operation} from '../../../models/interfaces/operation';
-import {MatHint, MatInputModule} from '@angular/material/input';
-import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
+import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {InputComponent} from '../../common/input/input';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-operation',
   imports: [
     MatInputModule,
-    MatHint,
     MatButtonModule,
     InputComponent,
     MatDialogModule
