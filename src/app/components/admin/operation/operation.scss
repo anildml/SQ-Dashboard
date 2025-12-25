@@ -1,9 +1,23 @@
 .container {
+  .update_schema_header {
+    display: flex;
+    margin-bottom: 10px;
+    .title {
+      width: 50%;
+    }
+  }
   .update_schema_list {
-    padding-left: 5px;
+    display: flex;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 3px solid black;
+    .update_schema__node_name {
+      width: 50%;
+    }
     .update_schema_content {
+      width: 50%;
       .state {
-        padding-left: 25px;
       }
     }
   }

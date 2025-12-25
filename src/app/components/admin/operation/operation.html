@@ -5,24 +5,31 @@
     [bold]="true"
     [placeholder]="'Can\'t be empty'">
   </app-input>
-  <div>
-    @for (update_schema of operation()!.update_schema_list; track $index) {
-    <div class="update_schema_list">
-      <div class="update_schema__node_name">
-        {{update_schema.node_name}}
-      </div>
-      <div class="update_schema_content">
-        @for (state of update_schema.effected_states; track $index;) {
-        <div class="state">
-          {{state}}
-        </div>
-        } @empty {
-        <div class="state">
-          -
-        </div>
-        }
-      </div>
+  <div class="update_schema_header">
+    <div class="title">
+      Node
     </div>
-    }
+    <div class="title">
+      State
+    </div>
   </div>
+  @for (update_schema of operation()!.update_schema_list; track $index) {
+  <div class="update_schema_list">
+    <div class="update_schema__node_name">
+      {{update_schema.node_name}}
+    </div>
+    <div class="update_schema_content">
+      @for (state of update_schema.effected_states; track $index;) {
+      <div class="state">
+        - {{state}}
+      </div>
+      } @empty {
+      <div class="state">
+        -
+      </div>
+      }
+    </div>
+  </div>
+  }
+  <div class="update_schema_list"></div>
 </div>
