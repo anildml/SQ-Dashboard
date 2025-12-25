@@ -26,27 +26,27 @@ export class InputComponent {
   bold: InputSignal<boolean> = input<boolean>(false);
   isEditable: InputSignal<boolean> = input<boolean>(true);
   isDeletable: InputSignal<boolean> = input<boolean>(false);
-  isSelected: InputSignal<boolean> = input<boolean>(false);
+  isSelectable: InputSignal<boolean> = input<boolean>(false);
   placeholder: InputSignal<string> = input<string>("");
 
   editMode: WritableSignal<boolean> = signal<boolean>(false);
   previousValue: WritableSignal<string> = signal<string>("");
   currentValue: WritableSignal<string> = model<string>("");
-  selectionMode: WritableSignal<boolean> = signal<boolean>(false);
+  isSelected: WritableSignal<boolean> = signal<boolean>(false);
   isDirty: WritableSignal<boolean> = signal<boolean>(false);
 
-  showEditButton: Signal<boolean> = computed(() => !this.editMode());
-  showCompleteButton: Signal<boolean> = computed(() => this.editMode() && this.currentValue() != "");
-  showCancelButton: Signal<boolean> = computed(() => this.editMode() && this.currentValue() != "");
-  showDeleteButton: Signal<boolean> = computed(() => this.isDeletable());
-  showSelectedRadioButton: Signal<boolean> = computed(() => this.selectionMode() && this.isSelected());
-  showUnselectedRadioButton: Signal<boolean> = computed(() => this.selectionMode() && !this.isSelected());
+  showEditButton: Signal<boolean> = computed(() => !this.isSelectable() && !this.editMode());
+  showCompleteButton: Signal<boolean> = computed(() => !this.isSelectable() && this.editMode() && this.currentValue() != "");
+  showCancelButton: Signal<boolean> = computed(() => !this.isSelectable() && this.editMode() && this.currentValue() != "");
+  showDeleteButton: Signal<boolean> = computed(() => !this.isSelectable() && this.isDeletable());
+  showSelectedRadioButton: Signal<boolean> = computed(() => this.isSelectable() && this.isSelected());
+  showUnselectedRadioButton: Signal<boolean> = computed(() => this.isSelectable() && !this.isSelected());
 
   valueEdit = output<string>();
   editClick = output<void>();
   exitEditMode = output<string>();
   deleteClick = output<void>();
-  componentClick = output<void>();
+  selectClick = output<void>();
 
   constructor() {
     effect(() => {
@@ -77,6 +77,10 @@ export class InputComponent {
 
   _deleteClicked() {
     this.deleteClick.emit();
+  }
+
+  _selectClicked() {
+    this.selectClick.emit();
   }
 
 }

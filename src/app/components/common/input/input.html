@@ -29,12 +29,12 @@
     </div>
     }
     @if (showSelectedRadioButton()) {
-    <div class="flex-center">
+    <div class="flex-center" (click)="_selectClicked()">
       <mat-icon class="flex-center">radio_button_checked</mat-icon>
     </div>
     }
     @if (showUnselectedRadioButton()) {
-    <div class="flex-center">
+    <div class="flex-center" (click)="_selectClicked()">
       <mat-icon class="flex-center">radio_button_unchecked</mat-icon>
     </div>
     }
