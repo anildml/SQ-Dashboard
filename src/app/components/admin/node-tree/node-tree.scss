@@ -1,3 +1,32 @@
 .node_tree {
   padding: 20px;
 }
+
+.define_update_schema_section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  .backdrop {
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .dialog {
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 5px black;
+    border-radius: 20px;
+    padding: 15px;
+    background: white;
+    width: 40%;
+    .buttons {
+      display: flex;
+      justify-content: end;
+      padding-top: 30px;
+    }
+  }
+}

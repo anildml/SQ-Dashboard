@@ -7,6 +7,9 @@ import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
 import {firstValueFrom} from 'rxjs';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
+import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
+import {OperationComponent} from '../operation/operation';
+import {MatButtonModule} from '@angular/material/button';
 
 interface LayerData {
   nodeList: Node[];
@@ -18,7 +21,9 @@ interface LayerData {
   selector: 'app-node-tree',
   imports: [
     NodeTreeLayerComponent,
-    MatExpansionModule
+    MatExpansionModule,
+    MatButtonModule,
+    OperationComponent
   ],
   templateUrl: './node-tree.html',
   styleUrl: './node-tree.scss',
@@ -28,6 +33,7 @@ export class NodeTreeComponent {
   layerPanels: Signal<readonly MatExpansionPanel[]> = viewChildren("layer");
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
+  nodeManagementService: NodeManagementService = inject(NodeManagementService);
 
   constructor() {
     this.nodeTreeService.expandChildNodeClicked.subscribe(nodeId => {
@@ -110,6 +116,10 @@ export class NodeTreeComponent {
     });
     layersToCollapse.forEach(layer => layer.close());
     await Promise.all(layersCollapsed).then();
+  }
+
+  finalizeEditOperation(saveValue: boolean) {
+
   }
 
 }
