@@ -1,7 +1,6 @@
 import {
   Component, inject,
-  QueryList,
-  ViewChildren
+  Signal, viewChildren
 } from '@angular/core';
 import {Node} from '../../../models/interfaces/node';
 import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
@@ -26,8 +25,7 @@ interface LayerData {
 })
 export class NodeTreeComponent {
 
-  @ViewChildren("layer")
-  layerPanels!: QueryList<MatExpansionPanel>;
+  layerPanels: Signal<readonly MatExpansionPanel[]> = viewChildren("layer");
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
 
@@ -60,12 +58,12 @@ export class NodeTreeComponent {
   async expandLayer() {
     await new Promise<void>(resolve => {
       setTimeout(() => {
-        this.layerPanels.last.open();
+        this.layerPanels().at(-1)!.open();
         resolve();
       }, 250); // timeout added for animation
     });
     this.drawLines();
-    await firstValueFrom(this.layerPanels.last.afterExpand);
+    await firstValueFrom(this.layerPanels().at(-1)!.afterExpand);
   }
 
   drawLines() {
@@ -101,7 +99,7 @@ export class NodeTreeComponent {
     for (let i = layerIndex + 1; i < this.nodeTreeService.treePath().length; i++) {
       let layerData = this.nodeTreeService.treePath().at(i - 1);
       linesToRemove = linesToRemove.concat(layerData?.lines);
-      let layerPanel = this.layerPanels.get(i)!;
+      let layerPanel = this.layerPanels().at(i)!;
       layersCollapsed.push(firstValueFrom(layerPanel.afterCollapse));
       layersToCollapse.push(layerPanel);
     }
