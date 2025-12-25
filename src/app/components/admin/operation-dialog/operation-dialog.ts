@@ -10,8 +10,7 @@ import {InputComponent} from '../../common/input/input';
   imports: [
     MatDialogModule,
     OperationComponent,
-    MatButtonModule,
-    InputComponent
+    MatButtonModule
   ],
   templateUrl: './operation-dialog.html',
   styleUrl: './operation-dialog.scss',
