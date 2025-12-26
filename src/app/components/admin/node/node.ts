@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, computed,
   inject, input,
   OnInit,
   Signal,
@@ -88,6 +88,7 @@ export class NodeComponent implements OnInit {
       node.state_list.push("");
       return {...node};
     })
+    this.statesIsSelectedSignalList.push(signal(false));
     await firstValueFrom(this.viewStateList_.pipe(skip(1)));
     this.viewStateList().at(-1)!._enterEditMode();
   }
@@ -139,10 +140,12 @@ export class NodeComponent implements OnInit {
   }
 
   deleteState(state: string) {
+    let index = this.updatedNodeTemplate().state_list.indexOf(state);
     this.updatedNodeTemplate.update(node => {
       node.state_list = node.state_list.filter(o => o != state);
       return {...node};
     });
+    this.statesIsSelectedSignalList = this.statesIsSelectedSignalList.filter((_, i) => i != index);
   }
 
   clickedOnState(state: string) {
