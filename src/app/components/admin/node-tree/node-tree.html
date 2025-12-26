@@ -10,11 +10,14 @@
     </mat-expansion-panel>
     }
   </mat-accordion>
-  @if (nodeManagementService.operationEditMode()) {
+  @if (nodeManagementService.operationToEdit()) {
   <div class="define_update_schema_section flex-center">
     <div class="backdrop"></div>
     <div class="dialog">
-      <app-operation [operation]="nodeManagementService.operationToEdit()!"></app-operation>
+      <app-operation
+        [operation]="nodeManagementService.operationToEdit()!"
+        (operationUpdate)="operationUpdated($event)"
+      ></app-operation>
       <div class="buttons">
         <button matButton (click)="finalizeEditOperation(false)">Cancel</button>
         <button matButton (click)="finalizeEditOperation(true)">Save Operation</button>

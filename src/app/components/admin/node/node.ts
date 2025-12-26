@@ -39,11 +39,33 @@ export class NodeComponent implements OnInit {
   viewOperationList: Signal<readonly InputComponent[]> = viewChildren("operation");
   viewOperationList_ = toObservable(this.viewOperationList);
 
+  stateIsSelectedSignalList: WritableSignal<boolean>[] = [];
+  isSelected: WritableSignal<boolean> = signal(false);
+
   constructor() {
   }
 
   ngOnInit(): void {
     this.node$.set(this.node());
+    let stateListLength = this.node$().state_list.length;
+    this.stateIsSelectedSignalList = new Array(stateListLength).fill(signal(false), 0, stateListLength);
+    this.nodeManagementService.operationToEdit_.subscribe(operation => {
+      this.stateIsSelectedSignalList.forEach(s => s.set(false));
+      if (operation) {
+        let operationToEdit = this.nodeManagementService.operationToEdit()!;
+        let node = operationToEdit.update_schema_list
+          .find(us => us.node_id == this.node$().id);
+        if (!node) {
+          return;
+        }
+        node.effected_states.forEach(es => {
+            let index = this.node$().state_list.indexOf(es);
+            this.stateIsSelectedSignalList.at(index)!.set(true);
+          }
+        );
+      }
+    });
+
   }
 
   expandChildNodeClicked() {
@@ -137,13 +159,17 @@ export class NodeComponent implements OnInit {
   }
 
   clickedOnState(state: string) {
-    if (this.nodeManagementService.operationEditMode()) {
+    if (this.nodeManagementService.operationToEdit()) {
       this.nodeManagementService.addStateToOperationUpdateSchemaEventEmitter.emit({
         state: state,
         nodeId: this.node().id,
         nodeName: this.node().name
       });
     }
+  }
+
+  isStateSelected(index: number): Signal<boolean> {
+    return this.stateIsSelectedSignalList.at(index)!;
   }
 
 }

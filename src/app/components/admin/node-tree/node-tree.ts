@@ -10,6 +10,7 @@ import {NodeTreeService} from '../../../services/node-tree-service/node-tree-ser
 import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
 import {OperationComponent} from '../operation/operation';
 import {MatButtonModule} from '@angular/material/button';
+import {Operation} from '../../../models/interfaces/operation';
 
 interface LayerData {
   nodeList: Node[];
@@ -120,6 +121,10 @@ export class NodeTreeComponent {
 
   finalizeEditOperation(saveValue: boolean) {
 
+  }
+
+  operationUpdated(updatedOperation: Operation) {
+    this.nodeManagementService.operationToEdit.set(updatedOperation);
   }
 
 }
