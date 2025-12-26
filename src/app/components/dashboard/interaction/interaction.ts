@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, input, InputSignal, Signal, viewChild} from '@angular/core';
 import {Interaction} from '../../../models/interfaces/interaction';
 import {DatePipe} from '@angular/common';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
@@ -22,11 +22,9 @@ export enum CONTENT_TYPE {
 })
 export class InteractionComponent {
 
-  @Input("interaction")
-  interaction!: Interaction;
+  interaction: InputSignal<Interaction> = input.required<Interaction>();
 
-  @ViewChild("panel")
-  panel!: MatExpansionPanel;
+  panel: Signal<MatExpansionPanel> = viewChild.required<MatExpansionPanel>("panel")
 
   CONTENT_TYPE_ENUM = CONTENT_TYPE;
   contentType: CONTENT_TYPE = CONTENT_TYPE.EMPTY;
@@ -49,24 +47,24 @@ export class InteractionComponent {
 
   async toggleInteractionContent(contentType: CONTENT_TYPE) {
     if (this.contentType === contentType) {
-      this.panel.toggle();
+      this.panel().toggle();
     } else {
-      if (this.panel.expanded) {
-        this.panel.close();
-        await firstValueFrom(this.panel.afterCollapse);
+      if (this.panel().expanded) {
+        this.panel().close();
+        await firstValueFrom(this.panel().afterCollapse);
       }
       this.contentType = contentType;
-      this.panel.open();
+      this.panel().open();
     }
   }
 
   getContentTime(): string {
     switch (this.contentType) {
       case CONTENT_TYPE.RESULT: {
-        return this.getFormattedDateTime(this.interaction.result_time);
+        return this.getFormattedDateTime(this.interaction().result_time);
       }
       case CONTENT_TYPE.TRIGGER: {
-        return this.getFormattedDateTime(this.interaction.trigger_time);
+        return this.getFormattedDateTime(this.interaction().trigger_time);
       }
       default: {
         return "";
@@ -77,10 +75,10 @@ export class InteractionComponent {
   getContentData(): string {
     switch (this.contentType) {
       case CONTENT_TYPE.RESULT: {
-        return this.getPrettyJSONString(this.interaction.result_data);
+        return this.getPrettyJSONString(this.interaction().result_data);
       }
       case CONTENT_TYPE.TRIGGER: {
-        return this.getPrettyJSONString(this.interaction.trigger_data);
+        return this.getPrettyJSONString(this.interaction().trigger_data);
       }
       default: {
         return "";

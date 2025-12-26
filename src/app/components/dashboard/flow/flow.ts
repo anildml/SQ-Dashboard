@@ -1,4 +1,4 @@
-import {Component, Input, signal} from '@angular/core';
+import {Component, input, InputSignal, signal} from '@angular/core';
 import {Flow, isFlow} from '../../../models/interfaces/flow';
 import {DatePipe} from '@angular/common';
 import {Session} from '../../../models/interfaces/session';
@@ -18,9 +18,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 })
 export class FlowComponent {
 
-
-  @Input("flow")
-  flow!: Flow | Session;
+  flow: InputSignal<Flow | Session> = input.required<Flow | Session>();
 
   panelOpenState = signal(false);
 

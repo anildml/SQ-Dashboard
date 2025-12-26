@@ -1,4 +1,8 @@
-import {Component, Input, OnChanges, output, signal, SimpleChanges, WritableSignal} from '@angular/core';
+import {
+  Component,
+  input,
+  InputSignal
+} from '@angular/core';
 import {NodeComponent} from '../node/node';
 import {Node} from '../../../models/interfaces/node';
 import {MatButtonModule} from '@angular/material/button';
@@ -16,7 +20,6 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class NodeTreeLayerComponent {
 
-  @Input('nodeList')
-  nodeList!: Node[];
+  nodeList: InputSignal<Node[]> = input.required<Node[]>()
 
 }

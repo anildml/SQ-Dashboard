@@ -3,15 +3,15 @@
     <mat-expansion-panel-header [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
       <div class="flow__container__header">
         <div class="flow__container__title__text">
-          {{flow.node_name}}
+          {{flow().node_name}}
         </div>
         <div class="flow__container__title__datetime">
-          {{getFormattedDateTime(flow.start_time)}}
+          {{getFormattedDateTime(flow().start_time)}}
         </div>
       </div>
     </mat-expansion-panel-header>
     <div class="flow__container__content">
-      @for (event of flow.events; track $index) {
+      @for (event of flow().events; track $index) {
       <div
         class="event">
         @if (isFlow(event)) {
@@ -35,7 +35,7 @@
       <div class="flow__container__title__text">
       </div>
       <div class="flow__container__title__datetime">
-        {{getFormattedDateTime(flow.end_time)}}
+        {{getFormattedDateTime(flow().end_time)}}
       </div>
     </div>
   </mat-expansion-panel>

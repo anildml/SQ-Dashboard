@@ -1,5 +1,5 @@
 <div class="node_tree_layer">
-  @for (node of nodeList; track $index) {
+  @for (node of nodeList(); track $index) {
     <div>
       <app-node
         [node]="node"

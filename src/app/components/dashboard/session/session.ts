@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input, InputSignal} from '@angular/core';
 import {Session} from '../../../models/interfaces/session';
 import {FlowComponent} from '../flow/flow';
 
@@ -12,7 +12,6 @@ import {FlowComponent} from '../flow/flow';
 })
 export class SessionComponent {
 
-  @Input("session")
-  session!: Session;
+  session: InputSignal<Session> = input.required<Session>()
 
 }
