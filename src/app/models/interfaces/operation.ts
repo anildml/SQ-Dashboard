@@ -1,5 +1,7 @@
+import {Node} from './node';
+
 export interface Operation {
-  node_id?: string;
+  node?: Node;
   id: string;
   name: string;
   update_schema_list: UpdateSchema[];
