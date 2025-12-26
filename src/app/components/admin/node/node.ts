@@ -61,7 +61,7 @@ export class NodeComponent implements OnInit {
 
   openOperationDialog(operation: Operation) {
     operation.node = this.updatedNodeTemplate();
-    this.nodeManagementService.operationToEdit.set(operation);
+    this.nodeManagementService.operationToEdit.set({...operation});
   }
 
   editName(val: string) {
