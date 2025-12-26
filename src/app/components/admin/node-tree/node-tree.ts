@@ -11,12 +11,6 @@ import {NodeManagementService} from '../../../services/node-management-service/n
 import {OperationComponent} from '../operation/operation';
 import {MatButtonModule} from '@angular/material/button';
 
-interface LayerData {
-  nodeList: Node[];
-  selectedNode?: Node | null;
-  lines?: any[];
-}
-
 @Component({
   selector: 'app-node-tree',
   imports: [
