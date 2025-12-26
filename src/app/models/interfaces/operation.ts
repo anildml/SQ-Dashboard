@@ -1,4 +1,5 @@
 export interface Operation {
+  node_id?: string;
   id: string;
   name: string;
   update_schema_list: UpdateSchema[];

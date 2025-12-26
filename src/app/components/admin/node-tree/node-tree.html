@@ -16,7 +16,6 @@
     <div class="dialog">
       <app-operation
         [operation]="nodeManagementService.operationToEdit()!"
-        (operationUpdate)="operationUpdated($event)"
       ></app-operation>
       <div class="buttons">
         <button matButton (click)="finalizeEditOperation(false)">Cancel</button>

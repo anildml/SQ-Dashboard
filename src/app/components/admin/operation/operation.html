@@ -1,7 +1,7 @@
 <div class="container">
   <app-input
     class="operation_name"
-    [value]="operation$()!.name"
+    [value]="operation()!.name"
     [bold]="true"
     [placeholder]="'Can\'t be empty'">
   </app-input>
@@ -13,7 +13,7 @@
       State
     </div>
   </div>
-  @for (update_schema of operation$()!.update_schema_list; track $index) {
+  @for (update_schema of operation()!.update_schema_list; track $index) {
   <div class="update_schema_list">
     <div class="update_schema__node_name">
       {{update_schema.node_name}}
