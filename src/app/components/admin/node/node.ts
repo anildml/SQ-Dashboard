@@ -33,43 +33,30 @@ export class NodeComponent implements OnInit {
   nodeManagementService: NodeManagementService = inject(NodeManagementService);
 
   node = input.required<Node>();
-  node$: WritableSignal<Node> = signal<Node>({} as Node);
+  updatedNodeTemplate: WritableSignal<Node> = signal<Node>({} as Node);
   viewStateList: Signal<readonly InputComponent[]> = viewChildren("state");
   viewStateList_ = toObservable(this.viewStateList);
   viewOperationList: Signal<readonly InputComponent[]> = viewChildren("operation");
   viewOperationList_ = toObservable(this.viewOperationList);
 
-  stateIsSelectedSignalList: WritableSignal<boolean>[] = [];
+  statesIsSelectedSignalList: WritableSignal<boolean>[] = [];
   isSelected: WritableSignal<boolean> = signal(false);
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.node$.set(this.node());
-    let stateListLength = this.node$().state_list.length;
-    this.stateIsSelectedSignalList = new Array(stateListLength).fill(signal(false), 0, stateListLength);
+    this.updatedNodeTemplate.set(this.node());
+    let stateListLength = this.updatedNodeTemplate().state_list.length;
+    this.statesIsSelectedSignalList = new Array(stateListLength).fill(signal(false), 0, stateListLength);
     this.nodeManagementService.operationToEdit_.subscribe(operation => {
-      this.stateIsSelectedSignalList.forEach(s => s.set(false));
-      if (operation) {
-        let operationToEdit = this.nodeManagementService.operationToEdit()!;
-        let node = operationToEdit.update_schema_list
-          .find(us => us.node_id == this.node$().id);
-        if (!node) {
-          return;
-        }
-        node.effected_states.forEach(es => {
-            let index = this.node$().state_list.indexOf(es);
-            this.stateIsSelectedSignalList.at(index)!.set(true);
-          }
-        );
-      }
+      this.updateStatesIsSelectedSignalList(operation);
     });
 
   }
 
   expandChildNodeClicked() {
-    this.nodeTreeService.expandChildNodeClicked.emit(this.node$().id);
+    this.nodeTreeService.expandChildNodeClicked.emit(this.updatedNodeTemplate().id);
   }
 
   openOperationDialog(operation: Operation) {
@@ -77,14 +64,14 @@ export class NodeComponent implements OnInit {
   }
 
   editName(val: string) {
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.name = val;
       return {...node};
-    })
+    });
   }
 
   async addNewOperationRecord() {
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.operation_list.push({
         id: "",
         name: "",
@@ -97,7 +84,7 @@ export class NodeComponent implements OnInit {
   }
 
   async addNewStateRecord() {
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.state_list.push("");
       return {...node};
     })
@@ -107,34 +94,34 @@ export class NodeComponent implements OnInit {
 
   initDefineNewOperation(changedValue: string, index: number) {
     if (changedValue == "") {
-      this.node$.update(node => {
+      this.updatedNodeTemplate.update(node => {
         node.operation_list = node.operation_list.filter((_, i) => index != i);
         return {...node};
       });
       return;
     }
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.operation_list.at(-1)!.name = changedValue;
       return {...node};
     });
-    let operationToDefine = this.node$().operation_list.at(-1)!;
+    let operationToDefine = this.updatedNodeTemplate().operation_list.at(-1)!;
     this.openOperationDialog(operationToDefine);
   }
 
   editOperation(id: string) {
-    let operation = this.node$().operation_list.filter(o => o.id == id).at(0)!;
+    let operation = this.updatedNodeTemplate().operation_list.filter(o => o.id == id).at(0)!;
     this.openOperationDialog(operation);
   }
 
   editState(changedValue: string, index: number) {
     if (changedValue == "") {
-      this.node$.update(node => {
+      this.updatedNodeTemplate.update(node => {
         node.state_list = node.state_list.filter((_, i) => index != i);
         return {...node};
       });
       return;
     }
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.state_list[index] = changedValue;
       return {...node};
     });
@@ -145,14 +132,14 @@ export class NodeComponent implements OnInit {
   }
 
   deleteOperation(id: string) {
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.operation_list = node.operation_list.filter(o => o.id != id);
       return {...node};
     });
   }
 
   deleteState(state: string) {
-    this.node$.update(node => {
+    this.updatedNodeTemplate.update(node => {
       node.state_list = node.state_list.filter(o => o != state);
       return {...node};
     });
@@ -169,7 +156,24 @@ export class NodeComponent implements OnInit {
   }
 
   isStateSelected(index: number): Signal<boolean> {
-    return this.stateIsSelectedSignalList.at(index)!;
+    return this.statesIsSelectedSignalList.at(index)!;
+  }
+
+  updateStatesIsSelectedSignalList(operation: Operation | null) {
+    this.statesIsSelectedSignalList.forEach(s => s.set(false));
+    if (operation) {
+      let operationToEdit = this.nodeManagementService.operationToEdit()!;
+      let node = operationToEdit.update_schema_list
+        .find(us => us.node_id == this.updatedNodeTemplate().id);
+      if (!node) {
+        return;
+      }
+      node.effected_states.forEach(es => {
+          let index = this.updatedNodeTemplate().state_list.indexOf(es);
+          this.statesIsSelectedSignalList.at(index)!.set(true);
+        }
+      );
+    }
   }
 
 }
