@@ -69,6 +69,7 @@ export class NodeComponent implements OnInit {
       node.name = val;
       return {...node};
     });
+    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
   }
 
   async addNewOperationRecord() {
@@ -127,6 +128,7 @@ export class NodeComponent implements OnInit {
       node.state_list[index] = changedValue;
       return {...node};
     });
+    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
   }
 
   deleteNode() {
@@ -138,6 +140,7 @@ export class NodeComponent implements OnInit {
       node.operation_list = node.operation_list.filter(o => o.id != id);
       return {...node};
     });
+    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
   }
 
   deleteState(state: string) {
@@ -147,6 +150,7 @@ export class NodeComponent implements OnInit {
       return {...node};
     });
     this.statesIsSelectedSignalList = this.statesIsSelectedSignalList.filter((_, i) => i != index);
+    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
   }
 
   clickedOnState(state: string) {
