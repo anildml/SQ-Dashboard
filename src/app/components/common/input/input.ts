@@ -27,12 +27,12 @@ export class InputComponent {
   isEditable: InputSignal<boolean> = input<boolean>(true);
   isDeletable: InputSignal<boolean> = input<boolean>(false);
   isSelectable: InputSignal<boolean> = input<boolean>(false);
+  isSelected: InputSignal<boolean> = input<boolean>(false);
   placeholder: InputSignal<string> = input<string>("");
 
   editMode: WritableSignal<boolean> = signal<boolean>(false);
   previousValue: WritableSignal<string> = signal<string>("");
   currentValue: WritableSignal<string> = model<string>("");
-  isSelected: WritableSignal<boolean> = signal<boolean>(false);
   isDirty: WritableSignal<boolean> = signal<boolean>(false);
 
   showEditButton: Signal<boolean> = computed(() => !this.isSelectable() && !this.editMode());
