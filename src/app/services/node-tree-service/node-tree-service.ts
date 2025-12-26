@@ -1,4 +1,4 @@
-import {EventEmitter, inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {EventEmitter, Injectable, signal, WritableSignal} from '@angular/core';
 import {Node} from '../../models/interfaces/node';
 
 interface LayerData {
@@ -27,6 +27,25 @@ export class NodeTreeService {
       });
       return [...tp];
     })
+  }
+
+  addNewNodeToTree(node: Node) {
+    let parentnode = this.findParentNode(this.rootNode, node);
+    parentnode!.children.push(node);
+    this.treePath.update(tp => [...tp]);
+  }
+
+  updateNode(node: Node) {
+    let parentnode = this.findParentNode(this.rootNode, node);
+    let i = parentnode?.children?.findIndex(c => c.id == node.id) ?? -1;
+    parentnode!.children![i] = node;
+    this.treePath.update(tp => [...tp]);
+  }
+
+  removeNodeFromTree(node: Node) {
+    let parentnode = this.findParentNode(this.rootNode, node);
+    parentnode!.children = parentnode!.children.filter(n => n.id != node.id);
+    this.treePath.update(tp => [...tp]);
   }
 
   getNodeData(id: string) {
@@ -79,13 +98,6 @@ export class NodeTreeService {
       tp.at(-2)!.lines = lines;
       return [...tp];
     })
-  }
-
-  updateNode(node: Node) {
-    let parentnode = this.findParentNode(this.rootNode, node);
-    let i = parentnode?.children?.findIndex(c => c.id == node.id) ?? -1;
-    parentnode!.children![i] = node;
-    this.treePath.update(tp => [...tp]);
   }
 
   findParentNode(parent: Node, search: Node): (Node | null) {
