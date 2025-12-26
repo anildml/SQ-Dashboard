@@ -3,8 +3,9 @@
     class="operation_name"
     [value]="operation()!.name"
     [bold]="true"
-    [placeholder]="'Can\'t be empty'">
-  </app-input>
+    [placeholder]="'Can\'t be empty'"
+    (valueEdit)="editName($event)"
+  ></app-input>
   <div class="update_schema_header">
     <div class="title">
       Node

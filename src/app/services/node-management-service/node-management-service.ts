@@ -48,6 +48,13 @@ export class NodeManagementService {
     this.nodeTreeService.removeNodeFromTree(node);
   }
 
+  updateOperationName(name: string) {
+    this.operationToEdit.update(operation => {
+      operation!.name = name;
+      return {...operation!};
+    })
+  }
+
   addStateToOperationUpdateSchema(stateData: any) {
     let operation = this.operationToEdit()!;
     let existingUpdateSchema = operation.update_schema_list.find(us => us.node_id === stateData.nodeId);
