@@ -132,7 +132,7 @@ export class NodeComponent implements OnInit {
   }
 
   deleteNode() {
-
+    this.nodeManagementService.deleteNode(this.updatedNodeTemplate());
   }
 
   deleteOperation(id: string) {
