@@ -2,6 +2,7 @@
   <div class="content">
     <div class="header">
       <app-input
+        #nodeName
         [value]="updatedNodeTemplate().name"
         [bold]="true"
         (valueEdit)="editName($event)"

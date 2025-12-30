@@ -36,9 +36,17 @@ export class NodeTreeService {
     })
   }
 
-  addNewNodeToTree(node: Node) {
-    let parentnodeData = this.findParentNode(this.rootNode, node);
-    parentnodeData?.node!.children.push(node);
+  addNewNodeRecordToTree(layerIndex: number) {
+    let parentNode = this.treePath().at(layerIndex - 1)!.selectedNode!;
+    let newNode: Node = {
+      id: "",
+      name: "",
+      parents: [parentNode.id],
+      children: [],
+      state_list: [],
+      operation_list: []
+    };
+    parentNode.children.push(newNode);
     this.treePath.update(tp => [...tp]);
   }
 
@@ -137,7 +145,7 @@ export class NodeTreeService {
     return layerIndex === this.treePath().length - 1;
   }
 
-  findParentNode(parent: Node, search: Node): ({node: Node, index: number} | null) {
+  findParentNode(parent: Node, search: Node): ({ node: Node, index: number } | null) {
     for (let i = 0; i < parent.children.length; i++) {
       let child = parent.children.at(i)!;
       if (search.id == child.id) {

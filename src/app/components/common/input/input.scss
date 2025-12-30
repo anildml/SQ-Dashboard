@@ -9,11 +9,16 @@
   .title {
     border: none;
     background: none;
-    padding: 5px;
+    padding: 10px;
     color: rgba(0, 0, 0, 0.8);
     font-family: Roboto;
     font-weight: 400;
     font-size: 1rem;
+  }
+  .edit_mode {
+    box-shadow: 0 0 5px black;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.05);
   }
   .bold_title {
     font-size: medium;

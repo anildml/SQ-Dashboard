@@ -2,12 +2,16 @@
   @for (node of nodeList(); track $index) {
     <div>
       <app-node
+        #node
         [node]="node"
         [id]="'node_'+node.id"
       ></app-node>
     </div>
   }
-  <div class="add__new__node flex-center">
+  <div
+    class="add__new__node flex-center"
+    (click)="initDefineNewNode()"
+  >
     <mat-icon>add</mat-icon>
   </div>
 </div>

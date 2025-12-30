@@ -33,9 +33,13 @@ export class NodeManagementService {
     this.operationToEdit.set(null);
   }
 
+  initDefineNewNode(layerIndex: number) {
+    this.nodeTreeService.addNewNodeRecordToTree(layerIndex);
+  }
+
   createNode(node: Node) {
     // call api
-    this.nodeTreeService.addNewNodeToTree(node);
+//    this.nodeTreeService.addNewNodeToTree(node);
   }
 
   updateNode(node: Node) {

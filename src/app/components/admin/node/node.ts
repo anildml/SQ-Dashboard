@@ -3,7 +3,7 @@ import {
   inject, input,
   OnInit,
   Signal,
-  signal,
+  signal, viewChild,
   viewChildren,
   WritableSignal
 } from '@angular/core';
@@ -34,6 +34,7 @@ export class NodeComponent implements OnInit {
 
   node = input.required<Node>();
   updatedNodeTemplate: WritableSignal<Node> = signal<Node>({} as Node);
+  viewNodeName: Signal<InputComponent> = viewChild.required("nodeName");
   viewStateList: Signal<readonly InputComponent[]> = viewChildren("state");
   viewStateList_ = toObservable(this.viewStateList);
   viewOperationList: Signal<readonly InputComponent[]> = viewChildren("operation");
@@ -52,7 +53,6 @@ export class NodeComponent implements OnInit {
     this.nodeManagementService.operationToEdit_.subscribe(operation => {
       this.updateStatesIsSelectedSignalList(operation);
     });
-
   }
 
   expandChildNodeClicked() {
