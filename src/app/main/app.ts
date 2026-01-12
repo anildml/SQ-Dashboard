@@ -19,7 +19,7 @@ import {AdminComponent} from '../components/admin/admin';
     DatePipe
   ]
 })
-export class App implements OnInit {
+export class App {
 
   protected readonly title = signal('SQ Dashboard');
 
@@ -115,28 +115,5 @@ export class App implements OnInit {
       }
     ]
   };
-
-  constructor(
-    private http: HttpClient
-  ) {
-
-  }
-
-  async ngOnInit() {
-//    console.log("test");
-//    let a = await firstValueFrom(this.http.get(
-//      "http://localhost:64400/v1/event/session/691b141fd2f3b3e6de933b32",
-//      {
-//        headers: {},
-//        params: {},
-//      }
-//    )).then((res: any) => {
-////          console.log(res);
-//        return res;
-//      }
-//    );
-//    this.session = a.session;
-//    console.log(this.session);
-  }
 
 }
