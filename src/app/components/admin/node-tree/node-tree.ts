@@ -2,7 +2,7 @@ import {
   Component, inject,
   Signal, viewChildren
 } from '@angular/core';
-import {Node} from '../../../models/interfaces/node';
+import {Node} from '../../../models/view/node';
 import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
 import {firstValueFrom} from 'rxjs';

@@ -4,7 +4,7 @@ import {
   InputSignal, Signal, viewChildren
 } from '@angular/core';
 import {NodeComponent} from '../node/node';
-import {Node} from '../../../models/interfaces/node';
+import {Node} from '../../../models/view/node';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {toObservable} from '@angular/core/rxjs-interop';

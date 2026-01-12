@@ -1,5 +1,5 @@
 import {Component, inject, input, InputSignal} from '@angular/core';
-import {Operation, } from '../../../models/interfaces/operation';
+import {Operation, } from '../../../models/view/operation';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {InputComponent} from '../../common/input/input';
