@@ -1,7 +1,7 @@
 import {Component, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {DatePipe} from '@angular/common';
-import {Session} from '../models/view/session';
+import {Session} from '../models/interfaces/view/session';
 import {AdminComponent} from '../components/admin/admin';
 
 @Component({

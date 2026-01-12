@@ -1,7 +1,7 @@
 import {EventEmitter, inject, Injectable, signal, WritableSignal} from '@angular/core';
-import {Node} from '../../models/view/node';
+import {Node} from '../../models/interfaces/view/node';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {Operation, UpdateSchema} from '../../models/view/operation';
+import {Operation, UpdateSchema} from '../../models/interfaces/view/operation';
 import {firstValueFrom, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment.dev';

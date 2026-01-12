@@ -1,5 +1,5 @@
 import {Component, input, InputSignal, Signal, viewChild} from '@angular/core';
-import {Interaction} from '../../../models/view/interaction';
+import {Interaction} from '../../../models/interfaces/view/interaction';
 import {DatePipe} from '@angular/common';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button';
