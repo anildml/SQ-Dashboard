@@ -1,5 +1,5 @@
 import {
-  Component, computed,
+  Component,
   inject, input,
   OnInit,
   Signal,
@@ -10,7 +10,6 @@ import {
 import {Node} from '../../../models/interfaces/node';
 import {MatIconModule} from '@angular/material/icon';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
-import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
 import {MatInputModule} from '@angular/material/input';
 import {InputComponent} from '../../common/input/input';
 import {toObservable} from '@angular/core/rxjs-interop';
@@ -30,7 +29,6 @@ import {Operation} from '../../../models/interfaces/operation';
 export class NodeComponent implements OnInit {
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
-  nodeManagementService: NodeManagementService = inject(NodeManagementService);
 
   node = input.required<Node>();
   updatedNodeTemplate: WritableSignal<Node> = signal<Node>({} as Node);
@@ -50,7 +48,7 @@ export class NodeComponent implements OnInit {
     this.updatedNodeTemplate.set(this.node());
     let stateListLength = this.updatedNodeTemplate().state_list.length;
     this.statesIsSelectedSignalList = new Array(stateListLength).fill(signal(false), 0, stateListLength);
-    this.nodeManagementService.operationToEdit_.subscribe(operation => {
+    this.nodeTreeService.operationToEdit_.subscribe(operation => {
       this.updateStatesIsSelectedSignalList(operation);
     });
   }
@@ -61,7 +59,7 @@ export class NodeComponent implements OnInit {
 
   openOperationDialog(operation: Operation) {
     operation.node = this.updatedNodeTemplate();
-    this.nodeManagementService.operationToEdit.set({...operation});
+    this.nodeTreeService.operationToEdit.set({...operation});
   }
 
   editName(val: string) {
@@ -69,7 +67,7 @@ export class NodeComponent implements OnInit {
       node.name = val;
       return {...node};
     });
-    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
+    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   async addNewOperationRecord() {
@@ -128,11 +126,11 @@ export class NodeComponent implements OnInit {
       node.state_list[index] = changedValue;
       return {...node};
     });
-    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
+    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   deleteNode() {
-    this.nodeManagementService.deleteNode(this.updatedNodeTemplate());
+    this.nodeTreeService.deleteNodeFromTreePath(this.updatedNodeTemplate());
   }
 
   deleteOperation(id: string) {
@@ -140,7 +138,7 @@ export class NodeComponent implements OnInit {
       node.operation_list = node.operation_list.filter(o => o.id != id);
       return {...node};
     });
-    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
+    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   deleteState(state: string) {
@@ -150,12 +148,12 @@ export class NodeComponent implements OnInit {
       return {...node};
     });
     this.statesIsSelectedSignalList = this.statesIsSelectedSignalList.filter((_, i) => i != index);
-    this.nodeManagementService.updateNode(this.updatedNodeTemplate());
+    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   clickedOnState(state: string) {
-    if (this.nodeManagementService.operationToEdit()) {
-      this.nodeManagementService.addStateToOperationUpdateSchemaEventEmitter.emit({
+    if (this.nodeTreeService.operationToEdit()) {
+      this.nodeTreeService.addStateToOperationUpdateSchemaEventEmitter.emit({
         state: state,
         nodeId: this.node().id,
         nodeName: this.node().name
@@ -170,7 +168,7 @@ export class NodeComponent implements OnInit {
   updateStatesIsSelectedSignalList(operation: Operation | null) {
     this.statesIsSelectedSignalList.forEach(s => s.set(false));
     if (operation) {
-      let operationToEdit = this.nodeManagementService.operationToEdit()!;
+      let operationToEdit = this.nodeTreeService.operationToEdit()!;
       let node = operationToEdit.update_schema_list
         .find(us => us.node_id == this.updatedNodeTemplate().id);
       if (!node) {

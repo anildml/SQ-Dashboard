@@ -7,9 +7,9 @@ import {NodeComponent} from '../node/node';
 import {Node} from '../../../models/interfaces/node';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {NodeManagementService} from '../../../services/node-management-service/node-management-service';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {firstValueFrom, skip} from 'rxjs';
+import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
 
 @Component({
   selector: 'app-node-tree-layer',
@@ -27,10 +27,11 @@ export class NodeTreeLayerComponent {
   viewNodeList: Signal<readonly NodeComponent[]> = viewChildren("node");
   viewNodeList_ = toObservable(this.viewNodeList);
   layerIndex: InputSignal<number> = input.required<number>();
-  nodeManagementService: NodeManagementService = inject(NodeManagementService);
+
+  nodeTreeService: NodeTreeService = inject(NodeTreeService);
 
   async initDefineNewNode() {
-    this.nodeManagementService.initDefineNewNode(this.layerIndex());
+    this.nodeTreeService.addNewNodeRecordToTree(this.layerIndex());
     await firstValueFrom(this.viewNodeList_.pipe(skip(1)));
     this.viewNodeList().at(-1)?.viewNodeName()?._enterEditMode();
   }

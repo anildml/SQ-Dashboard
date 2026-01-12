@@ -1,6 +1,10 @@
-import {EventEmitter, Injectable, signal, WritableSignal} from '@angular/core';
+import {EventEmitter, inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {Node} from '../../models/interfaces/node';
 import {toObservable} from '@angular/core/rxjs-interop';
+import {Operation, UpdateSchema} from '../../models/interfaces/operation';
+import {firstValueFrom, Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment.dev';
 
 interface LayerData {
   nodeList: Node[];
@@ -20,10 +24,87 @@ interface LineRef {
 export class NodeTreeService {
 
   rootNode!: Node
-
   treePath: WritableSignal<LayerData[]> = signal([]);
-
   expandChildNodeClicked: EventEmitter<string> = new EventEmitter<string>();
+
+  operationToEdit: WritableSignal<Operation | null> = signal(null);
+  operationToEdit_: Observable<Operation | null> = toObservable(this.operationToEdit);
+  addStateToOperationUpdateSchemaEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+
+  http: HttpClient = inject(HttpClient)
+
+  constructor() {
+    this.setRootNode();
+    this.addStateToOperationUpdateSchemaEventEmitter.subscribe(data => {
+      this.addStateToOperationUpdateSchema(data);
+    });
+  }
+
+  async readNode(id: string): Promise<Node> {
+    let url = "http://" + environment.service_url + "/v1/admin/node/" + id;
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    try {
+      response = await firstValueFrom(this.http.get<any>(url, options));
+    } catch (e) {
+      throw e;
+    }
+    return response.node;
+  }
+
+  async createNode(node: Node): Promise<string> {
+    let url = "http://" + environment.service_url + "/v1/admin/node/";
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    try {
+      response = await firstValueFrom(this.http.post(url, node, options));
+    } catch (e) {
+      throw e;
+    }
+    return response.node_id;
+  }
+
+  async updateNode(node: Node): Promise<void> {
+    let url = "http://" + environment.service_url + "/v1/admin/node/" + node.id;
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    try {
+      response = await firstValueFrom(this.http.put(url, node, options));
+    } catch (e) {
+      throw e;
+    }
+    return;
+  }
+
+  async deleteNode(node: Node): Promise<void> {
+    let url = "http://" + environment.service_url + "/v1/admin/node/" + node.id;
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    try {
+      response = await firstValueFrom(this.http.delete(url, options));
+    } catch (e) {
+      throw e;
+    }
+    return;
+  }
+
+  setRootNode() {
+    this.readNode("691ae106a7adf91a70f76791").then(res => {
+      this.initNodeTree(res);
+    });
+  }
 
   initNodeTree(node: Node) {
     this.rootNode = node;
@@ -50,14 +131,15 @@ export class NodeTreeService {
     this.treePath.update(tp => [...tp]);
   }
 
-  updateNode(node: Node) {
-    let parentnodeData = this.findParentNode(this.rootNode, node);
-    let i = parentnodeData?.node?.children?.findIndex(c => c.id == node.id) ?? -1;
-    parentnodeData!.node!.children![i] = node;
+  updateNodeOnTreePath(node: Node) {
+    let parentNodeData = this.findParentNode(this.rootNode, node);
+    let i = parentNodeData?.node?.children?.findIndex(c => c.id == node.id) ?? -1;
+    parentNodeData!.node!.children![i] = node;
     this.treePath.update(tp => [...tp]);
+    this.updateNode(node);
   }
 
-  removeNodeFromTree(node: Node) {
+  deleteNodeFromTreePath(node: Node) {
     let parentnodeData = this.findParentNode(this.rootNode, node);
     parentnodeData!.node!.children! = parentnodeData!.node!.children.filter(n => n.id != node.id);
     this.treePath.update(tp => {
@@ -67,6 +149,7 @@ export class NodeTreeService {
       childLayer.nodeList = childLayer.nodeList.filter(n => n != node);
       return [...tp]
     });
+    this.deleteNode(node);
   }
 
   getNodeData(id: string) {
@@ -160,6 +243,46 @@ export class NodeTreeService {
       }
     }
     return null;
+  }
+
+  finalizeUpdateOperation(saveValue: boolean) {
+    if (saveValue) {
+      let node = this.operationToEdit()!.node!;
+      let index = node.operation_list.map(o => o.id).indexOf(this.operationToEdit()!.id);
+      node.operation_list[index] = this.operationToEdit()!;
+      this.updateNode(node);
+    }
+    this.operationToEdit.set(null);
+  }
+
+  updateOperationName(name: string) {
+    this.operationToEdit.update(operation => {
+      operation!.name = name;
+      return {...operation!};
+    })
+  }
+
+  addStateToOperationUpdateSchema(stateData: any) {
+    let operation = this.operationToEdit()!;
+    let existingUpdateSchema = operation.update_schema_list.find(us => us.node_id === stateData.nodeId);
+    let updateSchema: UpdateSchema = existingUpdateSchema ? existingUpdateSchema : {
+      node_id: stateData.nodeId,
+      node_name: stateData.nodeName,
+      effected_states: []
+    };
+    if (!existingUpdateSchema) {
+      operation.update_schema_list.push(updateSchema);
+    }
+    let effectedState = updateSchema.effected_states?.find(es => es == stateData.state);
+    if (!effectedState) {
+      updateSchema.effected_states?.push(stateData.state);
+    } else {
+      updateSchema.effected_states = updateSchema.effected_states?.filter(es => es != stateData.state);
+      if (updateSchema.effected_states?.length == 0) {
+        operation.update_schema_list = operation.update_schema_list.filter(us => us.node_id != updateSchema.node_id);
+      }
+    }
+    this.operationToEdit.set({...operation});
   }
 
 }

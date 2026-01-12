@@ -1,6 +1,6 @@
 <div class="node_tree">
   <mat-accordion [multi]="true">
-    @for (layer of nodeTreeService.treePath(); track $index; let f = $first) {
+    @for (layer of nodeTreeService.treePath(); track $index) {
     <mat-expansion-panel #layer [id]="'layer'+$index" [expanded]="$first">
       <div>
         <app-node-tree-layer
@@ -11,12 +11,12 @@
     </mat-expansion-panel>
     }
   </mat-accordion>
-  @if (nodeManagementService.operationToEdit()) {
+  @if (nodeTreeService.operationToEdit()) {
   <div class="define_update_schema_section flex-center">
     <div class="backdrop"></div>
     <div class="dialog">
       <app-operation
-        [operation]="nodeManagementService.operationToEdit()!"
+        [operation]="nodeTreeService.operationToEdit()!"
       ></app-operation>
       <div class="buttons">
         <button matButton (click)="finalizeEditOperation(false)">Cancel</button>
