@@ -5,6 +5,7 @@ import {Operation, UpdateSchema} from '../../models/interfaces/view/operation';
 import {firstValueFrom, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment.dev';
+import {request_updateNode} from '../../models/interfaces/api/request_updateNode';
 
 interface LayerData {
   nodeList: Node[];
@@ -76,9 +77,17 @@ export class NodeTreeService {
       headers: {},
       params: {}
     };
+    let updateNodeRequest: request_updateNode = {
+      id: node.id,
+      name: node.name,
+      children: node.children.map(n => n.id),
+      parents: node.parents,
+      operation_ids: node.operation_list.map(o => o.id),
+      state_list: node.state_list
+    };
     let response: any;
     try {
-      response = await firstValueFrom(this.http.put(url, node, options));
+      response = await firstValueFrom(this.http.put(url, updateNodeRequest, options));
     } catch (e) {
       throw e;
     }
