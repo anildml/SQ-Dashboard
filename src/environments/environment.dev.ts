@@ -1,4 +1,4 @@
 export const environment = {
-  produciton: false,
-  service_url: ""
+  production: false,
+  service_url: "sbidroplet:12280"
 }
