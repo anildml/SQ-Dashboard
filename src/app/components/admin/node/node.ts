@@ -14,7 +14,7 @@ import {MatInputModule} from '@angular/material/input';
 import {InputComponent} from '../../common/input/input';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {firstValueFrom, skip} from 'rxjs';
-import {Operation} from '../../../models/interfaces/view/operation';
+import {Operation, UpdateSchema} from '../../../models/interfaces/view/operation';
 
 @Component({
   selector: 'app-node',
@@ -47,6 +47,14 @@ export class NodeComponent implements OnInit {
   ngOnInit(): void {
     this.updatedNodeTemplate.set(this.node());
     let stateListLength = this.updatedNodeTemplate().state_list.length;
+    this.updatedNodeTemplate().operation_list.forEach((o: Operation) => {
+      o.update_schema_list.forEach((us: UpdateSchema) => {
+        if (!us.node_name) {
+          let n = this.nodeTreeService.findNode(us.node_id);
+          us.node_name = n!.name;
+        }
+      })
+    });
     this.statesIsSelectedSignalList = new Array(stateListLength).fill(signal(false), 0, stateListLength);
     this.nodeTreeService.operationToEdit_.subscribe(operation => {
       this.updateStatesIsSelectedSignalList(operation);
@@ -110,7 +118,7 @@ export class NodeComponent implements OnInit {
   }
 
   editOperation(id: string) {
-    let operation = this.updatedNodeTemplate().operation_list.filter(o => o.id == id).at(0)!;
+    let operation = this.updatedNodeTemplate().operation_list.find(o => o.id == id)!;
     this.openOperationDialog(operation);
   }
 
