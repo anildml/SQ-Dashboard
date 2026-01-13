@@ -4,7 +4,7 @@ export interface Operation {
   node?: Node;
   id: string;
   name: string;
-  update_schema_list: UpdateSchema[];
+  update_schemas: UpdateSchema[];
 }
 
 export interface UpdateSchema {

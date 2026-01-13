@@ -46,9 +46,9 @@ export class NodeComponent implements OnInit {
 
   ngOnInit(): void {
     this.updatedNodeTemplate.set(this.node());
-    let stateListLength = this.updatedNodeTemplate().state_list.length;
-    this.updatedNodeTemplate().operation_list.forEach((o: Operation) => {
-      o.update_schema_list.forEach((us: UpdateSchema) => {
+    let stateListLength = this.updatedNodeTemplate().states.length;
+    this.updatedNodeTemplate().operations.forEach((o: Operation) => {
+      o.update_schemas.forEach((us: UpdateSchema) => {
         if (!us.node_name) {
           let n = this.nodeTreeService.findNode(us.node_id);
           us.node_name = n!.name;
@@ -80,10 +80,10 @@ export class NodeComponent implements OnInit {
 
   async addNewOperationRecord() {
     this.updatedNodeTemplate.update(node => {
-      node.operation_list.push({
+      node.operations.push({
         id: "",
         name: "",
-        update_schema_list: []
+        update_schemas: []
       });
       return {...node};
     })
@@ -93,7 +93,7 @@ export class NodeComponent implements OnInit {
 
   async addNewStateRecord() {
     this.updatedNodeTemplate.update(node => {
-      node.state_list.push("");
+      node.states.push("");
       return {...node};
     })
     this.statesIsSelectedSignalList.push(signal(false));
@@ -104,34 +104,34 @@ export class NodeComponent implements OnInit {
   initDefineNewOperation(changedValue: string, index: number) {
     if (changedValue == "") {
       this.updatedNodeTemplate.update(node => {
-        node.operation_list = node.operation_list.filter((_, i) => index != i);
+        node.operations = node.operations.filter((_, i) => index != i);
         return {...node};
       });
       return;
     }
     this.updatedNodeTemplate.update(node => {
-      node.operation_list.at(-1)!.name = changedValue;
+      node.operations.at(-1)!.name = changedValue;
       return {...node};
     });
-    let operationToDefine = this.updatedNodeTemplate().operation_list.at(-1)!;
+    let operationToDefine = this.updatedNodeTemplate().operations.at(-1)!;
     this.openOperationDialog(operationToDefine);
   }
 
   editOperation(id: string) {
-    let operation = this.updatedNodeTemplate().operation_list.find(o => o.id == id)!;
+    let operation = this.updatedNodeTemplate().operations.find(o => o.id == id)!;
     this.openOperationDialog(operation);
   }
 
   editState(changedValue: string, index: number) {
     if (changedValue == "") {
       this.updatedNodeTemplate.update(node => {
-        node.state_list = node.state_list.filter((_, i) => index != i);
+        node.states = node.states.filter((_, i) => index != i);
         return {...node};
       });
       return;
     }
     this.updatedNodeTemplate.update(node => {
-      node.state_list[index] = changedValue;
+      node.states[index] = changedValue;
       return {...node};
     });
     this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
@@ -143,16 +143,16 @@ export class NodeComponent implements OnInit {
 
   deleteOperation(id: string) {
     this.updatedNodeTemplate.update(node => {
-      node.operation_list = node.operation_list.filter(o => o.id != id);
+      node.operations = node.operations.filter(o => o.id != id);
       return {...node};
     });
     this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   deleteState(state: string) {
-    let index = this.updatedNodeTemplate().state_list.indexOf(state);
+    let index = this.updatedNodeTemplate().states.indexOf(state);
     this.updatedNodeTemplate.update(node => {
-      node.state_list = node.state_list.filter(o => o != state);
+      node.states = node.states.filter(o => o != state);
       return {...node};
     });
     this.statesIsSelectedSignalList = this.statesIsSelectedSignalList.filter((_, i) => i != index);
@@ -177,13 +177,13 @@ export class NodeComponent implements OnInit {
     this.statesIsSelectedSignalList.forEach(s => s.set(false));
     if (operation) {
       let operationToEdit = this.nodeTreeService.operationToEdit()!;
-      let node = operationToEdit.update_schema_list
+      let node = operationToEdit.update_schemas
         .find(us => us.node_id == this.updatedNodeTemplate().id);
       if (!node) {
         return;
       }
       node.effected_states.forEach(es => {
-          let index = this.updatedNodeTemplate().state_list.indexOf(es);
+          let index = this.updatedNodeTemplate().states.indexOf(es);
           this.statesIsSelectedSignalList.at(index)!.set(true);
         }
       );

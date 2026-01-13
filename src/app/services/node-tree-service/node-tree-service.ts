@@ -5,7 +5,6 @@ import {Operation, UpdateSchema} from '../../models/interfaces/view/operation';
 import {firstValueFrom, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment.dev';
-import {request_updateNode} from '../../models/interfaces/api/request_updateNode';
 
 interface LayerData {
   nodeList: Node[];
@@ -63,8 +62,11 @@ export class NodeTreeService {
       params: {}
     };
     let response: any;
+    let body = node as any;
+    body.children = node.children.map(node => node.id);
+    body.operations = node.operations.map(operation => operation.id);
     try {
-      response = await firstValueFrom(this.http.post(url, node, options));
+      response = await firstValueFrom(this.http.post(url, body, options));
     } catch (e) {
       throw e;
     }
@@ -77,17 +79,12 @@ export class NodeTreeService {
       headers: {},
       params: {}
     };
-    let updateNodeRequest: request_updateNode = {
-      id: node.id,
-      name: node.name,
-      children: node.children.map(n => n.id),
-      parents: node.parents,
-      operation_ids: node.operation_list.map(o => o.id),
-      state_list: node.state_list
-    };
     let response: any;
+    let body = node as any;
+    body.children = node.children.map(node => node.id);
+    body.operations = node.operations.map(operation => operation.id);
     try {
-      response = await firstValueFrom(this.http.put(url, updateNodeRequest, options));
+      response = await firstValueFrom(this.http.put(url, body, options));
     } catch (e) {
       throw e;
     }
@@ -96,6 +93,68 @@ export class NodeTreeService {
 
   async deleteNode(node: Node): Promise<void> {
     let url = "http://" + environment.service_url + "/v1/admin/node/" + node.id;
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    try {
+      response = await firstValueFrom(this.http.delete(url, options));
+    } catch (e) {
+      throw e;
+    }
+    return;
+  }
+
+  async readOperation(id: string): Promise<Node> {
+    let url = "http://" + environment.service_url + "/v1/admin/operation/" + id;
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    try {
+      response = await firstValueFrom(this.http.get<any>(url, options));
+    } catch (e) {
+      throw e;
+    }
+    return response.operation;
+  }
+
+  async createOperation(operation: Operation): Promise<string> {
+    let url = "http://" + environment.service_url + "/v1/admin/operation/";
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    operation.node = undefined;
+    try {
+      response = await firstValueFrom(this.http.post(url, operation, options));
+    } catch (e) {
+      throw e;
+    }
+    return response.operation_id;
+  }
+
+  async updateOperation(operation: Operation): Promise<void> {
+    let url = "http://" + environment.service_url + "/v1/admin/operation/" + operation.id;
+    let options = {
+      headers: {},
+      params: {}
+    };
+    let response: any;
+    operation.node = undefined;
+    try {
+      response = await firstValueFrom(this.http.put(url, operation, options));
+    } catch (e) {
+      throw e;
+    }
+    return;
+  }
+
+  async deleteOperation(operation: Operation): Promise<void> {
+    let url = "http://" + environment.service_url + "/v1/admin/operation/" + operation.id;
     let options = {
       headers: {},
       params: {}
@@ -133,8 +192,8 @@ export class NodeTreeService {
       name: "",
       parents: [parentNode.id],
       children: [],
-      state_list: [],
-      operation_list: []
+      states: [],
+      operations: []
     };
     parentNode.children.push(newNode);
     this.treePath.update(tp => [...tp]);

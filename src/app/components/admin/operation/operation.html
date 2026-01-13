@@ -14,7 +14,7 @@
       State
     </div>
   </div>
-  @for (update_schema of operation()!.update_schema_list; track $index) {
+  @for (update_schema of operation()!.update_schemas; track $index) {
   <div class="update_schema_list">
     <div class="update_schema__node_name">
       {{update_schema.node_name}}

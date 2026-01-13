@@ -5,6 +5,6 @@ export interface Node {
   name: string;
   parents: string[];
   children: Node[];
-  state_list: string[];
-  operation_list: Operation[];
+  states: string[];
+  operations: Operation[];
 }
