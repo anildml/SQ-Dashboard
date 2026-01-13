@@ -336,6 +336,7 @@ export class NodeTreeService {
       let index = node.operations.map(o => o.id).indexOf(this.operationToEdit()!.id);
       node.operations[index] = this.operationToEdit()!;
       this.updateNode(node);
+      this.updateOperation(this.operationToEdit()!);
     }
     this.operationToEdit.set(null);
   }
