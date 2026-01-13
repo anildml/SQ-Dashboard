@@ -80,7 +80,7 @@ export class NodeTreeService {
       params: {}
     };
     let response: any;
-    let body = node as any;
+    let body = {...node} as any;
     body.children = node.children.map(node => node.id);
     body.operations = node.operations.map(operation => operation.id);
     try {
