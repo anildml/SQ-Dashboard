@@ -333,8 +333,8 @@ export class NodeTreeService {
   finalizeUpdateOperation(saveValue: boolean) {
     if (saveValue) {
       let node = this.operationToEdit()!.node!;
-      let index = node.operation_list.map(o => o.id).indexOf(this.operationToEdit()!.id);
-      node.operation_list[index] = this.operationToEdit()!;
+      let index = node.operations.map(o => o.id).indexOf(this.operationToEdit()!.id);
+      node.operations[index] = this.operationToEdit()!;
       this.updateNode(node);
     }
     this.operationToEdit.set(null);
@@ -349,14 +349,14 @@ export class NodeTreeService {
 
   addStateToOperationUpdateSchema(stateData: any) {
     let operation = this.operationToEdit()!;
-    let existingUpdateSchema = operation.update_schema_list.find(us => us.node_id === stateData.nodeId);
+    let existingUpdateSchema = operation.update_schemas.find(us => us.node_id === stateData.nodeId);
     let updateSchema: UpdateSchema = existingUpdateSchema ? existingUpdateSchema : {
       node_id: stateData.nodeId,
       node_name: stateData.nodeName,
       effected_states: []
     };
     if (!existingUpdateSchema) {
-      operation.update_schema_list.push(updateSchema);
+      operation.update_schemas.push(updateSchema);
     }
     let effectedState = updateSchema.effected_states?.find(es => es == stateData.state);
     if (!effectedState) {
@@ -364,7 +364,7 @@ export class NodeTreeService {
     } else {
       updateSchema.effected_states = updateSchema.effected_states?.filter(es => es != stateData.state);
       if (updateSchema.effected_states?.length == 0) {
-        operation.update_schema_list = operation.update_schema_list.filter(us => us.node_id != updateSchema.node_id);
+        operation.update_schemas = operation.update_schemas.filter(us => us.node_id != updateSchema.node_id);
       }
     }
     this.operationToEdit.set({...operation});
