@@ -226,7 +226,7 @@ export class NodeTreeService {
   }
 
   deleteNodeFromTreePath(node: Node) {
-    let parentNodeData = this.findParentNode(this.rootNode, node);
+    let parentNodeData = this.findParentNode(this.rootNode, node, 0);
     parentNodeData!.node!.children! = parentNodeData!.node!.children.filter(n => n.id != node.id);
     this.treePath.update(tp => {
       let parentLayer = tp.at(parentNodeData!.index)!;
@@ -314,16 +314,16 @@ export class NodeTreeService {
     return layerIndex === this.treePath().length - 1;
   }
 
-  findParentNode(parent: Node, search: Node): ({ node: Node, index: number } | null) {
+  findParentNode(parent: Node, search: Node, currentLayerIndex: number): ({ node: Node, index: number } | null) {
     for (let i = 0; i < parent.children.length; i++) {
       let child = parent.children.at(i)!;
       if (search.id == child.id) {
         return {
           node: parent,
-          index: i
+          index: currentLayerIndex
         };
       }
-      let result = this.findParentNode(child, search);
+      let result = this.findParentNode(child, search, currentLayerIndex+1);
       if (result) {
         return result;
       }
