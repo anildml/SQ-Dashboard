@@ -65,9 +65,11 @@ export class NodeComponent implements OnInit {
     this.nodeTreeService.expandChildNodeClicked.emit(this.updatedNodeTemplate().id);
   }
 
-  openOperationDialog(operation: Operation) {
+  async openOperationDialog(operation: Operation) {
     operation.node = this.updatedNodeTemplate();
     this.nodeTreeService.operationToEdit.set({...operation});
+    await firstValueFrom(this.nodeTreeService.viewOperationDialog_);
+    this.nodeTreeService.viewOperationDialog()?.viewOperationName()?._enterEditMode();
   }
 
   editName(val: string) {
@@ -79,16 +81,12 @@ export class NodeComponent implements OnInit {
   }
 
   async addNewOperationRecord() {
+    await this.nodeTreeService.addNewOperationRecordToNode(this.updatedNodeTemplate());
     this.updatedNodeTemplate.update(node => {
-      node.operations.push({
-        id: "",
-        name: "",
-        update_schemas: []
-      });
       return {...node};
-    })
+    });
     await firstValueFrom(this.viewOperationList_.pipe(skip(1)));
-    this.viewOperationList().at(-1)?._enterEditMode();
+    this.viewOperationList().at(-1)!._enterEditMode();
   }
 
   async addNewStateRecord() {
@@ -101,7 +99,7 @@ export class NodeComponent implements OnInit {
     this.viewStateList().at(-1)!._enterEditMode();
   }
 
-  initDefineNewOperation(changedValue: string, index: number) {
+  async initDefineNewOperation(changedValue: string, index: number) {
     if (changedValue == "") {
       this.updatedNodeTemplate.update(node => {
         node.operations = node.operations.filter((_, i) => index != i);
@@ -114,12 +112,11 @@ export class NodeComponent implements OnInit {
       return {...node};
     });
     let operationToDefine = this.updatedNodeTemplate().operations.at(-1)!;
-    this.openOperationDialog(operationToDefine);
+    await this.openOperationDialog(operationToDefine);
   }
 
-  editOperation(id: string) {
-    let operation = this.updatedNodeTemplate().operations.find(o => o.id == id)!;
-    this.openOperationDialog(operation);
+  async editOperation(operation: Operation) {
+    await this.openOperationDialog(operation);
   }
 
   editState(changedValue: string, index: number) {
@@ -141,11 +138,12 @@ export class NodeComponent implements OnInit {
     this.nodeTreeService.deleteNodeFromTreePath(this.updatedNodeTemplate());
   }
 
-  deleteOperation(id: string) {
+  async deleteOperation(operation: Operation) {
     this.updatedNodeTemplate.update(node => {
-      node.operations = node.operations.filter(o => o.id != id);
+      node.operations = node.operations.filter(o => o != operation);
       return {...node};
     });
+    await this.nodeTreeService.deleteOperation(operation);
     this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 

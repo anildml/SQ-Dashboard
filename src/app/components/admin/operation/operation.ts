@@ -1,4 +1,4 @@
-import {Component, inject, input, InputSignal} from '@angular/core';
+import {Component, inject, input, InputSignal, Signal, viewChild, viewChildren} from '@angular/core';
 import {Operation, } from '../../../models/interfaces/view/operation';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -18,6 +18,7 @@ import {NodeTreeService} from '../../../services/node-tree-service/node-tree-ser
 export class OperationComponent {
 
   operation: InputSignal<Operation> = input.required<Operation>();
+  viewOperationName: Signal<InputComponent | undefined> = viewChild("name");
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
 

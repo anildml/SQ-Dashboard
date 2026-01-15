@@ -1,6 +1,6 @@
 import {
-  Component, inject,
-  Signal, viewChildren
+  Component, computed, inject,
+  Signal, viewChild, viewChildren
 } from '@angular/core';
 import {Node} from '../../../models/interfaces/view/node';
 import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
@@ -24,10 +24,12 @@ import {MatButtonModule} from '@angular/material/button';
 export class NodeTreeComponent {
 
   layerPanels: Signal<readonly MatExpansionPanel[]> = viewChildren("layer");
+  viewOperationDialog: Signal<OperationComponent | undefined> = viewChild("operationDialog");
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
 
   constructor() {
+    this.nodeTreeService.viewOperationDialog = computed(() => this.viewOperationDialog());
     this.nodeTreeService.expandChildNodeClicked.subscribe(nodeId => {
       this.nodeClicked(nodeId);
     });
