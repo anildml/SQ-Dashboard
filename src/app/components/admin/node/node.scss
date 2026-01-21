@@ -77,6 +77,11 @@
         background: white;
       }
     }
+    .add_child_node_section {
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+    }
     .border_between_content {
       border-bottom: 5px solid black;
     }

@@ -4,6 +4,7 @@
     <mat-expansion-panel #layer [id]="'layer'+$index" [expanded]="$first">
       <div>
         <app-node-tree-layer
+          #nodeTreeLayer
           [nodeList]="layer.nodeList"
           [layerIndex]="$index"
         ></app-node-tree-layer>

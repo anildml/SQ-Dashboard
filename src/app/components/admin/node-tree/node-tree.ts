@@ -1,11 +1,11 @@
 import {
+  afterRenderEffect, ChangeDetectorRef,
   Component, computed, inject,
   Signal, viewChild, viewChildren
 } from '@angular/core';
 import {Node} from '../../../models/interfaces/view/node';
 import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
-import {firstValueFrom} from 'rxjs';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
 import {OperationComponent} from '../operation/operation';
 import {MatButtonModule} from '@angular/material/button';
@@ -24,70 +24,30 @@ import {MatButtonModule} from '@angular/material/button';
 export class NodeTreeComponent {
 
   layerPanels: Signal<readonly MatExpansionPanel[]> = viewChildren("layer");
+  viewTreeLayers: Signal<readonly NodeTreeLayerComponent[]> = viewChildren("nodeTreeLayer");
   viewOperationDialog: Signal<OperationComponent | undefined> = viewChild("operationDialog");
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
+  changeDetectorRef: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
-    this.nodeTreeService.viewOperationDialog = computed(() => this.viewOperationDialog());
-    this.nodeTreeService.expandChildNodeClicked.subscribe(nodeId => {
-      this.nodeClicked(nodeId);
-    });
+    this.nodeTreeService.viewTreePath = this.viewTreeLayers;
+    this.nodeTreeService.viewTreePathLayerPanels = this.layerPanels;
+    this.nodeTreeService.viewOperationDialog = this.viewOperationDialog;
+    this.nodeTreeService.nodeTreeChangeDetectorRef = this.changeDetectorRef;
   }
 
-  async nodeClicked(id: string) {
-    let nodeData: any = this.nodeTreeService.getNodeData(id);
-    await this.updateTree(nodeData.layerIndex, nodeData.clickedNode);
-  }
+  // async nodeClicked(id: string) {
+  //   let node = this.nodeTreeService.findNode(id);
+  //   await this.updateTree(node!.layerIndex!, node!);
+  // }
 
-  async updateTree(layerIndex: number, clickedNode: Node) {
-    if (this.nodeTreeService.isLastLayer(layerIndex)) {
-      this.nodeTreeService.growTreePath(clickedNode);
-      await this.expandLayer();
-    } else {
-      let isNewBranch: boolean = this.nodeTreeService.isNewBranch(layerIndex, clickedNode);
-      await this.collapseLayers(layerIndex);
-      this.nodeTreeService.shortenTreePath(layerIndex);
-      if (isNewBranch) {
-        this.nodeTreeService.growTreePath(clickedNode);
-        await this.expandLayer();
-      }
-    }
-  }
+  // async updateTree(layerIndex: number, clickedNode: Node) {
+  //   await this.nodeTreeService.updateTree(layerIndex, clickedNode);
+  // }
 
-  async expandLayer() {
-    await new Promise<void>(resolve => {
-      setTimeout(() => {
-        this.layerPanels().at(-1)!.open();
-        resolve();
-      }, 250); // timeout added for animation
-    });
-    this.nodeTreeService.drawLinesForLastLayer();
-    await firstValueFrom(this.layerPanels().at(-1)!.afterExpand);
-  }
-
-  async collapseLayers(layerIndex: number) {
-    let layersCollapsed: Promise<any>[] = [];
-    let layersToCollapse: MatExpansionPanel[] = [];
-    let linesToRemove: any[] = [];
-    for (let i = layerIndex + 1; i < this.nodeTreeService.treePath().length; i++) {
-      let layerData = this.nodeTreeService.treePath().at(i - 1);
-      linesToRemove = linesToRemove.concat(layerData?.lines);
-      let layerPanel = this.layerPanels().at(i)!;
-      layersCollapsed.push(firstValueFrom(layerPanel.afterCollapse));
-      layersToCollapse.push(layerPanel);
-    }
-    linesToRemove.forEach(async (lineData) => {
-      lineData.line.hide("draw", {duration: 200});
-      await new Promise(resolve => setTimeout(resolve, 200));
-      lineData.line.remove();
-    });
-    layersToCollapse.forEach(layer => layer.close());
-    await Promise.all(layersCollapsed).then();
-  }
-
-  finalizeEditOperation(saveValue: boolean) {
-    this.nodeTreeService.finalizeUpdateOperation(saveValue);
+  async finalizeEditOperation(saveValue: boolean) {
+    await this.nodeTreeService.finalizeUpdateOperation(saveValue);
   }
 
 }

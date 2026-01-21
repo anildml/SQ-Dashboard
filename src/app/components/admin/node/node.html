@@ -33,7 +33,6 @@
             [value]="el.name"
             [isDeletable]="true"
             [isEditable]="false"
-            (editClick)="editOperation(el)"
             (exitEditMode)="initDefineNewOperation($event, $index)"
             (deleteClick)="deleteOperation(el)"
           ></app-input>
@@ -70,11 +69,18 @@
         }
       </div>
     </div>
+    <div class="border_between_content"></div>
+    <div class="add_child_node_section">
+      <button matButton (click)="initDefineNewNode()">
+        Add child node
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
   </div>
   @if (updatedNodeTemplate().children && updatedNodeTemplate().children.length != 0) {
   <div class="footer flex-center">
     <div class="expand_button flex-center"
-         (click)="expandChildNodeClicked()">
+         (click)="expandButtonClicked()">
       <span class="keyboard_arrow_down material-symbols-outlined flex-center">
         keyboard_arrow_down
       </span>

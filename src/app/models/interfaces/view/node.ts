@@ -7,4 +7,7 @@ export interface Node {
   children: Node[];
   states: string[];
   operations: Operation[];
+
+  parentNode?: Node;
+  layerIndex?: number;
 }

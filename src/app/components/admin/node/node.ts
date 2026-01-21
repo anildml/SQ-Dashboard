@@ -1,4 +1,6 @@
 import {
+  AfterContentChecked,
+  AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef,
   Component,
   inject, input,
   OnInit,
@@ -13,15 +15,17 @@ import {NodeTreeService} from '../../../services/node-tree-service/node-tree-ser
 import {MatInputModule} from '@angular/material/input';
 import {InputComponent} from '../../common/input/input';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {firstValueFrom, skip} from 'rxjs';
-import {Operation, UpdateSchema} from '../../../models/interfaces/view/operation';
+import {firstValueFrom, Observable, skip} from 'rxjs';
+import {Operation} from '../../../models/interfaces/view/operation';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-node',
   imports: [
     MatIconModule,
     MatInputModule,
-    InputComponent
+    InputComponent,
+    MatButton
   ],
   templateUrl: './node.html',
   styleUrl: './node.scss',
@@ -29,64 +33,57 @@ import {Operation, UpdateSchema} from '../../../models/interfaces/view/operation
 export class NodeComponent implements OnInit {
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
+  changeDetector = inject(ChangeDetectorRef);
 
   node = input.required<Node>();
+  node_: Observable<Node> = toObservable(this.node);
   updatedNodeTemplate: WritableSignal<Node> = signal<Node>({} as Node);
-  viewNodeName: Signal<InputComponent> = viewChild.required("nodeName");
+  viewNodeName: Signal<InputComponent | undefined> = viewChild("nodeName");
   viewStateList: Signal<readonly InputComponent[]> = viewChildren("state");
   viewStateList_ = toObservable(this.viewStateList);
   viewOperationList: Signal<readonly InputComponent[]> = viewChildren("operation");
   viewOperationList_ = toObservable(this.viewOperationList);
 
   statesIsSelectedSignalList: WritableSignal<boolean>[] = [];
-  isSelected: WritableSignal<boolean> = signal(false);
 
   constructor() {
+    this.nodeTreeService.ncd = this.changeDetector;
   }
 
   ngOnInit(): void {
     this.updatedNodeTemplate.set(this.node());
-    let stateListLength = this.updatedNodeTemplate().states.length;
-    this.updatedNodeTemplate().operations.forEach((o: Operation) => {
-      o.update_schemas.forEach((us: UpdateSchema) => {
-        if (!us.node_name) {
-          let n = this.nodeTreeService.findNode(us.node_id);
-          us.node_name = n!.name;
-        }
-      })
-    });
-    this.statesIsSelectedSignalList = new Array(stateListLength).fill(signal(false), 0, stateListLength);
+    for (let i = 0; i < this.updatedNodeTemplate().states.length; i++) {
+      this.statesIsSelectedSignalList.push(signal(false));
+    }
     this.nodeTreeService.operationToEdit_.subscribe(operation => {
       this.updateStatesIsSelectedSignalList(operation);
     });
+    this.changeDetector.detectChanges()
   }
 
-  expandChildNodeClicked() {
-    this.nodeTreeService.expandChildNodeClicked.emit(this.updatedNodeTemplate().id);
+  async expandButtonClicked() {
+    await this.nodeTreeService.expandButtonClicked(this.node());
   }
 
-  async openOperationDialog(operation: Operation) {
-    operation.node = this.updatedNodeTemplate();
-    this.nodeTreeService.operationToEdit.set({...operation});
-    await firstValueFrom(this.nodeTreeService.viewOperationDialog_);
-    this.nodeTreeService.viewOperationDialog()?.viewOperationName()?._enterEditMode();
+  async initDefineNewNode() {
+    await this.nodeTreeService.addNodeToTreePath(this.node());
   }
 
-  editName(val: string) {
+  async editName(val: string) {
     this.updatedNodeTemplate.update(node => {
       node.name = val;
       return {...node};
     });
-    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
+    await this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   async addNewOperationRecord() {
-    await this.nodeTreeService.addNewOperationRecordToNode(this.updatedNodeTemplate());
+    let newOperation = await this.nodeTreeService.addNewOperationRecordToNode(this.updatedNodeTemplate());
     this.updatedNodeTemplate.update(node => {
       return {...node};
     });
     await firstValueFrom(this.viewOperationList_.pipe(skip(1)));
-    this.viewOperationList().at(-1)!._enterEditMode();
+    await this.nodeTreeService.openOperationDialog(newOperation);
   }
 
   async addNewStateRecord() {
@@ -112,14 +109,10 @@ export class NodeComponent implements OnInit {
       return {...node};
     });
     let operationToDefine = this.updatedNodeTemplate().operations.at(-1)!;
-    await this.openOperationDialog(operationToDefine);
+    await this.nodeTreeService.openOperationDialog(operationToDefine);
   }
 
-  async editOperation(operation: Operation) {
-    await this.openOperationDialog(operation);
-  }
-
-  editState(changedValue: string, index: number) {
+  async editState(changedValue: string, index: number) {
     if (changedValue == "") {
       this.updatedNodeTemplate.update(node => {
         node.states = node.states.filter((_, i) => index != i);
@@ -131,11 +124,11 @@ export class NodeComponent implements OnInit {
       node.states[index] = changedValue;
       return {...node};
     });
-    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
+    await this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
-  deleteNode() {
-    this.nodeTreeService.deleteNodeFromTreePath(this.updatedNodeTemplate());
+  async deleteNode() {
+    await this.nodeTreeService.deleteNodeFromTreePath(this.updatedNodeTemplate());
   }
 
   async deleteOperation(operation: Operation) {
@@ -144,26 +137,25 @@ export class NodeComponent implements OnInit {
       return {...node};
     });
     await this.nodeTreeService.deleteOperation(operation);
-    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
+    await this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
-  deleteState(state: string) {
+  async deleteState(state: string) {
     let index = this.updatedNodeTemplate().states.indexOf(state);
     this.updatedNodeTemplate.update(node => {
       node.states = node.states.filter(o => o != state);
       return {...node};
     });
     this.statesIsSelectedSignalList = this.statesIsSelectedSignalList.filter((_, i) => i != index);
-    this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
+    await this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
   }
 
   clickedOnState(state: string) {
     if (this.nodeTreeService.operationToEdit()) {
-      this.nodeTreeService.addStateToOperationUpdateSchemaEventEmitter.emit({
+      this.nodeTreeService.addStateToOperationUpdateSchema({
         state: state,
-        nodeId: this.node().id,
-        nodeName: this.node().name
-      });
+        node: this.updatedNodeTemplate(),
+      })
     }
   }
 
@@ -181,10 +173,9 @@ export class NodeComponent implements OnInit {
         return;
       }
       node.effected_states.forEach(es => {
-          let index = this.updatedNodeTemplate().states.indexOf(es);
-          this.statesIsSelectedSignalList.at(index)!.set(true);
-        }
-      );
+        let index = this.updatedNodeTemplate().states.indexOf(es);
+        this.statesIsSelectedSignalList.at(index)!.set(true);
+      });
     }
   }
 
