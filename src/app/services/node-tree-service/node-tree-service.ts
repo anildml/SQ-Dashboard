@@ -253,6 +253,7 @@ export class NodeTreeService {
   }
 
   private async updateTreePath$WithNewNode(newNode: Node) {
+    this.refreshLines();
     this.updateTreePath$();
     let isLastLayer = this.isLastLayer(newNode.parentNode!.layerIndex!);
     if (isLastLayer) {
@@ -262,7 +263,6 @@ export class NodeTreeService {
       await this.switchSelectedNode(newNode.parentNode!);
     }
     await this.drawLine(newNode);
-    this.refreshLines();
   }
 
   async updateNodeOnTreePath(node: Node) {
@@ -356,15 +356,11 @@ export class NodeTreeService {
   }
 
   private refreshLine(line: {ref: any; endNode: Node}) {
-    try {
-      line.ref.position();
-    } catch (e) {
-      line.ref.remove();
-      let newLineRef = this.configureLine(line.endNode);
-      newLineRef.show("none");
-      line.ref = newLineRef;
-      this.updateTreePath$();
-    }
+    line.ref.remove();
+    let newLineRef = this.configureLine(line.endNode);
+    newLineRef.show("none");
+    line.ref = newLineRef;
+    this.updateTreePath$();
   }
 
   private async collapseLayers(layerIndex: number) {
