@@ -47,6 +47,9 @@ export class NodeComponent implements OnInit {
     this.nodeTreeService.updatedOperationTemplate_.subscribe(operation => {
       this.updateStatesIsSelectedSignalList(operation);
     });
+    this.node_.subscribe(node => {
+      this.updatedNodeTemplate.set(node);
+    });
   }
 
   ngOnInit(): void {

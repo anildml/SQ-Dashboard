@@ -1,5 +1,5 @@
 <div class="node_tree_layer"
-     (scroll)="layerScrolled.emit()">
+     (scroll)="layerScrolled()">
   @for (node of nodeList(); track $index) {
     <div class="app_node_container">
       <app-node

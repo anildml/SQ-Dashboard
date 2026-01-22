@@ -1,5 +1,5 @@
 import {
-  ChangeDetectorRef,
+  ChangeDetectorRef, EventEmitter,
   inject,
   Injectable,
   Signal,
@@ -24,7 +24,6 @@ interface LayerData {
     node: Node,
     lines: {
       ref: any;
-      redrawSubscription: Subscription;
       endNode: Node;
     }[]
   } | null;
@@ -48,10 +47,15 @@ export class NodeTreeService {
   updatedOperationTemplate: WritableSignal<Operation | null> = signal(null);
   updatedOperationTemplate_: Observable<Operation | null> = toObservable(this.updatedOperationTemplate);
 
+  refreshLines_: EventEmitter<void> = new EventEmitter();
+
   http: HttpClient = inject(HttpClient)
 
   constructor() {
     this.setRootNode();
+    this.refreshLines_.subscribe(() => {
+      this.refreshLines();
+    });
   }
 
   private async createNode(node: Node): Promise<Node> {
@@ -258,6 +262,7 @@ export class NodeTreeService {
       await this.switchSelectedNode(newNode.parentNode!);
     }
     await this.drawLine(newNode);
+    this.refreshLines();
   }
 
   async updateNodeOnTreePath(node: Node) {
@@ -268,7 +273,7 @@ export class NodeTreeService {
     await this.deleteNode(node);
     node.parentNode!.children! = node.parentNode!.children.filter(n => n.id != node.id);
     let parentLayer = this.treePath.at(node.parentNode!.layerIndex!)!;
-    let childLayer = this.treePath.at(node.parentNode!.layerIndex! + 1)!;
+    let childLayer = this.treePath.at(node.layerIndex!)!;
     let lines = parentLayer.selected!.lines!;
     let line = lines.find(lineData => lineData.endNode.id == node.id)!;
     await this.removeLine(line);
@@ -278,6 +283,7 @@ export class NodeTreeService {
       this.treePath.splice(this.treePath.length - 1, 1);
     }
     this.updateTreePath$();
+    this.refreshLines();
   }
 
   async switchSelectedNode(selectedNode: Node) {
@@ -321,6 +327,17 @@ export class NodeTreeService {
   }
 
   private async drawLine(childNode: Node): Promise<void> {
+    let line = this.configureLine(childNode);
+    line.show("draw", {duration: 200});
+    await new Promise(resolve => setTimeout(resolve, 250));
+    this.treePath.at(childNode.layerIndex! - 1)?.selected?.lines.push({
+      ref: line,
+      endNode: childNode
+    });
+    this.updateTreePath$();
+  }
+
+  private configureLine(childNode: Node): any {
     this.nodeTreeChangeDetectorRef?.detectChanges();
     let parentNodeEl = document.getElementById("node_" + childNode.parentNode!.id);
     let parentNodeExpandButton = parentNodeEl?.getElementsByClassName("expand_button")?.item(0);
@@ -335,18 +352,19 @@ export class NodeTreeService {
       endSocket: "top",
       endPlug: "disc"
     });
-    line.show("draw", {duration: 200});
-    // render time for line to be ready on dom
-    let redrawSubscription = this.viewTreePath().at(childNode.layerIndex!)?.layerScrolled.subscribe(() => {
-      line.position();
-    });
-    await new Promise(resolve => setTimeout(resolve, 250));
-    this.treePath.at(childNode.layerIndex! - 1)?.selected?.lines.push({
-      ref: line,
-      redrawSubscription: redrawSubscription!,
-      endNode: childNode
-    });
-    this.updateTreePath$();
+    return line;
+  }
+
+  private refreshLine(line: {ref: any; endNode: Node}) {
+    try {
+      line.ref.position();
+    } catch (e) {
+      line.ref.remove();
+      let newLineRef = this.configureLine(line.endNode);
+      newLineRef.show("none");
+      line.ref = newLineRef;
+      this.updateTreePath$();
+    }
   }
 
   private async collapseLayers(layerIndex: number) {
@@ -365,7 +383,6 @@ export class NodeTreeService {
   }
 
   private async removeLine(line: any) {
-    line.redrawSubscription.unsubscribe();
     line.ref.hide("draw", {duration: 200});
     // render time for line to be ready on dom
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -477,7 +494,13 @@ export class NodeTreeService {
 
   private updateTreePath$() {
     this.treePath$.set([...this.treePath]);
+  }
+
+  private refreshLines() {
     this.nodeTreeChangeDetectorRef?.detectChanges();
+    this.treePath.forEach((layer) => {
+      layer.selected?.lines.forEach(line => this.refreshLine(line));
+    });
   }
 
 }
