@@ -23,7 +23,6 @@ export class NodeTreeLayerComponent {
 
   nodeList: InputSignal<Node[]> = input.required<Node[]>()
   viewNodeList: Signal<readonly NodeComponent[]> = viewChildren("node");
-  viewNodeList_ = toObservable(this.viewNodeList);
   layerIndex: InputSignal<number> = input.required<number>();
 
 }
