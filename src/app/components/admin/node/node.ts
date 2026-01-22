@@ -1,6 +1,4 @@
 import {
-  AfterContentChecked,
-  AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef,
   Component,
   inject, input,
   OnInit,
@@ -33,7 +31,6 @@ import {MatButton} from '@angular/material/button';
 export class NodeComponent implements OnInit {
 
   nodeTreeService: NodeTreeService = inject(NodeTreeService);
-  changeDetector = inject(ChangeDetectorRef);
 
   node = input.required<Node>();
   node_: Observable<Node> = toObservable(this.node);
@@ -47,7 +44,9 @@ export class NodeComponent implements OnInit {
   statesIsSelectedSignalList: WritableSignal<boolean>[] = [];
 
   constructor() {
-    this.nodeTreeService.ncd = this.changeDetector;
+    this.nodeTreeService.updatedOperationTemplate_.subscribe(operation => {
+      this.updateStatesIsSelectedSignalList(operation);
+    });
   }
 
   ngOnInit(): void {
@@ -55,18 +54,14 @@ export class NodeComponent implements OnInit {
     for (let i = 0; i < this.updatedNodeTemplate().states.length; i++) {
       this.statesIsSelectedSignalList.push(signal(false));
     }
-    this.nodeTreeService.operationToEdit_.subscribe(operation => {
-      this.updateStatesIsSelectedSignalList(operation);
-    });
-    this.changeDetector.detectChanges()
   }
 
   async expandButtonClicked() {
-    await this.nodeTreeService.expandButtonClicked(this.node());
+    await this.nodeTreeService.switchSelectedNode(this.node());
   }
 
   async initDefineNewNode() {
-    await this.nodeTreeService.addNodeToTreePath(this.node());
+    await this.nodeTreeService.initDefineNewNode(this.node());
   }
 
   async editName(val: string) {
@@ -151,7 +146,7 @@ export class NodeComponent implements OnInit {
   }
 
   clickedOnState(state: string) {
-    if (this.nodeTreeService.operationToEdit()) {
+    if (this.nodeTreeService.updatedOperationTemplate()) {
       this.nodeTreeService.addStateToOperationUpdateSchema({
         state: state,
         node: this.updatedNodeTemplate(),
@@ -166,7 +161,7 @@ export class NodeComponent implements OnInit {
   updateStatesIsSelectedSignalList(operation: Operation | null) {
     this.statesIsSelectedSignalList.forEach(s => s.set(false));
     if (operation) {
-      let operationToEdit = this.nodeTreeService.operationToEdit()!;
+      let operationToEdit = this.nodeTreeService.updatedOperationTemplate()!;
       let node = operationToEdit.update_schemas
         .find(us => us.node_id == this.updatedNodeTemplate().id);
       if (!node) {

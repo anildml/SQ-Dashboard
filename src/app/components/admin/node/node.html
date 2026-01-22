@@ -59,7 +59,7 @@
             [value]="el"
             [isDeletable]="true"
             [placeholder]="'Can\'t be empty'"
-            [isSelectable]="nodeTreeService.operationToEdit() != null"
+            [isSelectable]="nodeTreeService.updatedOperationTemplate() != null"
             [isSelected]="isStateSelected($index)()"
             (exitEditMode)="editState($event, $index)"
             (deleteClick)="deleteState(el)"

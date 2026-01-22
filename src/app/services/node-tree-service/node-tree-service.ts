@@ -1,17 +1,15 @@
 import {
   ChangeDetectorRef,
-  EventEmitter,
   inject,
   Injectable,
   Signal,
   signal,
-  viewChildren,
   WritableSignal
 } from '@angular/core';
 import {Node} from '../../models/interfaces/view/node';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {Operation, UpdateSchema} from '../../models/interfaces/view/operation';
-import {firstValueFrom, Observable, skip} from 'rxjs';
+import {firstValueFrom, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment.dev';
 import {OperationComponent} from '../../components/admin/operation/operation';
@@ -20,6 +18,7 @@ import {NodeTreeLayerComponent} from '../../components/admin/node-tree-layer/nod
 import {NodeComponent} from '../../components/admin/node/node';
 
 interface LayerData {
+  parentNode: Node | null;
   nodeList: Node[];
   selected: {
     node: Node,
@@ -36,18 +35,19 @@ interface LayerData {
 export class NodeTreeService {
 
   rootNode!: Node
-  treePath: WritableSignal<LayerData[]> = signal([]);
+  treePath: LayerData[] = [];
+  treePath$: WritableSignal<LayerData[]> = signal([]);
+
 
   nodeTreeChangeDetectorRef: ChangeDetectorRef | undefined;
-  ncd: ChangeDetectorRef | undefined;
 
   viewTreePath: Signal<readonly NodeTreeLayerComponent[]> = signal([]);
   viewTreePathLayerPanels: Signal<readonly MatExpansionPanel[]> = signal([]);
   viewOperationDialog: Signal<OperationComponent | undefined> = signal(undefined);
   viewOperationDialog_: Observable<OperationComponent | undefined> = toObservable(this.viewOperationDialog);
 
-  operationToEdit: WritableSignal<Operation | null> = signal(null);
-  operationToEdit_: Observable<Operation | null> = toObservable(this.operationToEdit);
+  updatedOperationTemplate: WritableSignal<Operation | null> = signal(null);
+  updatedOperationTemplate_: Observable<Operation | null> = toObservable(this.updatedOperationTemplate);
 
   http: HttpClient = inject(HttpClient)
 
@@ -219,21 +219,22 @@ export class NodeTreeService {
   private initNodeTree(node: Node) {
     this.rootNode = node;
     this.buildNodeSubData(this.rootNode, 0);
-    this.treePath.update(tp => {
-      tp.push({
-        nodeList: [this.rootNode],
-        selected: null
-      });
-      return [...tp];
+    this.treePath.push({
+      parentNode: null,
+      nodeList: [this.rootNode],
+      selected: null
     });
+    this.updateTreePath$();
   }
 
+  async initDefineNewNode(parentNode: Node) {
+    let newNode = await this.createNewNode(parentNode);
+    await this.updateTreePath$WithNewNode(newNode)
+    let newNodeComponent = this.getNodeComponentRef(newNode.id);
+    newNodeComponent!.viewNodeName()?._enterEditMode();
+  }
 
-
-
-
-  // simplify logic
-  async addNodeToTreePath(parentNode: Node) {
+  private async createNewNode(parentNode: Node): Promise<Node> {
     let newNode: Node = {
       id: "",
       name: "",
@@ -245,107 +246,82 @@ export class NodeTreeService {
     await this.createNode(newNode);
     parentNode.children.push(newNode);
     this.buildNodeSubData(parentNode, parentNode.layerIndex!);
-    this.treePath.update(tp => {
-      // tp.at(newNode.layerIndex!)?.nodeList.push(newNode);
-      return [...tp];
-    });
-    this.nodeTreeChangeDetectorRef?.detectChanges();
-    let newNodeComponent = this.getNodeComponentRef(newNode.id);
-    let isLastLayer = this.isLastLayer(parentNode.layerIndex!)
+    return newNode;
+  }
+
+  private async updateTreePath$WithNewNode(newNode: Node) {
+    this.updateTreePath$();
+    let isLastLayer = this.isLastLayer(newNode.parentNode!.layerIndex!);
     if (isLastLayer) {
-      await this.growTreePath(parentNode);
-    } else {
-      await this.drawLine(newNode);
+      await this.growTreePath(newNode.parentNode!);
     }
-
-
-    newNodeComponent!.viewNodeName()?._enterEditMode();
+    if (!this.isNodeOnTheSelectedPath(newNode.parentNode!)) {
+      await this.switchSelectedNode(newNode.parentNode!);
+    }
+    await this.drawLine(newNode);
   }
 
   async updateNodeOnTreePath(node: Node) {
     await this.updateNode(node);
-    this.treePath.update(tp => [...tp]);
   }
 
   async deleteNodeFromTreePath(node: Node) {
     await this.deleteNode(node);
     node.parentNode!.children! = node.parentNode!.children.filter(n => n.id != node.id);
-    this.treePath.update(tp => {
-      let parentLayer = tp.at(node.parentNode!.layerIndex!)!;
-      let childLayer = tp.at(node.parentNode!.layerIndex! + 1)!;
-      parentLayer.selected!.lines!.find(lineData => lineData.endNode.id == node.id)!.ref.remove();
-      childLayer.nodeList = childLayer.nodeList.filter(n => n.id != node.id);
-      if (childLayer.nodeList.length == 0) {
-        tp.splice(tp.length - 1, 1);
-        // wait for layer collapse
-      }
-      return [...tp]
-    });
+    let parentLayer = this.treePath.at(node.parentNode!.layerIndex!)!;
+    let childLayer = this.treePath.at(node.parentNode!.layerIndex! + 1)!;
+    let lines = parentLayer.selected!.lines!;
+    let line = lines.find(lineData => lineData.endNode.id == node.id)!;
+    await this.removeLine(line.ref);
+    parentLayer.selected!.lines = lines.filter(lineData => lineData.endNode.id != node.id)!
+    childLayer.nodeList = childLayer.nodeList.filter(n => n.id != node.id);
+    if (childLayer.nodeList.length == 0) {
+      this.treePath.splice(this.treePath.length - 1, 1);
+    }
+    this.updateTreePath$();
   }
 
-  async expandButtonClicked(selectedNode: Node) {
-    if (this.isLastLayer(selectedNode.layerIndex!)) {
-      await this.growTreePath(selectedNode);
-    } else {
-      let isNewBranch: boolean = this.isNewBranch(selectedNode);
+  async switchSelectedNode(selectedNode: Node) {
+    let isNodeOnTheSelectedPath = this.isNodeOnTheSelectedPath(selectedNode);
+    if (!this.isLastLayer(selectedNode.layerIndex!)) {
       await this.shortenTreePath(selectedNode.layerIndex!);
-      if (isNewBranch) {
-        this.nodeTreeChangeDetectorRef!.detectChanges();
-        await this.growTreePath(selectedNode);
-      }
+    }
+    if (!isNodeOnTheSelectedPath) {
+      await this.growTreePath(selectedNode);
     }
   }
 
-  private async growTreePath(lastSelectedNode: Node) {
-    this.treePath.update(tp => {
-      tp.at(-1)!.selected = {
-        node: lastSelectedNode,
-        lines: []
-      };
-      tp.push({
-        nodeList: lastSelectedNode.children ?? [],
-        selected: null
-      });
-      return [...tp];
+  private async growTreePath(selectedNode: Node) {
+    this.treePath.at(-1)!.selected = {
+      node: selectedNode,
+      lines: []
+    };
+    this.treePath.push({
+      parentNode: selectedNode,
+      nodeList: selectedNode.children,
+      selected: null
     });
+    this.updateTreePath$();
     await this.expandLastLayer();
   }
 
   private async shortenTreePath(layerIndex: number) {
     await this.collapseLayers(layerIndex + 1);
-    this.treePath.update(tp => {
-      tp = tp.slice(0, layerIndex + 1);
-      tp.at(-1)!.selected = null;
-      return [...tp];
-    });
+    this.treePath = this.treePath.slice(0, layerIndex + 1);
+    this.treePath.at(-1)!.selected = null;
+    this.updateTreePath$();
   }
 
   private async expandLastLayer() {
-    this.nodeTreeChangeDetectorRef?.detectChanges();
+    // render time for expansion panels to be ready on dom
+    await new Promise(resolve => setTimeout(resolve, 250));
     let layerPanel = this.viewTreePathLayerPanels().at(-1)!;
-    await new Promise(resolve => setTimeout(resolve, 100));
-
     layerPanel.open();
-    layerPanel.afterExpand.subscribe(data => {
-      console.log("here");
-    })
-    layerPanel.afterCollapse.subscribe(data => {
-      console.log("here");
-    })
-
-    let childNodes = this.treePath().at(-1)?.nodeList!;
-    let lines: any[] = [];
-    await Promise.all(childNodes.map(async childNode => {
-      let line = await this.drawLine(childNode);
-      lines.push({ref: line, endNode: childNode});
-    }))
-    this.treePath.update(tp => {
-      tp.at(-2)!.selected!.lines = lines;
-      return [...tp];
-    });
+    let childNodes = this.treePath.at(-1)?.nodeList!;
+    await Promise.all(childNodes.map(async childNode => this.drawLine(childNode)))
   }
 
-  private async drawLine(childNode: Node): Promise<any> {
+  private async drawLine(childNode: Node): Promise<void> {
     let parentNodeEl = document.getElementById("node_" + childNode.parentNode!.id);
     let parentNodeExpandButton = parentNodeEl?.getElementsByClassName("expand_button")?.item(0);
     let childNodeEl = document.getElementById("node_" + childNode.id);
@@ -360,19 +336,24 @@ export class NodeTreeService {
       endPlug: "disc"
     });
     line.show("draw", {duration: 200});
-    await new Promise(resolve => setTimeout(resolve, 200));
-    return line;
+    // render time for line to be ready on dom
+    await new Promise(resolve => setTimeout(resolve, 250));
+    this.treePath.at(childNode.layerIndex! - 1)?.selected?.lines.push({
+      ref: line,
+      endNode: childNode
+    });
+    this.updateTreePath$();
   }
 
   private async collapseLayers(layerIndex: number) {
-    let layersToCollapse: number[] = [...Array(this.treePath().length).keys()].slice(layerIndex);
+    let layersToCollapse: number[] = [...Array(this.treePath.length).keys()].slice(layerIndex);
     await Promise.all(layersToCollapse.map(i => this.collapseLayer(i)));
   }
 
   private async collapseLayer(layerIndex: number): Promise<void> {
     let layerPanel: MatExpansionPanel = this.viewTreePathLayerPanels().at(layerIndex)!;
     layerPanel.close();
-    let lines = this.treePath().at(layerIndex - 1)?.selected?.lines!;
+    let lines = this.treePath.at(layerIndex - 1)?.selected?.lines!;
     await Promise.all([
       lines.map(async line => await this.removeLine(line.ref)),
       firstValueFrom(layerPanel.afterCollapse)
@@ -381,6 +362,7 @@ export class NodeTreeService {
 
   private async removeLine(line: any) {
     line.hide("draw", {duration: 200});
+    // render time for line to be ready on dom
     await new Promise(resolve => setTimeout(resolve, 200));
     line.remove();
   }
@@ -402,31 +384,31 @@ export class NodeTreeService {
   }
 
   async openOperationDialog(operation: Operation) {
-    this.operationToEdit.set({...operation});
+    this.updatedOperationTemplate.set({...operation});
     await firstValueFrom(this.viewOperationDialog_);
     this.viewOperationDialog()?.viewOperationName()?._enterEditMode();
   }
 
   async finalizeUpdateOperation(saveValue: boolean) {
     if (saveValue) {
-      let node = this.operationToEdit()!.node!;
-      let i = node.operations.map(o => o.id).indexOf(this.operationToEdit()?.id!);
-      node.operations[i] = this.operationToEdit!()!;
-      await this.updateOperation(this.operationToEdit()!);
+      let node = this.updatedOperationTemplate()!.node!;
+      let i = node.operations.map(o => o.id).indexOf(this.updatedOperationTemplate()?.id!);
+      node.operations[i] = this.updatedOperationTemplate!()!;
+      await this.updateOperation(this.updatedOperationTemplate()!);
       await this.updateNode(node);
     }
-    this.operationToEdit.set(null);
+    this.updatedOperationTemplate.set(null);
   }
 
   updateOperationName(name: string) {
-    this.operationToEdit.update(operation => {
+    this.updatedOperationTemplate.update(operation => {
       operation!.name = name;
       return {...operation!};
     });
   }
 
   addStateToOperationUpdateSchema(stateData: any) {
-    let operation = this.operationToEdit()!;
+    let operation = this.updatedOperationTemplate()!;
     let existingUpdateSchema = operation.update_schemas.find(us => us.node_id === stateData.node.id);
     let updateSchema: UpdateSchema = existingUpdateSchema ? existingUpdateSchema : {
       node_id: stateData.node.id,
@@ -445,18 +427,14 @@ export class NodeTreeService {
         operation.update_schemas = operation.update_schemas.filter(us => us.node_id != updateSchema.node_id);
       }
     }
-    this.operationToEdit.set({...operation});
+    this.updatedOperationTemplate.set({...operation});
   }
 
 
 
   // UTIL FUNCTIONS
-  isNewBranch(selectedNode: Node): boolean {
-    return !(this.treePath().at(selectedNode.layerIndex!)?.selected!.node!.id === selectedNode.id);
-  }
-
   isLastLayer(layerIndex: number): boolean {
-    return layerIndex === this.treePath().length - 1;
+    return layerIndex === this.treePath.length - 1;
   }
 
   findNode(id: string): Node | null {
@@ -487,5 +465,14 @@ export class NodeTreeService {
     return newNodeComponent!;
   }
 
+  private isNodeOnTheSelectedPath(node: Node) {
+    let layer = this.treePath.find(layer => layer.selected?.node.id == node.id);
+    return layer != undefined;
+  }
+
+  private updateTreePath$() {
+    this.treePath$.set([...this.treePath]);
+    this.nodeTreeChangeDetectorRef?.detectChanges();
+  }
 
 }

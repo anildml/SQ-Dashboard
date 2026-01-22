@@ -1,9 +1,8 @@
 import {
-  afterRenderEffect, ChangeDetectorRef,
-  Component, computed, inject,
+  ChangeDetectorRef,
+  Component, inject,
   Signal, viewChild, viewChildren
 } from '@angular/core';
-import {Node} from '../../../models/interfaces/view/node';
 import {NodeTreeLayerComponent} from '../node-tree-layer/node-tree-layer';
 import {MatExpansionModule, MatExpansionPanel} from '@angular/material/expansion';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
@@ -36,15 +35,6 @@ export class NodeTreeComponent {
     this.nodeTreeService.viewOperationDialog = this.viewOperationDialog;
     this.nodeTreeService.nodeTreeChangeDetectorRef = this.changeDetectorRef;
   }
-
-  // async nodeClicked(id: string) {
-  //   let node = this.nodeTreeService.findNode(id);
-  //   await this.updateTree(node!.layerIndex!, node!);
-  // }
-
-  // async updateTree(layerIndex: number, clickedNode: Node) {
-  //   await this.nodeTreeService.updateTree(layerIndex, clickedNode);
-  // }
 
   async finalizeEditOperation(saveValue: boolean) {
     await this.nodeTreeService.finalizeUpdateOperation(saveValue);
