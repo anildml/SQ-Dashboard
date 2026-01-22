@@ -37,8 +37,6 @@ export class NodeTreeService {
   rootNode!: Node
   treePath: LayerData[] = [];
   treePath$: WritableSignal<LayerData[]> = signal([]);
-
-
   nodeTreeChangeDetectorRef: ChangeDetectorRef | undefined;
 
   viewTreePath: Signal<readonly NodeTreeLayerComponent[]> = signal([]);
@@ -274,7 +272,7 @@ export class NodeTreeService {
     let line = lines.find(lineData => lineData.endNode.id == node.id)!;
     await this.removeLine(line.ref);
     parentLayer.selected!.lines = lines.filter(lineData => lineData.endNode.id != node.id)!
-    childLayer.nodeList = childLayer.nodeList.filter(n => n.id != node.id);
+    childLayer.nodeList = node.parentNode!.children!;
     if (childLayer.nodeList.length == 0) {
       this.treePath.splice(this.treePath.length - 1, 1);
     }
@@ -322,6 +320,7 @@ export class NodeTreeService {
   }
 
   private async drawLine(childNode: Node): Promise<void> {
+    this.nodeTreeChangeDetectorRef?.detectChanges();
     let parentNodeEl = document.getElementById("node_" + childNode.parentNode!.id);
     let parentNodeExpandButton = parentNodeEl?.getElementsByClassName("expand_button")?.item(0);
     let childNodeEl = document.getElementById("node_" + childNode.id);
@@ -337,6 +336,9 @@ export class NodeTreeService {
     });
     line.show("draw", {duration: 200});
     // render time for line to be ready on dom
+    this.viewTreePath().at(childNode.layerIndex!)?.layerScrolled.subscribe(() => {
+      line.position();
+    });
     await new Promise(resolve => setTimeout(resolve, 250));
     this.treePath.at(childNode.layerIndex! - 1)?.selected?.lines.push({
       ref: line,
