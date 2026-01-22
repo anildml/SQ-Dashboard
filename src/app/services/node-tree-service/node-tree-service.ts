@@ -9,7 +9,7 @@ import {
 import {Node} from '../../models/interfaces/view/node';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {Operation, UpdateSchema} from '../../models/interfaces/view/operation';
-import {firstValueFrom, Observable} from 'rxjs';
+import {firstValueFrom, Observable, Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment.dev';
 import {OperationComponent} from '../../components/admin/operation/operation';
@@ -24,6 +24,7 @@ interface LayerData {
     node: Node,
     lines: {
       ref: any;
+      redrawSubscription: Subscription;
       endNode: Node;
     }[]
   } | null;
@@ -270,7 +271,7 @@ export class NodeTreeService {
     let childLayer = this.treePath.at(node.parentNode!.layerIndex! + 1)!;
     let lines = parentLayer.selected!.lines!;
     let line = lines.find(lineData => lineData.endNode.id == node.id)!;
-    await this.removeLine(line.ref);
+    await this.removeLine(line);
     parentLayer.selected!.lines = lines.filter(lineData => lineData.endNode.id != node.id)!
     childLayer.nodeList = node.parentNode!.children!;
     if (childLayer.nodeList.length == 0) {
@@ -336,12 +337,13 @@ export class NodeTreeService {
     });
     line.show("draw", {duration: 200});
     // render time for line to be ready on dom
-    this.viewTreePath().at(childNode.layerIndex!)?.layerScrolled.subscribe(() => {
+    let redrawSubscription = this.viewTreePath().at(childNode.layerIndex!)?.layerScrolled.subscribe(() => {
       line.position();
     });
     await new Promise(resolve => setTimeout(resolve, 250));
     this.treePath.at(childNode.layerIndex! - 1)?.selected?.lines.push({
       ref: line,
+      redrawSubscription: redrawSubscription!,
       endNode: childNode
     });
     this.updateTreePath$();
@@ -357,16 +359,17 @@ export class NodeTreeService {
     layerPanel.close();
     let lines = this.treePath.at(layerIndex - 1)?.selected?.lines!;
     await Promise.all([
-      lines.map(async line => await this.removeLine(line.ref)),
+      lines.map(async line => await this.removeLine(line)),
       firstValueFrom(layerPanel.afterCollapse)
     ]);
   }
 
   private async removeLine(line: any) {
-    line.hide("draw", {duration: 200});
+    line.redrawSubscription.unsubscribe();
+    line.ref.hide("draw", {duration: 200});
     // render time for line to be ready on dom
     await new Promise(resolve => setTimeout(resolve, 200));
-    line.remove();
+    line.ref.remove();
   }
 
 
