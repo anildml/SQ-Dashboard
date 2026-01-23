@@ -2,8 +2,7 @@
   <input
     #name
     class="title"
-    [class]="bold() ? 'bold_title' : ''"
-    [class]="editMode() ? 'edit_mode' : ''"
+    [class]="[bold() ? 'bold_title' : '', editMode() ? 'edit_mode' : '']"
     [disabled]="!editMode()"
     [(ngModel)]="currentValue"
     [placeholder]="isDirty() ? placeholder() : ''"
