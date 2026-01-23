@@ -88,8 +88,9 @@ export class NodeComponent implements OnInit {
     this.updatedNodeTemplate.update(node => {
       node.states.push("");
       return {...node};
-    })
+    });
     this.statesIsSelectedSignalList.push(signal(false));
+    await this.nodeTreeService.updateNodeOnTreePath(this.updatedNodeTemplate());
     await firstValueFrom(this.viewStateList_.pipe(skip(1)));
     this.viewStateList().at(-1)!._enterEditMode();
   }
