@@ -182,4 +182,8 @@ export class NodeComponent implements OnInit {
     }
   }
 
+  isStateSelectable(state: string): boolean {
+    return this.nodeTreeService.isStateSelectable(state);
+  }
+
 }

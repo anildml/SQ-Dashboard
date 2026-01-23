@@ -71,8 +71,10 @@
       @extend .node_data_list;
       .el {
         position: relative;
-        z-index: 1;
         background: white;
+      }
+      .selectable {
+        z-index: 1;
       }
     }
     .add_child_node_section {

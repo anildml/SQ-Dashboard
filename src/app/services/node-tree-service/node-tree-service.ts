@@ -448,6 +448,24 @@ export class NodeTreeService {
     this.updatedOperationTemplate.set({...operation});
   }
 
+  isStateSelectable(state: string) {
+    if (this.updatedOperationTemplate() == null) {
+      return false;
+    }
+    return this.isStateDefinedInPath(state, this.updatedOperationTemplate()!.node);
+  }
+
+  private isStateDefinedInPath(state: string, node: Node | undefined): boolean {
+    if (!node) {
+      return false;
+    }
+    if (node.states.find(s => s == state)) {
+      return true;
+    } else {
+      return this.isStateDefinedInPath(state, node.parentNode);
+    }
+  }
+
 
 
   // UTIL FUNCTIONS

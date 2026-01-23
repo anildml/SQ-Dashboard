@@ -54,13 +54,14 @@
       </div>
       <div class="list">
         @for (el of updatedNodeTemplate().states; track $index) {
-        <div class="el">
+        <div class="el"
+             [class]="isStateSelectable(el) ? 'selectable' : ''">
           <app-input
             #state
             [value]="el"
             [isDeletable]="true"
             [placeholder]="'Can\'t be empty'"
-            [isSelectable]="nodeTreeService.updatedOperationTemplate() != null"
+            [isSelectable]="isStateSelectable(el)"
             [isSelected]="isStateSelected($index)()"
             (exitEditMode)="editState($event, $index)"
             (deleteClick)="deleteState(el)"
