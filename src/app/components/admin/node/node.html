@@ -34,6 +34,7 @@
             [isDeletable]="true"
             [isEditable]="false"
             (exitEditMode)="initDefineNewOperation($event, $index)"
+            (editClick)="editOperation(el)"
             (deleteClick)="deleteOperation(el)"
           ></app-input>
         </div>

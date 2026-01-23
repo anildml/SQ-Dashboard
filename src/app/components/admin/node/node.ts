@@ -110,6 +110,10 @@ export class NodeComponent implements OnInit {
     await this.nodeTreeService.openOperationDialog(operationToDefine);
   }
 
+  async editOperation(operation: Operation) {
+    await this.nodeTreeService.openOperationDialog(operation);
+  }
+
   async editState(changedValue: string, index: number) {
     if (changedValue == "") {
       this.updatedNodeTemplate.update(node => {
