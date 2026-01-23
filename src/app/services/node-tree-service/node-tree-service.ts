@@ -405,6 +405,8 @@ export class NodeTreeService {
     this.updatedOperationTemplate.set({...operation});
     await firstValueFrom(this.viewOperationDialog_);
     this.viewOperationDialog()?.viewOperationName()?._enterEditMode();
+    this.nodeTreeChangeDetectorRef?.detectChanges();
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   async finalizeUpdateOperation(saveValue: boolean) {
