@@ -1,12 +1,13 @@
 <div class="container">
-  <app-input
-    #name
-    class="operation_name"
-    [value]="operation()!.name"
-    [bold]="true"
-    [placeholder]="'Can\'t be empty'"
-    (valueEdit)="editName($event)"
-  ></app-input>
+  <div class="operation_name">
+    <app-input
+      #name
+      [value]="operation()!.name"
+      [bold]="true"
+      [placeholder]="'Can\'t be empty'"
+      (valueEdit)="editName($event)">
+    </app-input>
+  </div>
   <div class="update_schema_header">
     <div class="title">
       Node
