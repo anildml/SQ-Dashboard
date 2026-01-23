@@ -73,7 +73,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.post(url, body, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     node.id = response.node_id;
     return node;
@@ -89,7 +92,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.get<any>(url, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return response.node;
   }
@@ -109,7 +115,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.put(url, body, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return;
   }
@@ -124,7 +133,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.delete(url, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return;
   }
@@ -142,7 +154,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.post(url, body, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return response.operation_id;
   }
@@ -157,7 +172,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.get<any>(url, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return response.operation;
   }
@@ -175,7 +193,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.put(url, body, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return;
   }
@@ -190,7 +211,10 @@ export class NodeTreeService {
     try {
       response = await firstValueFrom(this.http.delete(url, options));
     } catch (e) {
-      throw e;
+      console.error("request failed", e);
+    }
+    if (!response.success) {
+      console.error("request unsuccessful", response);
     }
     return;
   }
