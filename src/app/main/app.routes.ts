@@ -8,15 +8,15 @@ export const routes: Routes = [
     component: AdminComponent
   },
   {
-    path: "**",
-    component: AdminComponent
-  },
-  {
     path: "admin",
     component: AdminComponent
   },
   {
     path: "dashboard",
     component: SessionComponent
-  }
+  },
+  {
+    path: "**",
+    redirectTo: ""
+  },
 ];

@@ -2,14 +2,12 @@ import {Component, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {Session} from '../models/interfaces/view/session';
-import {AdminComponent} from '../components/admin/admin';
 import {NavbarComponent} from '../components/common/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    AdminComponent,
     NavbarComponent
   ],
   templateUrl: './app.html',
