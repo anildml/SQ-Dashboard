@@ -1,1 +1,18 @@
-<p>dashboard works!</p>
+<div class="find_client_form">
+  <div class="title">Find Client</div>
+  <div class="form">
+    <mat-form-field>
+      <mat-label>Search by</mat-label>
+      <mat-select [(value)]="searchType">
+        @for (s of searchTypes; track $index) {
+          <mat-option [value]="s">{{s}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>{{searchType() + ' of the client'}}</mat-label>
+      <input matInput [(ngModel)]="searchValue">
+      <mat-icon matSuffix (click)="searchClient()">search</mat-icon>
+    </mat-form-field>
+  </div>
+</div>

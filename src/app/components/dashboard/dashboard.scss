@@ -1,0 +1,13 @@
+.find_client_form {
+  .title {
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  .form {
+    padding-left: 20px;
+    mat-form-field {
+      padding-right: 10px;
+    }
+  }
+}
