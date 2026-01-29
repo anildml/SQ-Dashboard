@@ -7,6 +7,7 @@ import {SessionComponent} from './session/session';
 import {Session} from '../../models/interfaces/api/session';
 import {DashboardService} from '../../services/dashboard-service/dashboard-service';
 import {Client} from '../../models/interfaces/api/client';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,8 @@ import {Client} from '../../models/interfaces/api/client';
     FormsModule,
     MatInputModule,
     MatIcon,
-    SessionComponent
+    SessionComponent,
+    MatButton
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
@@ -43,13 +45,14 @@ export class DashboardComponent {
     if (this.searchType() == "Name") {
       this.clientList.set(await this.dashboardService.searchClientByName(this.searchValue()));
     }
-    this.selectClient("c1");
-    let sessionId = this.selectedClient()!.session_ids.at(0)!;
-    this.sessionList.set([await this.dashboardService.readSession(sessionId)]);
   }
 
-  selectClient(name: string) {
-    this.selectedClient.set(this.clientList().find(c => c.name == name));
+  async selectClient(client: Client) {
+    this.selectedClient.set(this.clientList().find(c => c.name == client.name));
+    let sessionList = await Promise.all(this.selectedClient()!.session_ids.map(sessionId => {
+      return this.dashboardService.readSession(sessionId);
+    }));
+    this.sessionList.set(sessionList);
   }
 
 }

@@ -14,10 +14,17 @@
       <input matInput [(ngModel)]="searchValue">
       <mat-icon matSuffix (click)="searchClient()">search</mat-icon>
     </mat-form-field>
+    <div class="client_list">
+      @for (client of clientList(); track $index) {
+        <button class="client_button" matButton="tonal" (click)="selectClient(client)">{{client.name}}</button>
+      }
+    </div>
   </div>
   <div class="session_list">
     @for (session of sessionList(); track $index) {
-      <app-session [session]="session"></app-session>
+      <div class="session">
+        <app-session [session]="session"></app-session>
+      </div>
     }
   </div>
 </div>

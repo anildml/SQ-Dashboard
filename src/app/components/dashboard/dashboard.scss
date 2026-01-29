@@ -5,12 +5,27 @@
     font-weight: 500;
   }
   .search_clients_section {
+    display: flex;
+    flex-direction: row;
     padding-left: 20px;
     mat-form-field {
       padding-right: 10px;
     }
   }
+  .client_list {
+    padding-left: 40px;
+    .client_button {
+      margin-top: 10px;
+      margin-right: 10px;
+    }
+  }
   .session_list {
     padding-left: 20px;
+    width: fit-content;
+    .session {
+      padding-bottom: 10px;
+      app-session {
+      }
+    }
   }
 }
