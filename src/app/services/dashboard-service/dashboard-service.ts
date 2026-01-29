@@ -31,7 +31,7 @@ export class DashboardService {
   }
 
   async searchClientById(id: string): Promise<Client[]> {
-    let url = "http://" + environment.service_url + "/v1/event/client/search/id/" + name;
+    let url = "http://" + environment.service_url + "/v1/event/client/search/id/" + id;
     let options = {
       headers: {},
       params: {}
