@@ -16,7 +16,9 @@
     </mat-form-field>
     <div class="client_list">
       @for (client of clientList(); track $index) {
-        <button class="client_button" matButton="tonal" (click)="selectClient(client)">{{client.name}}</button>
+        <div class="client_button">
+          <button matButton="tonal" (click)="selectClient(client)">{{client.name}}</button>
+        </div>
       }
     </div>
   </div>
