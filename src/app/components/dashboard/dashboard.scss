@@ -22,6 +22,7 @@
   .session_list {
     padding-left: 20px;
     width: fit-content;
+    min-width: 600px;
     .session {
       padding-bottom: 10px;
       app-session {
