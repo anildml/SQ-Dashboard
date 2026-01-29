@@ -1,11 +1,11 @@
 import {
   Component,
   computed,
-  effect, ElementRef,
+  effect,
   input,
   InputSignal, model,
   output, Signal,
-  signal, viewChild,
+  signal,
   WritableSignal
 } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';

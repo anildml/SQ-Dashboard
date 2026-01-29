@@ -1,6 +1,6 @@
 <div class="find_client_form">
   <div class="title">Find Client</div>
-  <div class="form">
+  <div class="search_clients_section">
     <mat-form-field>
       <mat-label>Search by</mat-label>
       <mat-select [(value)]="searchType">
@@ -14,5 +14,10 @@
       <input matInput [(ngModel)]="searchValue">
       <mat-icon matSuffix (click)="searchClient()">search</mat-icon>
     </mat-form-field>
+  </div>
+  <div class="session_list">
+    @for (session of sessionList(); track $index) {
+      <app-session [session]="session"></app-session>
+    }
   </div>
 </div>

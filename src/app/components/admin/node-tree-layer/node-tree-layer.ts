@@ -4,7 +4,7 @@ import {
   InputSignal, Signal, viewChildren
 } from '@angular/core';
 import {NodeComponent} from '../node/node';
-import {Node} from '../../../models/interfaces/view/node';
+import {Node} from '../../../models/interfaces/api/node';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';

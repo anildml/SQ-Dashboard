@@ -7,14 +7,14 @@ import {
   viewChildren,
   WritableSignal
 } from '@angular/core';
-import {Node} from '../../../models/interfaces/view/node';
+import {Node} from '../../../models/interfaces/api/node';
 import {MatIconModule} from '@angular/material/icon';
 import {NodeTreeService} from '../../../services/node-tree-service/node-tree-service';
 import {MatInputModule} from '@angular/material/input';
 import {InputComponent} from '../../common/input/input';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {firstValueFrom, Observable, skip} from 'rxjs';
-import {Operation} from '../../../models/interfaces/view/operation';
+import {Operation} from '../../../models/interfaces/api/operation';
 import {MatButton} from '@angular/material/button';
 
 @Component({

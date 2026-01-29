@@ -1,5 +1,5 @@
-import {Component, inject, input, InputSignal, Signal, viewChild, viewChildren} from '@angular/core';
-import {Operation, } from '../../../models/interfaces/view/operation';
+import {Component, inject, input, InputSignal, Signal, viewChild} from '@angular/core';
+import {Operation, } from '../../../models/interfaces/api/operation';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {InputComponent} from '../../common/input/input';

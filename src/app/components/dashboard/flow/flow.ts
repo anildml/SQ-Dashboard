@@ -1,9 +1,9 @@
-import {Component, input, InputSignal, signal} from '@angular/core';
-import {Flow, isFlow} from '../../../models/interfaces/view/flow';
+import {Component, inject, input, InputSignal} from '@angular/core';
+import {Flow, isFlow} from '../../../models/interfaces/api/flow';
 import {DatePipe} from '@angular/common';
-import {Session} from '../../../models/interfaces/view/session';
-import {Event} from '../../../models/interfaces/view/event';
-import {Interaction, isInteraction} from '../../../models/interfaces/view/interaction';
+import {Session} from '../../../models/interfaces/api/session';
+import {Event} from '../../../models/interfaces/api/event';
+import {Interaction, isInteraction} from '../../../models/interfaces/api/interaction';
 import {InteractionComponent} from '../interaction/interaction';
 import {MatExpansionModule} from '@angular/material/expansion';
 
@@ -19,13 +19,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 export class FlowComponent {
 
   flow: InputSignal<Flow | Session> = input.required<Flow | Session>();
-
-  panelOpenState = signal(false);
-
-  constructor(
-    private datePipe: DatePipe
-  ) {
-  }
+  datePipe: DatePipe = inject(DatePipe);
 
   isFlow(event: Event): boolean {
     return isFlow(event);

@@ -6,10 +6,10 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
-import {Node} from '../../models/interfaces/view/node';
+import {Node} from '../../models/interfaces/api/node';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {Operation, UpdateSchema} from '../../models/interfaces/view/operation';
-import {firstValueFrom, Observable, Subscription} from 'rxjs';
+import {Operation, UpdateSchema} from '../../models/interfaces/api/operation';
+import {firstValueFrom, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment.dev';
 import {OperationComponent} from '../../components/admin/operation/operation';

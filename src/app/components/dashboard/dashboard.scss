@@ -4,10 +4,13 @@
     font-size: 1.5rem;
     font-weight: 500;
   }
-  .form {
+  .search_clients_section {
     padding-left: 20px;
     mat-form-field {
       padding-right: 10px;
     }
+  }
+  .session_list {
+    padding-left: 20px;
   }
 }
