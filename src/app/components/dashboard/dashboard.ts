@@ -49,6 +49,7 @@ export class DashboardComponent {
 
   async selectClient(client: Client) {
     this.selectedClient.set(this.clientList().find(c => c.name == client.name));
+    this.clientList.set([this.selectedClient()!]);
     let sessionList = await Promise.all(this.selectedClient()!.session_ids.map(sessionId => {
       return this.dashboardService.readSession(sessionId);
     }));
